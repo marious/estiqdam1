@@ -1,0 +1,454 @@
+@font-face {
+    font-family: myFont;
+    src: url(../fonts/droidkufi-regular.woff);
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    margin-bottom: 60px;
+    background-color: #eff0f3;
+    font-size: 16px;
+    font-family: myFont;
+    color: #055959;
+}
+select, option {
+    color: #055959 !important;
+}
+
+.small-img {
+    height: 200px;
+}
+
+
+/* only target IE9+, so to speak. */
+:root input[type="checkbox"] {
+    position: absolute;
+    overflow: hidden;
+    width: 1px;
+    height: 1px;
+    clip: rect(0 0 0 0); }
+
+:root input[type="checkbox"] + label {
+    line-height: 1.5;
+    color: #333;
+    padding-left: 1.5em;
+    background-position: .125em 36%;
+    background-repeat: no-repeat;
+    background-size: 18px 18px; }
+
+/**
+* fallbacks to png for when :checked is supported but no svg support/no js.
+* (in effect for Android 2.X)
+*/
+:root input[type="checkbox"] + label {
+    background-image: url(../../img/checkbox-unchecked.png); }
+
+:root input[type="checkbox"]:checked + label {
+
+    background-image: url(../../img/checkbox-checked.png) !important;
+}
+
+:root input[type="checkbox"]:focus + label {
+    background-image: url(../../img/checkbox-unchecked-focus.png); }
+
+:root input[type="checkbox"]:focus:checked + label {
+    background-image: url(../../img/checkbox-checked-focus.png); }
+
+.container.host-full-side-bg {
+    margin-right: 0;
+}
+
+/**
+* Modern browsers supporting SVG will get the inline SVG as data URI:s.
+* The SVG file is basically raw in the URL, but encoded to escape the SVG
+* code.
+* This boosts performance by cutting the number of requests and prevents
+* an ugly "white flash" as the browser switches from one graphic to the next
+* before all img have loaded.
+*/
+/* unchecked checkbox: */
+:root.svgasimg input[type="checkbox"] + label {
+    background-image: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2036%2036%22%20width%3D%2236%22%20height%3D%2236%22%3E%3Cpath%20fill%3D%22%23fff%22%20stroke%3D%22%23ccc%22%20stroke-width%3D%222%22%20stroke-miterlimit%3D%2210%22%20d%3D%22M35%2029c0%203.3-2.7%206-6%206H7c-3.3%200-6-2.7-6-6V7c0-3.3%202.7-6%206-6h22c3.3%200%206%202.7%206%206v22z%22%2F%3E%3C%2Fsvg%3E); }
+
+/* checked checkbox: */
+:root.svgasimg input[type="checkbox"]:checked + label {
+    background-image: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2036%2036%22%20width%3D%2236%22%20height%3D%2236%22%3E%3Cpath%20fill%3D%22%23fff%22%20stroke%3D%22%23ccc%22%20stroke-width%3D%222%22%20stroke-miterlimit%3D%2210%22%20d%3D%22M35%2029c0%203.3-2.7%206-6%206H7c-3.3%200-6-2.7-6-6V7c0-3.3%202.7-6%206-6h22c3.3%200%206%202.7%206%206v22z%22%2F%3E%3Cpath%20fill%3D%22%231A4A8E%22%20d%3D%22M26%205l5.2%206.7S19.1%2031.2%2019.1%2031.3L5%2021l4-4%209%207%208-19z%22%2F%3E%3C%2Fsvg%3E); }
+
+/* focused (but unchecked) checkbox: */
+:root.svgasimg input[type="checkbox"]:focus + label {
+    color: #000;
+    background-image: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2036%2036%22%20width%3D%2236%22%20height%3D%2236%22%3E%3Cpath%20fill%3D%22%23fff%22%20stroke%3D%22%235DA2F8%22%20stroke-width%3D%222%22%20stroke-miterlimit%3D%2210%22%20d%3D%22M35%2029c0%203.3-2.7%206-6%206H7c-3.3%200-6-2.7-6-6V7c0-3.3%202.7-6%206-6h22c3.3%200%206%202.7%206%206v22z%22%2F%3E%3C%2Fsvg%3E); }
+
+/* checked and focused checkbox: */
+:root.svgasimg input[type="checkbox"]:focus:checked + label {
+    background-image: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2036%2036%22%20width%3D%2236%22%20height%3D%2236%22%3E%3Cpath%20fill%3D%22%23fff%22%20stroke%3D%22%235DA2F8%22%20stroke-width%3D%222%22%20stroke-miterlimit%3D%2210%22%20d%3D%22M35%2029c0%203.3-2.7%206-6%206H7c-3.3%200-6-2.7-6-6V7c0-3.3%202.7-6%206-6h22c3.3%200%206%202.7%206%206v22z%22%2F%3E%3Cpath%20fill%3D%22%231A4A8E%22%20d%3D%22M26%205l5.2%206.7S19.1%2031.2%2019.1%2031.3L5%2021l4-4%209%207%208-19z%22%2F%3E%3C%2Fsvg%3E); }
+
+select {
+    padding-bottom: 2px !important;
+}
+.navbar-default {
+    background-color: #055959;
+    border-color: #055959;
+}
+.navbar-default ul.nav > li > a:focus,
+.navbar-default ul.nav > li > a:hover,
+.navbar-default ul.nav > li > a:active {
+    background-color: #055959;
+}
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+    background-color: #055959;
+    color: #fff;
+}
+.dropdown-menu > li > a:hover {
+    background-color: #055959;
+}
+h1,h2,h3,h4,h5,h6 {
+    font-family: myFont;
+}
+.btn-primary {
+    background-color: #055959 !important;
+}
+.navbar {
+    border-radius: 0 !important;
+}
+section {
+   margin-bottom: 100px;
+}
+.content {
+    min-height: 100px;
+    border-radius: 10px;
+    padding: 20px;
+}
+h1.main-header {
+}
+
+.page-header {
+    padding: 0px 20px;
+    margin: 0;
+    background-color: #fff;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #eee;
+}
+.m-t {
+    margin-top: 15px;
+}
+.nav-tabs {
+    border-bottom: 1px solid #ddd;
+}
+.nav-tabs > li.active a,
+.nav-tabs > li.active a:hover,
+.nav-tabs > li.active a:focus {
+    background-color: #1ab394;
+    border-color: #1ab394;
+    border-bottom: #1ab394;
+    font-weight: 600;
+    border-style: solid;
+    border-width: 1px;
+    color: #fff;
+
+}
+
+.nav-tabs > li > a {
+    border-radius: 0;
+    color: #222;
+    font-size: 18px;
+    font-weight: 500;
+    background-color: #e6e6e6;
+    padding: 5px 15px 5px 20px;
+}
+
+.box-footer {
+    margin-top: 50px;
+    padding: 20px 0 20px 0;
+    border-top: 1px solid #ddd;
+    background-color: #f7f7f7;
+    overflow: hidden;
+}
+
+.errorMessage {
+    color: #ff0039;
+}
+.entry-form .errorMessage {
+    /*color: #ff4c4c4c;*/
+    /*font-weight: bold;*/
+    font-size: 15px;
+    background: #ED1C24;
+    color: #fff;
+    font-weight: bold;
+    padding: 5px;
+    display: inline-block;
+    width: 100%;
+}
+.has-error {
+    border: 1px solid #ff0039;
+}
+
+.glyphicon-refresh-animate {
+    -animation: spin .7s infinite linear;
+    -webkit-animation: spin2 .7s infinite linear;
+}
+
+@-webkit-keyframes spin2 {
+    from { -webkit-transform: rotate(0deg);}
+    to { -webkit-transform: rotate(360deg);}
+}
+
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg);}
+    to { transform: scale(1) rotate(360deg);}
+}
+
+.spinner {
+    float: right;
+}
+
+.logo-container img {
+    display: block;
+    /*width: 200px;*/
+    /*height: 200px;*/
+}
+
+.warngin-msg {
+    color: #ff7518;
+    font-weight: 500;
+}
+p.password-warn {
+    margin-left: 260px;
+    padding-bottom: 20px;
+}
+
+#customer_image {
+    width: 100px;
+    height: 80px;
+}
+
+#customers_table .dropdown-menu li,
+#agents_table .dropdown-menu li,
+.datatable-dropdown li {
+    padding-bottom: 15px;
+}
+
+#customers_table .dropdown-menu li:last-child,
+#agents_table .dropdown-menu li:last-child,
+.datatable-dropdown li:last-child {
+    padding-bottom: 0;
+}
+
+#customer_model img,
+#agent_modal img,
+#representative_modal img {
+    width: 100px;
+    height: 80px;
+}
+
+.entry-form h2 {
+    color: #fff;
+    background-color: #1ab394;
+    margin-bottom: 30px;
+    padding: 10px;
+}
+
+.entry-form .entry-style {
+}
+
+.entry-form div.row {
+    padding-top: 8px;
+    padding-bottom: 0px;
+}
+
+.entry-form  div.row:nth-child(odd) {
+    background: #097878;
+    color: #fff;
+}
+
+.entry-form  div.row:nth-child(odd) table {
+    color: #222 !important;
+}
+textarea {
+    resize: none;
+}
+
+.big-link li a {
+    font-size: 22px;
+    color: #333;
+}
+
+.panel-heading-special {
+    color: green !important;
+    font-size: 22px;
+    font-weight: bold;
+    padding-bottom: 2px;
+    padding-top: 2px;
+}
+
+.services-table thead tr {
+    background: #055959;
+    color: #fff;
+}
+
+.nav-tabs > li a {
+    transition: all ease 0.2s;
+    border-right: 1px solid #f0f0f0;
+}
+
+.nav-tabs > li a:hover {
+    background: #055959;
+    color: #fff;
+}
+
+.services-entry-form textarea {
+    height: 40px;
+    overflow: hidden;
+
+}
+.services-entry-form textarea::-webkit-scrollbar {
+    display: none;
+}
+.services-entry-form .panel-body {
+    padding-bottom: 0;
+}
+.services-entry-form select {
+    padding-bottom: 8px;
+}
+
+.users-types-tabs {
+    background-color: #1ab394;
+}
+
+.users-types-tabs li {
+    list-style: none;
+    display: inline-block;
+}
+
+.users-types-tabs li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+    display: inline-block;
+    padding: 10px 30px;
+    transition: all ease 0.2s;
+}
+.users-types-tabs li a:hover {
+    background-color: #055959;
+}
+.users-types-tabs li a.active {
+    background-color: #055959;
+}
+
+.skills-option {
+    padding: 10px;
+}
+.skills-option div {
+    margin-bottom: 6px;
+}
+.skills-option label {
+    color: #055959 !important;
+    padding-left: 40px !important;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+.worker-agent-info .panel.worker-agent-panel {
+    min-height: 540px;
+}
+.worker-img {
+    width: 70px;
+    height: 50px;
+}
+.worker-img-2 {
+    width: 90px;
+    height: 70px;
+}
+
+.bg-aqua {
+    background-color: #0079ad ;
+}
+.small-box > .inner {
+    padding: 10px;
+}
+.small-box h3,
+.small-box p {
+    z-index: 5;
+}
+.small-box h3 {
+    font-size: 38px;
+    font-weight: bold;
+    margin: 0 0 10px 0;
+    white-space: nowrap;
+    padding: 0;
+    color: #fff;
+}
+.small-box p {
+    font-size: 20px;
+    color: #fff;
+}
+.small-box .icon {
+    transition: all 0.3s linear;
+    position: absolute;
+    top: -10px;
+    right: 30px;
+    z-index: 0;
+    font-size: 80px;
+    color: rgba(0,0,0,0.15);
+}
+.small-box .small-box-footer {
+    padding: 10px;
+}
+.small-box .small-box-footer h4 {
+    color: #fff;
+}
+.small-box-footer .details a:link,
+.small-box-footer .details a:visited {
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+    display: block;
+    padding: 10px;
+    width: 80px;
+    margin:  20px auto 0 auto;
+    box-sizing: border-box;
+    background: #0D62AD;
+    transition: all 0.2s linear;
+}
+
+.small-box-footer .details a:hover {
+    text-decoration: none;
+    background-color: #0F52AD;
+}
+
+table#tickets-contracts{
+    font-size: 13px;
+}
+table#not_stamp_table th {
+    font-size: 13px;
+}
+table#tickets-contracts th {
+    font-size: 13px;
+}
+.departure_date {
+    display: inline-block;
+    width: 100%;
+}
+#arrived_table tr th {
+    font-size: 13px;
+}
+#finance_table th {
+    font-size: 13px;
+}
+.accepted-table-2 {
+    font-size: 15px;
+}
+.accepted-table-2 th {
+    text-align: center;
+    font-size: 13px;
+}
+table#all-contracts th {
+    font-size: 13px;
+}

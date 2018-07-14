@@ -1,0 +1,60 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "0fba4c5ccbe2198b1747d92310fc9630",
+    "content-hash": "cd4bc10ba9b475c3e29708d1a5d81167",
+    "packages": [
+        {
+            "name": "seunmatt/codeigniter-log-viewer",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SeunMatt/codeigniter-log-viewer.git",
+                "reference": "06086cf276e1a823ea52fd0b8f133ed8f5090e68"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SeunMatt/codeigniter-log-viewer/zipball/06086cf276e1a823ea52fd0b8f133ed8f5090e68",
+                "reference": "06086cf276e1a823ea52fd0b8f133ed8f5090e68",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "CILogViewer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Seun Matt",
+                    "email": "smatt382@gmail.com"
+                }
+            ],
+            "description": "This is a simple Log Viewer for viewing Code Igniter log files on the browser",
+            "keywords": [
+                "Code Igniter",
+                "log viewer",
+                "php"
+            ],
+            "time": "2018-01-11 04:32:53"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

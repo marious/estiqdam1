@@ -1,0 +1,425 @@
+@font-face {
+    font-family: myFont;
+    src: url(https://peace4r.com/assets/fonts/droidkufi-regular.woff);
+}
+body {
+    background: #F1F3FA;
+    font-family: myFont;
+}
+textarea {
+  resize: vertical;
+}
+.site-logo {
+  width: 300px;
+  height: 60px;
+  margin-top: -15px;
+}
+.red-color {
+  color: red !important;
+}
+.building-container {
+    margin: 20px 0;
+    background: #fff;
+    padding: 20px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.building-container .col-sm-4 {
+    margin-bottom: 10px;
+}
+.col-item {
+    border: 1px solid #E1E1E1;
+    background: #FFF;
+    margin-bottom:12px;
+    overflow: hidden;
+    padding-bottom: 5px;
+}
+.col-item .options {
+    position:absolute;
+    top:6px;
+    right:22px;
+}
+.col-item .photo {
+    overflow: hidden;
+    height: 350px;
+}
+.col-item .photo .options {
+    display:none;
+}
+.col-item .photo img {
+    margin: 0 auto;
+    width: 100%;
+}
+
+.col-item .options-cart {
+    position:absolute;
+    left:22px;
+    top:6px;
+    display:none;
+}
+.col-item .options-cart-round {
+    position:absolute;
+    left:42%;
+    top:22%;
+    display:none;
+}
+.col-item .options-cart-round button {
+    border-radius: 50%;
+    padding:14px 16px;
+
+}
+.col-item .options-cart-round button .fa {
+    font-size:22px;
+}
+.col-item .info {
+    padding: 3px;
+    margin-top: 1px;
+}
+.col-item .price-details {
+    width: 100%;
+    margin-top: 5px;
+    padding: 5px;
+}
+.info h1 {
+    font-size: 20px;
+    line-height: 1.4em;
+    text-align: center;
+}
+
+.col-item .price-details .details {
+    margin-bottom: 0px;
+    font-size:14px;
+}
+.col-item .price-details span {
+    float:right;
+}
+.col-item .price-details .price-new {
+    font-size:16px;
+}
+.col-item .price-details .price-old {
+    font-size:18px;
+    text-decoration:line-through;
+}
+.col-item .separator {
+    border-top: 1px solid #E1E1E1;
+}
+p.btn-desc {
+    clear: both;
+    padding: 5px 0;
+    border-top: 1px solid #e1e1e1;
+}
+p.btn-desc .price {
+    color: #222;
+    font-weight: 400;
+}
+.col-item .btn-desc a {
+    background-color: #2ABB9B;
+    display: inline-block;
+    color: #fff;
+    float: left;
+    width: 40%;
+}
+.col-item .clear-left {
+    clear: left;
+}
+.col-item .separator a {
+    text-decoration:none;
+}
+.col-item .separator p {
+    margin-bottom: 0;
+    margin-top: 6px;
+    text-align: center;
+}
+
+.col-item .separator p i {
+    margin-right: 5px;
+}
+
+.contact-info {
+  margin: 30px 0;
+  background-color: #F1F3FA;
+  padding: 20px;
+  text-align: center;
+  line-height: 1.9em;
+}
+.contact-info .contact-details {
+  text-align: right;
+  margin-right: 235px;
+}
+.contact-info span.mail {
+  display: block;
+    margin-right: 80px;
+}
+
+/*sidebar*/
+/* Profile container */
+.profile {
+    margin: 20px 0;
+}
+
+/* Profile sidebar */
+.profile-sidebar {
+    padding: 20px 0 10px 0;
+    background: #fff;
+    margin: 20px 0;
+}
+
+.profile-userpic img {
+    float: none;
+    margin: 0 auto;
+    width: 50%;
+    height: 50%;
+    -webkit-border-radius: 50% !important;
+    -moz-border-radius: 50% !important;
+    border-radius: 50% !important;
+}
+
+.profile-usertitle {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.profile-usertitle-name {
+    color: #5a7391;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 7px;
+}
+
+.profile-usertitle-job {
+    text-transform: uppercase;
+    color: #5b9bd1;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.profile-userbuttons {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.profile-userbuttons .btn {
+    text-transform: uppercase;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 6px 15px;
+    margin-right: 5px;
+}
+
+.profile-userbuttons .btn:last-child {
+    margin-right: 0px;
+}
+
+.profile-usermenu {
+    margin-top: 30px;
+}
+
+.profile-usermenu ul li {
+    border-bottom: 1px solid #f0f4f7;
+}
+
+.profile-usermenu ul li:last-child {
+    border-bottom: none;
+}
+
+.profile-usermenu ul li a {
+    color: #93a3b5;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.profile-usermenu ul li a i {
+    margin-right: 8px;
+    font-size: 14px;
+}
+
+.profile-usermenu ul li a:hover {
+    background-color: #fafcfd;
+    color: #5b9bd1;
+}
+
+.profile-usermenu ul li.active {
+    border-bottom: none;
+}
+
+.profile-usermenu ul li.active a {
+    color: #5b9bd1;
+    background-color: #f6f9fb;
+    border-right: 2px solid #5b9bd1;
+    margin-right: -2px;
+}
+
+/* Profile Content */
+.profile-content {
+    padding: 20px;
+    background: #fff;
+    margin-bottom: 20px;
+}
+ul.search-buildings li {
+    margin: 4px 4px 8px 6px;
+}
+.separator {
+    padding: 10px 0;
+    margin: 10px 0 !important;
+}
+.building-item {
+    margin-bottom: 1em;
+}
+div.search-menu-page {
+    margin-top: 20px;
+}
+div.search-menu-page li {
+    margin-bottom: .5em;
+    text-align: right;
+}
+div.search-menu-page div{
+    margin: 4px 0;
+}
+
+a.details-btn {
+  display: block !important;
+  width: 100% !important;
+  padding: 8px !important;
+}
+
+div.share-buttons a {
+    font-size: 15px;
+    font-weight: bold;
+    color: #fff;
+    border: 1px solid #fff;
+    text-decoration: none;
+    padding: 8px;
+}
+
+div.share-buttons a:hover {
+    color: #fff;
+}
+
+.facebook-share {
+    background-color: #5D7DAE;
+}
+.whatsapp-share {
+    background-color: #25d366;
+}
+
+div.share-buttons .twitter-share {
+    background-color: #00a9f1;
+}
+.errorMessage {
+    color: red;
+}
+.white {
+    color: #fff;
+}
+
+
+.my-nav {
+    padding-right: 0;
+    padding-left: initial;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+.my-nav li a:link,
+.my-nav li a:visited {
+    display: block;
+    width:  100%;
+    padding: 10px;
+}
+
+.my-nav li a:hover {
+    text-decoration: none;
+}
+
+
+select {
+    padding-bottom: 0px !important;
+}
+
+@media only screen and (min-width: 700px) {
+  div.search-menu-page {
+      margin-right: 200px;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+     h1.contact-us {
+        text-align: center;
+    }
+    .contact-details .mail {
+        margin-right: 0;
+    }
+
+    .profile-content h1 {
+        font-size: 30px;
+    }
+    .maid-info-table {
+        margin-top: 10px;
+    }
+
+
+}
+
+.img-preview-mask {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9998;
+    background-color: rgba(0,0,0,.5);
+}
+
+.img-preview-popover {
+    position: fixed;
+    z-index: 9999;
+}
+.img-preview-foot {
+    width: 96%;
+    padding: 0 2%;
+    position: absolute;
+    bottom: 0;
+    background-color: rgba(0,0,0,.5);
+}
+
+.img-foot-title {
+    font-size: 16px;
+    color: #fff;
+    margin-top: 5px;
+}
+.maid-img {
+    /*cursor: zoom-in;*/
+}
+.img-foot-desc {
+    font-size: 12px;
+    color: #fff;
+    margin-top: 5px;
+    line-height: 24px;
+}
+.contact-us {
+    background-color: #FF5E00;
+    text-align: center;
+    padding: 8px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    color: #fff;
+}
+
+.contact-us i {
+    color: #fff;
+}
+.contact-us a:link,
+.contact-us a:visited {
+    /*display: block;*/
+    color: #fff;
+}
+
+@media only screen and (max-width: 700px) {
+    .profile-sidebar {
+        margin-bottom: 100px;
+        margin-top: 30px;
+    }
+}
+

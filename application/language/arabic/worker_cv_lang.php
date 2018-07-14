@@ -1,0 +1,32 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+$lang['bio_data'] = 'البيانات العامة';
+$lang['details_of_applicant'] = 'تفاصيل مقدم الطلب';
+$lang['passport_details'] = 'بيانات جواز السفر';
+$lang['work_skills'] = 'مهارات العمل';
+$lang['work_experience'] = 'الخبرة السابقة';
+$lang['position_applied'] = 'الوظيفة';
+$lang['monthly_salary'] = 'الراتب الشهرى';
+$lang['contract_period'] = 'مدة العقد';
+$lang['name'] = 'الاسم';
+$lang['nationality'] = 'الجنسية';
+$lang['religion'] = 'الدين';
+$lang['date_of_birth'] = 'تاريخ الميلاد';
+$lang['age'] = 'العمر';
+$lang['marital_status'] = 'الحالة الاجتماعية';
+$lang['weight'] = 'الوزن';
+$lang['height'] = 'الطول';
+$lang['education_qualification'] = 'المؤهل العلمى';
+$lang['passport_number'] = 'رقم الجواز';
+$lang['date_of_issue'] = 'تاريخ الاصدار';
+$lang['date_of_expiry'] = 'تاريخ الانتهاء';
+$lang['place_of_issue'] = 'مكان الاصدار';
+$lang['arabic_language'] = 'اللغة العربية';
+$lang['cleaning'] = 'التنظيف';
+$lang['ironing'] = 'كى الملابس';
+$lang['cooking'] = 'الطبخ';
+$lang['baby_sitting'] = 'الجلوس بالاطفال';
+$lang['old_care'] = 'العناية بالكبار';
+$lang['experience_period'] = 'مدة الخبرة';
+$lang['experience_country'] = 'دولة الخبرة';

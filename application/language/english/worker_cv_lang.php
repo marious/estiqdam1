@@ -1,0 +1,31 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+$lang['bio_data'] = 'Bio Data';
+$lang['details_of_applicant'] = 'Details Of Applicant';
+$lang['passport_details'] = 'Passport Details';
+$lang['work_skills'] = 'Work Skills';
+$lang['work_experience'] = 'Work Experience';
+$lang['position_applied'] = 'Position Applied';
+$lang['monthly_salary'] = 'Monthly Salary';
+$lang['contract_period'] = 'Contract Period';
+$lang['name'] = 'Name';
+$lang['nationality'] = 'Nationality';
+$lang['religion'] = 'Religion';
+$lang['date_of_birth'] = 'Date Of Birth';
+$lang['age'] = 'Age';
+$lang['marital_status'] = 'Marital Status';
+$lang['weight'] = 'Weight';
+$lang['height'] = 'Tall';
+$lang['education_qualification'] = 'Education';
+$lang['passport_number'] = 'Passport Number';
+$lang['date_of_issue'] = 'Date Of Issue';
+$lang['date_of_expiry'] = 'Date Of Expiry';
+$lang['place_of_issue'] = 'Place Of Issue';
+$lang['arabic_language'] = 'Arabic Language';
+$lang['cleaning'] = 'Cleaning';
+$lang['ironing'] = 'Ironing';
+$lang['cooking'] = 'Cooking';
+$lang['baby_sitting'] = 'Baby Sitting';
+$lang['old_care'] = 'Old Care';
+$lang['experience_period'] = 'Experience Period';
