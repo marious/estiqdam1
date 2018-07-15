@@ -17,28 +17,21 @@
       <link rel="stylesheet" href="<?= site_url('assets/css/style.css') . '?v=' . filemtime(FCPATH . 'assets/css/style.css'); ?>">
       <link rel="stylesheet" href="<?= site_url('assets/css/peacer.css') . '?v=' . filemtime(FCPATH . 'assets/css/peacer.css') ; ?>">
       <!-- Global site tag (gtag.js) - Google Analytics -->
-      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113323414-1"></script>
-      <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-
-          gtag('config', 'UA-113323414-1');
-      </script>
-
-
   </head>
 
   <body direction="rtl">
 
   <div class="header navbar navbar-default">
-      <div class="container"> <a class="navbar-brand pull-right" href="<?= site_url(); ?>"><img src="<?= site_url('assets/img/peace_logo.png'); ?>" class="site-logo"></a>
+      <div class="container">
+          <a class="navbar-brand pull-right" href="<?= site_url(); ?>">
+<!--              <img src="--><?//= site_url('assets/img/peace_logo.png'); ?><!--" class="site-logo">-->
+          </a>
           <div class="menu pull-left"> <a class="toggleMenu" href="#"><img src="<?= site_url('assets/img/nav_icon.png'); ?>" alt="" /> </a>
-              <ul class="nav" id="nav">
-                  <li><a href="<?= site_url('home'); ?>"><?= lang('home'); ?></a></li>
+<!--              <ul class="nav" id="nav">-->
+<!--                  <li><a href="--><?//= site_url('home'); ?><!--">--><?//= lang('home'); ?><!--</a></li>-->
 
-                  <li><a href="<?= site_url('home/contact'); ?>"><?= lang('contact_us'); ?></a></li>
-                  <li><a href="<?= site_url('home/tanazul'); ?>">للتنازل</a></li>
+<!--                  <li><a href="--><?//= site_url('home/contact'); ?><!--">--><?//= lang('contact_us'); ?><!--</a></li>-->
+<!--                  <li><a href="--><?//= site_url('home/tanazul'); ?><!--">للتنازل</a></li>-->
                   <?php
                   $this->load->module('seo_pages');
                   $seo_pages = $this->seo_pages->Seo_pages_model->get_column(null, 'title');
@@ -52,35 +45,35 @@
 
                   <!-- Authentication Links -->
                   <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true): ?>
-                      <li>
-                          <a href="<?= site_url('home/customer_favorite_list') ?>">
-                              قائمة التفضيلات
-                          </a>
-                      </li>
-                      <li>
-                          <a href="<?= site_url('home/demand_list'); ?>">قائمة الطلبات</a>
-                      </li>
-                      <li class="dropdown">
-                          <a href="#" class="dropdown-toggle parent" data-toggle="dropdown" role="button" aria-expanded="false">
-                              <?= $_SESSION['username'] ?> <span class="caret"></span>
-                          </a>
-
-                          <ul class="dropdown-menu" role="menu">
-                              <li>
-                                  <a href="<?= site_url('home/change_password'); ?>">تغيير الرقم السرى</a>
-                              </li>
-
-                              <li>
-                                  <a href="#" onclick="event.preventDefault();
-                                     document.getElementById('logout-form').submit();" class="parent">
-                                      تسجيل الخروج
-                                  </a>
-
-                                  <form id="logout-form" action="<?= site_url('site_security/logout_customer'); ?>" method="POST" style="display: none;">
-                                  </form>
-                              </li>
-                          </ul>
-                      </li>
+<!--                      <li>-->
+<!--                          <a href="--><?//= site_url('home/customer_favorite_list') ?><!--">-->
+<!--                              قائمة التفضيلات-->
+<!--                          </a>-->
+<!--                      </li>-->
+<!--                      <li>-->
+<!--                          <a href="--><?//= site_url('home/demand_list'); ?><!--">قائمة الطلبات</a>-->
+<!--                      </li>-->
+<!--                      <li class="dropdown">-->
+<!--                          <a href="#" class="dropdown-toggle parent" data-toggle="dropdown" role="button" aria-expanded="false">-->
+<!--                              --><?//= $_SESSION['username'] ?><!-- <span class="caret"></span>-->
+<!--                          </a>-->
+<!---->
+<!--                          <ul class="dropdown-menu" role="menu">-->
+<!--                              <li>-->
+<!--                                  <a href="--><?//= site_url('home/change_password'); ?><!--">تغيير الرقم السرى</a>-->
+<!--                              </li>-->
+<!---->
+<!--                              <li>-->
+<!--                                  <a href="#" onclick="event.preventDefault();-->
+<!--                                     document.getElementById('logout-form').submit();" class="parent">-->
+<!--                                      تسجيل الخروج-->
+<!--                                  </a>-->
+<!---->
+<!--                                  <form id="logout-form" action="--><?//= site_url('site_security/logout_customer'); ?><!--" method="POST" style="display: none;">-->
+<!--                                  </form>-->
+<!--                              </li>-->
+<!--                          </ul>-->
+<!--                      </li>-->
                   <?php else: ?>
                   <li><a href="<?= site_url('home/login'); ?>"><?= lang('register'); ?></a></li>
 <!--                  <li><a href="http://buildingsite.dev/register">تسجيل عضوية جديدة</a></li>-->
@@ -115,15 +108,7 @@
 
 
   <div class="footer">
-      <div class="footer_bottom">
-          <div class="follow-us">
-              <a class="fa fa-facebook social-icon" href="https://www.facebook.com/profile.php?id=100009223012865" target="_blank"></a>
-              <a class="fa fa-twitter social-icon" href="https://twitter.com/Upeacet" target="_blank"></a>
-              <a class="fa fa-youtube social-icon" href="https://www.youtube.com/channel/UCAd74izRxuMkA5UsTEQ0xnA?view_as=subscriber" target="_blank"></a> </div>
-          <div class="copy">
-              <p>Copyright &copy; <?= date('Y'); ?> Peace For Recruitment</p>
-          </div>
-      </div>
+
   </div>
 
 
