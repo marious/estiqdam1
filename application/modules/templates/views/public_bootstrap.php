@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>مكتب السلام للاستقدام</title>
+    <title>استقدام من أثيوبيا</title>
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
       <?php
       $language = isset($_SESSION['public_site_language']) ? $_SESSION['public_site_language'] : 'arabic';
@@ -21,17 +21,19 @@
 
   <body direction="rtl">
 
-  <div class="header navbar navbar-default">
+  <div class="header navbar navbar-default" style="padding-bottom: 0;">
+      <h1 class="eth-header">إستقدام عمالة من إثيوبيا</h1>
+
       <div class="container">
           <a class="navbar-brand pull-right" href="<?= site_url(); ?>">
-<!--              <img src="--><?//= site_url('assets/img/peace_logo.png'); ?><!--" class="site-logo">-->
+<!--              <img src="--><?php //echo site_url('assets/img/peace_logo.png'); ?><!--" class="site-logo">-->
           </a>
-          <div class="menu pull-left"> <a class="toggleMenu" href="#"><img src="<?= site_url('assets/img/nav_icon.png'); ?>" alt="" /> </a>
-<!--              <ul class="nav" id="nav">-->
-<!--                  <li><a href="--><?//= site_url('home'); ?><!--">--><?//= lang('home'); ?><!--</a></li>-->
+          <div class="menu pull-left"> <a class="toggleMenu" href="#"><img src="<?php //echo site_url('assets/img/nav_icon.png'); ?>" alt="" /> </a>
+              <ul class="nav" id="nav">
+<!--                  <li><a href="--><?php //echo site_url('home'); ?><!--">--><?php //echo lang('home'); ?><!--</a></li>-->
 
-<!--                  <li><a href="--><?//= site_url('home/contact'); ?><!--">--><?//= lang('contact_us'); ?><!--</a></li>-->
-<!--                  <li><a href="--><?//= site_url('home/tanazul'); ?><!--">للتنازل</a></li>-->
+<!--                  <li><a href="--><?php //echo site_url('home/contact'); ?><!--">--><?php //echo lang('contact_us'); ?><!--</a></li>-->
+<!--                  <li><a href="--><?php //echo site_url('home/tanazul'); ?><!--">للتنازل</a></li>-->
                   <?php
                   $this->load->module('seo_pages');
                   $seo_pages = $this->seo_pages->Seo_pages_model->get_column(null, 'title');
@@ -46,7 +48,7 @@
                   <!-- Authentication Links -->
                   <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true): ?>
 <!--                      <li>-->
-<!--                          <a href="--><?//= site_url('home/customer_favorite_list') ?><!--">-->
+<!--                          <a href="--><?php //echo site_url('home/customer_favorite_list') ?><!--">-->
 <!--                              قائمة التفضيلات-->
 <!--                          </a>-->
 <!--                      </li>-->
@@ -69,19 +71,19 @@
 <!--                                      تسجيل الخروج-->
 <!--                                  </a>-->
 <!---->
-<!--                                  <form id="logout-form" action="--><?//= site_url('site_security/logout_customer'); ?><!--" method="POST" style="display: none;">-->
+<!--                                  <form id="logout-form" action="--><?php //echo site_url('site_security/logout_customer'); ?><!--" method="POST" style="display: none;">-->
 <!--                                  </form>-->
 <!--                              </li>-->
 <!--                          </ul>-->
 <!--                      </li>-->
                   <?php else: ?>
-                  <li><a href="<?= site_url('home/login'); ?>"><?= lang('register'); ?></a></li>
+<!--                  <li><a href="--><?php //echo site_url('home/login'); ?><!--">--><?php //echo lang('register'); ?><!--</a></li>-->
 <!--                  <li><a href="http://buildingsite.dev/register">تسجيل عضوية جديدة</a></li>-->
                   <?php endif; ?>
                   <?php if (isset($_SESSION['public_site_language']) && $_SESSION['public_site_language'] == 'english'): ?>
-                      <li><a href="<?= site_url('home/lang/arabic') ?>">AR</a></li>
+<!--                      <li><a href="--><?php //echo site_url('home/lang/arabic') ?><!--">AR</a></li>-->
                   <?php else: ?>
-                      <li><a href="<?= site_url('home/lang/english') ?>">EN</a></li>
+<!--                      <li><a href="--><?php //echo site_url('home/lang/english') ?><!--">EN</a></li>-->
                   <?php endif; ?>
                   <div class="clear"></div>
               </ul>
