@@ -24,7 +24,7 @@ body a {
 .header {
 	background: #fff;
 	padding: 2em 0;
-	border-top: 3px solid #2ABB9B;
+	border-top: 3px solid #ce4844;
 }
 .navbar-brand {
 	font-size: 32px;
@@ -38,6 +38,17 @@ body a {
 }
 .navbar-brand .fa {
 	color: #2abb9b;
+}
+.eth-header {
+	text-align: center;
+	color: #ce4844;
+	font-size: 50px;
+	line-height: 1em;
+	margin: 0;
+	padding: 0;
+}
+.details-btn {
+	background-color: #ce4844 !important;
 }
 .menu {
 	float: right;
