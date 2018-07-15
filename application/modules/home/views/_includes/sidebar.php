@@ -106,7 +106,7 @@
                         <option value=""><?= lang('marital_status'); ?></option>
                         <option value="1"><?= lang('single') ?></option>
                         <option value="2"><?= lang('married') ?></option>
-                        <select>
+                        </select>
                 </li>
                 <li>
                     <input class="btn btn-success btn-block" type="submit" value="<?= lang('search'); ?>">
