@@ -35,11 +35,7 @@ spl_autoload_register(function($classname) {
 | a PHP script and you can easily do that on your own.
 |
 */
-<<<<<<< HEAD
-$config['base_url'] = 'http://estgda.com';
-=======
 $config['base_url'] = 'http://localhost/estiqdam1';
->>>>>>> 5aedbcfc4afaf344734f1c4e527fa0a795c7dcbf
 
 /*
 |--------------------------------------------------------------------------
