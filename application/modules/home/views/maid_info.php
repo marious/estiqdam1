@@ -9,7 +9,7 @@
             $nationality = $this->worker_nationality->Worker_nationality_model->get($worker->nationality_id, true)->$nationality;
         ?>
 
-    <div class="col-md-9 building-container">
+    <div class="col-md-10 building-container">
 
 
         <div class="profile-content">
@@ -20,7 +20,7 @@
             <hr>
 
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-5">
                     <?php
                     $img_size = getimagesize(FCPATH . '/assets/img/workers/' . $worker->image);
                     $img_width = $img_size[0];
@@ -56,7 +56,7 @@
                         <a href="http://www.facebook.com/sharer.php?u=http://peace4r.com/home/maidinfo/<?= url_title($worker->first_name) ?> . '.html'" class="facebook-share btn-block btn" target="_blank">Share <i class="fa fa-facebook-official white"></i></a>
                     </div>
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-7">
                     <table class="table table-striped table-bordered maid-info-table">
                         <tr>
                             <th><?= lang('name');  ?></th>
