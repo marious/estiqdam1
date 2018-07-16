@@ -47,6 +47,14 @@ body a {
 	margin: 0;
 	padding: 0;
 }
+.eth-header a:link,a:visited {
+	color: #ce4844;
+}
+
+.eth-header a:hover {
+	text-decoration: none;
+}
+
 .details-btn {
 	background-color: #ce4844 !important;
 }
