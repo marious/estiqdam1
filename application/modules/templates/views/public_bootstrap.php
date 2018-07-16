@@ -22,7 +22,7 @@
   <body direction="rtl">
 
   <div class="header navbar navbar-default" style="padding-bottom: 0;">
-      <h1 class="eth-header">إستقدام عمالة من إثيوبيا</h1>
+      <h1 class="eth-header"><a href="<?php echo base_url(); ?>">إستقدام عمالة من إثيوبيا</a></h1>
 
       <div class="container">
           <a class="navbar-brand pull-right" href="<?= site_url(); ?>">
