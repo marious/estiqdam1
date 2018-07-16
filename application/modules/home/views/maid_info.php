@@ -33,8 +33,7 @@
                     </div>
                     <br>
                     <div class="contact-us">
-                        <a href="tel:0541566633" title="0541566633"> <i class="fa fa-mobile"></i> 0541566633</a>
-                        <a href="tel:0547830004" title="0547830004"> <i class="fa fa-mobile"></i> 0547830004</a>
+                        <a href="tel:508586858" title="508586858"> <i class="fa fa-mobile"></i> 508586858</a>
                     </div>
                     <?php if (isset($_SESSION['logged_in']) && isset($_SESSION['access_id']) && $_SESSION['access_id'] == 3): ?>
                         <?php if ($customer->selected_worker_id == '0'): ?>
@@ -50,10 +49,10 @@
                         <?php
                         $share_text = "عاملة منزلية من $nationality جاهزة للاستقدام من مكتب السلام للاستقدام ";
                         ?>
-                        <a href="https://api.whatsapp.com/send?phone=966541566633" class="btn btn-block whatsapp-share" target="_blank">تواصل واتس <i class="fa fa-whatsapp white"></i></a>
-                        <a href="whatsapp://send?text=<?= urlencode($share_text) ?> http://peace4r.com/home/maidinfo/<?=  url_title($worker->first_name); ?>" data-action="share/whatsapp/share" class="btn btn-block whatsapp-share" target="_blank">مشاركة بالواتس <i class="fa fa-whatsapp white"></i></a>
-                        <a href="https://twitter.com/share?url=http://peace4r.com/home/maidinfo/<?= url_title($worker->first_name); ?>&amp;text=عاملة منزلية من <?=  $nationality; ?> مكتب السلام للاستقدام &amp;hashtags=السلام_للاستقدام" class="twitter-share btn btn-block" target="_blank">Tweet <i class="fa fa-twitter white"></i></a>
-                        <a href="http://www.facebook.com/sharer.php?u=http://peace4r.com/home/maidinfo/<?= url_title($worker->first_name) ?> . '.html'" class="facebook-share btn-block btn" target="_blank">Share <i class="fa fa-facebook-official white"></i></a>
+                        <a href="https://api.whatsapp.com/send?phone=966508586858" class="btn btn-block whatsapp-share" target="_blank">تواصل واتس <i class="fa fa-whatsapp white"></i></a>
+                        <a href="whatsapp://send?text=<?= urlencode('عاملة منزلية من اثيوبيا') ?> http://peace4r.com/home/maidinfo/<?=  url_title($worker->first_name); ?>" data-action="share/whatsapp/share" class="btn btn-block whatsapp-share" target="_blank">مشاركة بالواتس <i class="fa fa-whatsapp white"></i></a>
+                        <a href="https://twitter.com/share?url=http://http://estgdam1.com/.com/home/maidinfo/<?= url_title($worker->first_name); ?>&amp;text=عاملة منزلية من <?=  $nationality; ?>  &amp;hashtags=" class="twitter-share btn btn-block" target="_blank">Tweet <i class="fa fa-twitter white"></i></a>
+                        <a href="http://www.facebook.com/sharer.php?u=http://http://estgdam1.com/.com/home/maidinfo/<?= url_title($worker->first_name) ?> . '.html'" class="facebook-share btn-block btn" target="_blank">Share <i class="fa fa-facebook-official white"></i></a>
                     </div>
                 </div>
                 <div class="col-md-7">
