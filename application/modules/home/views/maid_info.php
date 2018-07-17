@@ -33,7 +33,7 @@
                     </div>
                     <br>
                     <div class="contact-us">
-                        <a href="tel:508586858" title="508586858"> <i class="fa fa-mobile"></i> 508586858</a>
+                        <a href="tel:0508586858" title="0508586858"> <i class="fa fa-mobile"></i> 0508586858</a>
                     </div>
                     <?php if (isset($_SESSION['logged_in']) && isset($_SESSION['access_id']) && $_SESSION['access_id'] == 3): ?>
                         <?php if ($customer->selected_worker_id == '0'): ?>
