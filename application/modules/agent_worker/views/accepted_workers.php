@@ -33,6 +33,7 @@
                                         </thead>
                                         <tbody id="accepted-workers">
                                         <?php $i = 1; ?>
+                                        <?php if ($workers && count($workers)): ?>
                                         <?php foreach ($workers as $worker): ?>
                                            <tr>
                                                <td style="text-align: center; width: 3%;"><?=  $i; ?></td>
@@ -61,6 +62,7 @@
                                            </tr>
 
                                         <?php $i++; endforeach; ?>
+                                        <?php endif; ?>
 
                                         </tbody>
                                     </table>
