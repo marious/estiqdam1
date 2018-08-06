@@ -7,15 +7,15 @@ switch (ENV) {
         define('DB_USER','root');
         define('DB_PASSWORD','2634231');
         define('DB_HOST', 'localhost');
-        define('URL_ROOT', 'http://localhost/estiqdam1/mytwitterapp/');
+        define('URL_ROOT', 'http://127.0.0.1/estiqdam1/mytwitterapp/');
         define('IS_PROD',false);
     break;
     case 'prod':
-        define('DB_NAME','b24_20817550_my_twitter_app');
-        define('DB_USER','b24_20817550');
+        define('DB_NAME','u273974407_mytw');
+        define('DB_USER','u273974407_twitt');
         define('DB_PASSWORD','2634231f16');
-        define('DB_HOST', 'sql303.byethost24.com');
-        define('URL_ROOT', 'http://mytwitter.byethost24.com/');
+        define('DB_HOST', 'mysql.hostinger.co.uk');
+        define('URL_ROOT', 'http://estgdam1.com//mytwitterapp/');
         define('IS_PROD',false);
         break;
 
