@@ -7,8 +7,9 @@ $assets['js'][] = 'typeahead.bundle.js';
 //$assets['js'][] = 'bootstrap3-typeahead.min.js';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $replay_message = isset($_POST['replay_message']) ? $_POST['replay_message'] : '';
     $twitterApp = new \MyApp\Controllers\Tweets();
-    $twitterApp->makeReplayUser();
+    $twitterApp->makeReplayUser($replay_message);
     exit;
 }
 
@@ -32,6 +33,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div class="col-sm-9">
                         <input type="text" id="search-account" class="Typeahead-input" placeholder="Search Twitter User" name="account_name" style="display: block;">
                         <img class="Typeahead-spinner" src="<?= URL_ROOT ?>assets/images/spinner.gif">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="replay_message" class="control-label col-sm-3">الرد</label>
+                    <div class="col-sm-9">
+                        <textarea name="replay_message" id="" cols="30" rows="10" class="form-control"></textarea>
                     </div>
                 </div>
 
