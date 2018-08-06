@@ -3,19 +3,11 @@ define('ENV', 'dev');
 
 switch (ENV) {
     case 'dev':
-        define('DB_NAME','mtwitterapp');
-        define('DB_USER','root');
-        define('DB_PASSWORD','2634231');
-        define('DB_HOST', 'localhost');
-        define('URL_ROOT', 'http://127.0.0.1/estiqdam1/mytwitterapp/');
-        define('IS_PROD',false);
-    break;
-    case 'prod':
         define('DB_NAME','u273974407_mytw');
         define('DB_USER','u273974407_twitt');
         define('DB_PASSWORD','2634231f16');
         define('DB_HOST', 'mysql.hostinger.co.uk');
-        define('URL_ROOT', 'http://estgdam1.com//mytwitterapp/');
+        define('URL_ROOT', 'http://estgdam1.com/mytwitterapp/');
         define('IS_PROD',false);
         break;
 
