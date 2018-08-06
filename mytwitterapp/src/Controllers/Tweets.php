@@ -295,7 +295,7 @@ class Tweets extends AbstractController
 
 
 
-    public function makeReplayUser()
+    public function makeReplayUser($replay_message = 'أفضل استقدام من مكتب السلام للاستقدام')
     {
         $redirectUrl = URL_ROOT . '/tweets/replay/add.php';
         $username = Helper::security($_POST['account_name']);
@@ -332,6 +332,7 @@ class Tweets extends AbstractController
                         statuses_count = :statuses_count,
                         date_added = :date_added,
                         last_status_id = :last_status_id,
+                        replay_message = :replay_message,
                         owner_id = :owner_id";
                     $stmt = $this->db->prepare($query);
                     $stmt->bindValue(':name', $user_info->name);
@@ -344,6 +345,7 @@ class Tweets extends AbstractController
                     $stmt->bindValue(':last_status_id', $user_info->status->id_str);
                     $stmt->bindValue(':statuses_count', $user_info->statuses_count);
                     $stmt->bindValue(':date_added', time());
+                    $stmt->bindValue(':replay_message', $replay_message);
                     $stmt->bindValue(':owner_id', $_SESSION['user_id']);
                     $stmt->execute();
 
