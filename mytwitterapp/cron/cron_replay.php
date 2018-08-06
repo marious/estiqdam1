@@ -24,6 +24,8 @@ $replay_users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 if ($replay_users && count($replay_users)) {
 
     foreach ($replay_users as $user) {
+        $replay_message = "@{$user['screen_name']} {$user['replay_message']}";
+
         $query = "SELECT oauth_token, oauth_token_secret FROM users WHERE id = :id";
         $stmt = $db->prepare($query);
         $stmt->bindValue(":id", $user['owner_id']);
@@ -33,7 +35,7 @@ if ($replay_users && count($replay_users)) {
 
             $get_tweets = $twitter->get('statuses/user_timeline', [
                 'screen_name' => $user['screen_name'],
-                'since_id'    => 1026296972775514114,
+                'since_id'    => $user['last_status_id'],
                 'count' => 5
             ]);
 
@@ -55,7 +57,7 @@ if ($replay_users && count($replay_users)) {
 
                     $retweet = $twitter_api->post('statuses/update', array(
                         'in_reply_to_status_id' => $tweet_info->id_str,
-                        'status' => '@upeacet افضل مكتب استقدام'
+                        'status' => $replay_message
                     ));
                     sleep(5);
                 }
