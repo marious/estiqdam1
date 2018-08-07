@@ -24,11 +24,7 @@ $replay_users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 echo '<pre>';
 print_r($replay_users);
 echo '</pre>';
-echo '<hr>';
-echo '<pre>';
-print_r($user);
-echo '</pre>';
-exit;
+
 
 if ($replay_users && count($replay_users)) {
 
@@ -40,6 +36,13 @@ if ($replay_users && count($replay_users)) {
         $stmt->bindValue(":id", $user['owner_id']);
         $stmt->execute();
         $user_cred = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+        echo '<pre>';
+        print_r($user_cred);
+        echo '</pre>';
+        exit;
+
         if ($user_cred && count($user_cred)) {
 
             $get_tweets = $twitter->get('statuses/user_timeline', [
