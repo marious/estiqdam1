@@ -23,10 +23,6 @@ if (!isset($_SESSION['access_token'])) {
     $user = $connection->get("account/verify_credentials");
 }
 
-echo '<pre>';
-print_r($user);
-echo '</pre>';
-exit;
 
 if ($twitterKeys && count($twitterKeys)) {
 
