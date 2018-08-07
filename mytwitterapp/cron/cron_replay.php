@@ -47,12 +47,7 @@ if ($replay_users && count($replay_users)) {
                 'count' => 5
             ]);
 
-            var_dump($get_tweets);
 
-            echo '<pre>';
-            print_r($user, $get_tweets);
-            echo '</pre>';
-            exit;
 
 
             // update user last_status_id in retweets_users in database for the next time to count
