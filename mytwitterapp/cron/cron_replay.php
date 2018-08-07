@@ -14,7 +14,10 @@ $twitter = \MyApp\Libs\Helper::getTwInstance();
 //    'since_id' => '909808281081847808',
 //    'count' => 10,
 //]);
-
+echo '<pre>';
+print_r($twitter);
+echo '</pre>';
+exit;
 
 $query = "SELECT * FROM replay_users ORDER BY rand() LIMIT 2";
 $stmt = $db->prepare($query);
