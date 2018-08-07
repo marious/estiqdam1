@@ -21,9 +21,6 @@ $stmt = $db->prepare($query);
 $stmt->execute();
 $replay_users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-echo '<pre>';
-print_r($replay_users);
-echo '</pre>';
 
 
 if ($replay_users && count($replay_users)) {
@@ -38,12 +35,12 @@ if ($replay_users && count($replay_users)) {
         $user_cred = $stmt->fetch(PDO::FETCH_ASSOC);
 
         echo '<pre>';
-        print_r($user_cred);
+        print_r($user);
         echo '</pre>';
 
 
         if ($user_cred && count($user_cred)) {
-
+    echo '<hr>';
             $get_tweets = $twitter->get('statuses/user_timeline', [
                 'screen_name' => $user['screen_name'],
                 'since_id'    => $user['last_status_id'],
