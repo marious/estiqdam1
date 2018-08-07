@@ -7,7 +7,6 @@ include __DIR__ . '/tpl/header.php';
 $settings = new \MyApp\Models\Setting();
 $twitterKeys = $settings->get('my_twitter_app');
 
-var_dump($twitterKeys);exit;
 
 if (isset($_SESSION['twitter_logged'])) {
     $userModel = new \MyApp\Models\User();
