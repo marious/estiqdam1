@@ -3,6 +3,12 @@ include __DIR__ . '/includes/setup.php';
 include __DIR__ . '/tpl/header.php';
 //session_destroy();exit;
 //var_dump($_SESSION);exit;
+
+$settings = new \MyApp\Models\Setting();
+$twitterKeys = $settings->get('my_twitter_app');
+
+var_dump($twitterKeys);exit;
+
 if (isset($_SESSION['twitter_logged'])) {
     $userModel = new \MyApp\Models\User();
     $user = $userModel->getById($_SESSION['user_id']);
