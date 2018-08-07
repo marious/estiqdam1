@@ -14,15 +14,16 @@ $twitter = \MyApp\Libs\Helper::getTwInstance();
 //    'since_id' => '909808281081847808',
 //    'count' => 10,
 //]);
-echo '<pre>';
-print_r($twitter);
-echo '</pre>';
-exit;
+
 
 $query = "SELECT * FROM replay_users ORDER BY rand() LIMIT 2";
 $stmt = $db->prepare($query);
 $stmt->execute();
 $replay_users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+echo '<pre>';
+print_r($replay_users);
+echo '</pre>';
 
 if ($replay_users && count($replay_users)) {
 
