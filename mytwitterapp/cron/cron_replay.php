@@ -38,10 +38,6 @@ if ($replay_users && count($replay_users)) {
         $user_cred = $stmt->fetch(PDO::FETCH_ASSOC);
 
 
-        echo '<pre>';
-        print_r($user_cred);
-        echo '</pre>';
-        exit;
 
         if ($user_cred && count($user_cred)) {
 
@@ -51,6 +47,11 @@ if ($replay_users && count($replay_users)) {
                 'count' => 5
             ]);
 
+
+            echo '<pre>';
+            print_r($get_tweets);
+            echo '</pre>';
+            exit;
 
 
             // update user last_status_id in retweets_users in database for the next time to count
