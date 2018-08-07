@@ -37,6 +37,9 @@ if ($replay_users && count($replay_users)) {
         $stmt->execute();
         $user_cred = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        echo '<pre>';
+        print_r($user_cred);
+        echo '</pre>';
 
 
         if ($user_cred && count($user_cred)) {
