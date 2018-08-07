@@ -7,6 +7,8 @@ require __DIR__ . '/includes/setup.php';
 // get the consumer key and consumer secret
 $settings = new \MyApp\Models\Setting();
 $twitterKeys = $settings->get('my_twitter_app');
+echo 'hi';
+print_r($twitterKeys);exit;
 
 if (!isset($_SESSION['access_token'])) {
     $connection = new TwitterOAuth($twitterKeys['consumer_key'], $twitterKeys['consumer_secret']);
