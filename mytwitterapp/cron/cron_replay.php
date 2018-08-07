@@ -49,7 +49,7 @@ if ($replay_users && count($replay_users)) {
 
 
             echo '<pre>';
-            print_r($get_tweets);
+            print_r($user, $get_tweets);
             echo '</pre>';
             exit;
 
