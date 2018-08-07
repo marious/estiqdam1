@@ -35,11 +35,12 @@ if ($replay_users && count($replay_users)) {
         $user_cred = $stmt->fetch(PDO::FETCH_ASSOC);
 
 
+
         if ($user_cred && count($user_cred)) {
 
             $get_tweets = $twitter->get('statuses/user_timeline', [
                 'screen_name' => $user['screen_name'],
-                'since_id'    => 1026416255396470785,
+                'since_id'    => $user['last_status_id'],
                 'count' => 5
             ]);
 
