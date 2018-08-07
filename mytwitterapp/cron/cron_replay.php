@@ -43,7 +43,7 @@ if ($replay_users && count($replay_users)) {
 
             $get_tweets = $twitter->get('statuses/user_timeline', [
                 'screen_name' => $user['screen_name'],
-                'since_id'    => $user['last_status_id'],
+                'since_id'    => 1026416255396470785,
                 'count' => 5
             ]);
 
