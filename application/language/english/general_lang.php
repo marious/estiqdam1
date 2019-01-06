@@ -86,3 +86,4 @@ $lang['suspend'] = 'Suspend';
 $lang['activate'] = 'Activate';
 $lang['no_agent_added'] = 'There is no agent Added Yet';
 $lang['add_new_agent'] = 'Add New Agent';
+$lang['delete'] = 'Delete';
