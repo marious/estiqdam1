@@ -83,4 +83,5 @@ $lang['enter_customer_visa'] = 'Enter Customer Visa Number';
 $lang['print_prepaid_customer_payment'] = 'Print Prepaid Customer Payment';
 $lang['country'] = 'Country';
 $lang['suspend'] = 'Suspend';
-
+$lang['activate'] = 'Activate';
+$lang['no_agent_added'] = 'There is no agent Added Yet';
