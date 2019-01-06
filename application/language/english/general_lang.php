@@ -14,7 +14,8 @@ $lang["agents"]  = "Agents";
 $lang['add_new_agent']  = 'Add New Agent';
  $lang["representatives"]  = "Representatives";
  $lang["jobs"]  = "Jobs";  
- $lang["order_types"]  = "Order Types";  
+ $lang["order_types"]  = "Order Types";
+ $lang['name'] = 'Name';
  $lang["credit_card"]  = "Credit Card";  
  $lang["visa_issued_city"]  = "Visa Issued City";  
  $lang["style_settings"]  = "Style Settings";  
@@ -80,3 +81,6 @@ $lang['days_after_arrived'] = 'Days After Arrived';
 $lang['remains'] = 'Remains';
 $lang['enter_customer_visa'] = 'Enter Customer Visa Number';
 $lang['print_prepaid_customer_payment'] = 'Print Prepaid Customer Payment';
+$lang['country'] = 'Country';
+$lang['suspend'] = 'Suspend';
+
