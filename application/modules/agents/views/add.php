@@ -3,7 +3,7 @@
         <div class="row">
             <div class="content">
                 <div class="page-header">
-                    <h3 class="page-title">Agents / Add  New Agent</h3>
+                    <h3 class="page-title"><?= lang('add_new_agent') ?></h3>
                 </div>
                 <!-- page header -->
                 <div class="page-content-wrapper m-t">
