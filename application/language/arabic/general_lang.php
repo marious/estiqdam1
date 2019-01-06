@@ -85,3 +85,7 @@ $lang['enter_customer_visa'] = 'أدخل رقم التأشيرة الخاصة ب
 $lang['print_prepaid_customer_payment'] = 'طباعة اذن الدفع المقدم';
 $lang['country'] = 'الدولة';
 $lang['suspend'] = 'حظر';
+$lang['activate'] = 'تنشيط';
+$lang['no_agent_added'] = 'لم يتم إضافة أى مكتب حتى الان';
+
+
