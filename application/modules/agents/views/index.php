@@ -45,9 +45,9 @@
                                                             <span class="glyphicon glyphicon-trash"></span>
                                                         </a>
                                                         <?php if ($agent->suspended == 1): ?>
-                                                            <a href="<?= site_url("agents/activate/" . $agent->id) ?>" class="btn btn-success">Activate</a>
+                                                            <a href="<?= site_url("agents/activate/" . $agent->id) ?>" class="btn btn-success"><?= lang('activate'); ?></a>
                                                         <?php else: ?>
-                                                        <a href="<?= site_url('agents/suspend/' . $agent->id); ?>" class="btn btn-warning">Suspend</a>
+                                                        <a href="<?= site_url('agents/suspend/' . $agent->id); ?>" class="btn btn-warning"><?= lang('suspend'); ?></a>
                                                         <?php endif; ?>
                                                     </td>
                                                 </tr>
@@ -56,7 +56,7 @@
                                            </thead>
                                         </table>
                                     <?php else: ?>
-                                        <h2>There is no agent Added Yet</h2>
+                                        <h2><?= lang('no_agent_added'); ?></h2>
                                     <?php endif; ?>
                                 </div>
                             </div>
