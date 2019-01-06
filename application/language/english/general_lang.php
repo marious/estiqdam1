@@ -87,3 +87,6 @@ $lang['activate'] = 'Activate';
 $lang['no_agent_added'] = 'There is no agent Added Yet';
 $lang['add_new_agent'] = 'Add New Agent';
 $lang['delete'] = 'Delete';
+$lang['name_in_arabic'] = 'Name In Arabic';
+$lang['name_in_english'] = 'Name In English';
+$lang['add_new'] = 'Add New';
