@@ -89,3 +89,6 @@ $lang['activate'] = 'تنشيط';
 $lang['no_agent_added'] = 'لم يتم إضافة أى مكتب حتى الان';
 $lang['add_new_agent'] = 'إضافة مكتب جديد';
 $lang['delete'] = 'حذف';
+$lang['name_in_arabic'] = 'الإسم بالانجليزى';
+$lang['name_in_english'] = 'الإسم بالعربى';
+$lang['add_new'] = 'إضافة جديد';
