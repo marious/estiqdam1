@@ -108,7 +108,7 @@ $caret = '<span class="caret"></span> ';
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="<?= base_url('site_settings') ?>"><?= lang('site_settings'); ?></a></li>
-                        <li><a href="<?= base_url('site_settings/tax'); ?>"><?= lang('tax_amount'); ?></a></li>
+<!--                        <li><a href="--><?//= base_url('site_settings/tax'); ?><!--">--><?//= lang('tax_amount'); ?><!--</a></li>-->
                         <li><a href="<?= base_url('staff') ?>"><?= lang('staff'); ?></a></li>
                         <li><a href="<?= base_url('agents'); ?>"><?= lang('agents') ?></a></li>
                         <li><a href="<?= base_url('customers') ?>"><?= lang('customers'); ?></a></li>
