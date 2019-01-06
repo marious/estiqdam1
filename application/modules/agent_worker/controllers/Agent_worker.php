@@ -98,7 +98,9 @@ class Agent_worker extends MY_Controller
     {
         $this->data['agents'] = $this->Agent_worker_model->get_agents();
         $this->data['datatables'] = true;
-        $this->data['js_files'] = ['assets/admin_panel/js/all_accepted_workers.js'];
+        $this->data['js_files'][] = 'assets/admin_panel/js/moment.min.js';
+        $this->data['js_files'][] = 'assets/admin_panel/js/combodate.js';
+        $this->data['js_files'][] = 'assets/admin_panel/js/all_accepted_workers.js';
         $this->adminTemplate('all_accepted_workers', $this->data);
     }
 
@@ -303,6 +305,22 @@ class Agent_worker extends MY_Controller
     }
 
 
+
+    public function view_ph_cv($id)
+    {
+        if ($id && is_numeric($id))
+        {
+            $this->data['worker'] = $this->Agent_worker_model->get_by(array('id' => $id), true);
+            count($this->data['worker']) || redirect('agent_worker');
+            $this->load->module('jobs');
+            $job = $this->jobs->Job_model->get_by(array('id' => $this->data['worker']->job_id), true);
+            $this->data['job'] = $job->name_in_english;
+            $this->data['id'] = $id;
+            $this->load->view('ph_cv', $this->data);
+        }
+    }
+
+
     public function testpdf($id)
     {
 //        require_once FCPATH . 'dompdf/autoload.inc.php';
@@ -438,6 +456,10 @@ class Agent_worker extends MY_Controller
                 $data['owwa_sched'] = $this->input->post('owwa_sched');
              }
 
+             if ($agent_user->nationality_id == 21) {
+                 $data['middle_name']  = $this->input->post('middle_name');
+             }
+
 //            $data['date_of_birth'] = trim($_POST['day']) . '/' . trim($_POST['month']) . '/' . trim($_POST['year']);
 //            $data['date_of_issue'] = trim($_POST['day_of_issue']) . '/' . trim($_POST['month_of_issue']) . '/' . trim($_POST['year_of_issue']);
 //            $data['date_of_expiry'] = trim($_POST['day_of_expiry']) . '/' . trim($_POST['month_of_expiry']) . '/' . trim($_POST['year_of_expiry']);
@@ -486,6 +508,63 @@ class Agent_worker extends MY_Controller
                     }
                 }
             }
+
+
+            /* UPLoad visa stamp image */
+            if (isset($_FILES['stamping_image']) && $_FILES['stamping_image']['name'] != '')
+            {
+                $this->load->module('services_entry');
+
+                $worker_data = $this->db->get_where('services_worker', array('passport_number' => $data['passport_number']))->row();
+                $contract_number = $worker_data->contract_number ? $worker_data->contract_number : null;
+
+
+
+                $upload_image = $this->services_entry->do_upload('stamping_image', FCPATH . 'assets/contracts/' . $contract_number);
+                if ($upload_image) {
+                    if (isset($upload_image['file_name'])) {
+                        $data['image'] = $upload_image['file_name'];
+                        $this->load->module('services_contract');
+                        $this->services_contract->Service_contract_model->update(array('stamping_image' => $data['image']), $contract_number);
+                    }
+                    if (isset($upload_image['error'])) {
+                        $error = $upload_image['error'];
+                        $this->session->set_flashdata('error', $error);
+                        redirect('agent_worker');
+                    }
+                }
+            }
+            /* end */
+
+            /* UPLOAD OEC IMAGE */
+
+            if (isset($_FILES['oec_image']) && $_FILES['oec_image']['name'] != '')
+            {
+                $this->load->module('services_entry');
+
+                $worker_data = $this->db->get_where('services_worker', array('passport_number' => $data['passport_number']))->row();
+                $contract_number = $worker_data->contract_number ? $worker_data->contract_number : null;
+
+
+
+                $upload_image = $this->services_entry->do_upload('oec_image', FCPATH . 'assets/contracts/' . $contract_number);
+                if ($upload_image) {
+                    if (isset($upload_image['file_name'])) {
+                        $data['image'] = $upload_image['file_name'];
+                        $this->load->module('services_contract');
+                        $this->services_contract->Service_contract_model->update(array('oec_image' => $data['image']), $contract_number);
+                    }
+                    if (isset($upload_image['error'])) {
+                        $error = $upload_image['error'];
+                        $this->session->set_flashdata('error', $error);
+                        redirect('agent_worker');
+                    }
+                }
+            }
+
+            /* end */
+
+
 
 
 
@@ -568,6 +647,10 @@ class Agent_worker extends MY_Controller
             if (isset($_POST['middle_name']))
             {
                 $data['middle_name']  = $this->input->post('middle_name');
+            }
+
+            if (isset($data['next_kin_name']))
+            {
                 $data['worker_phone'] = $this->input->post('worker_phone');
                 $data['address'] = $this->input->post('address');
                 $data['place_of_issue'] = $this->input->post('place_of_issue');
@@ -1007,6 +1090,91 @@ class Agent_worker extends MY_Controller
         $this->data['workers'] = $this->Agent_worker_model->get_vfs_workers_by_agent($agent_id);
 
         $this->load->view('print_vfs_worker', $this->data);
+    }
+
+
+
+    public function refuse_workers()
+    {
+        $this->lang->load('services_entry');
+
+        $this->data['datatables'] = true;
+        $this->data['js_files'] = ['assets/admin_panel/js/refuse_workers.js'];
+
+        $this->load->module('services_entry');
+        $this->data['agents'] = $this->services_entry->Service_model->get_agents();
+        $this->adminTemplate('refuse_workers', $this->data);
+    }
+
+    public function load_refuse_workers()
+    {
+        $this->Agent_worker_model->get_refuse_workers();
+    }
+
+
+
+
+    public function save_refuse_worker()
+    {
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('refuse_date', 'Refuse Date', 'trim|required');
+        $this->form_validation->set_rules('reason', 'Reason', 'trim|required');
+
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->session->set_flashdata('error', ':) Something happen please try again');
+            redirect('agent_worker/accepted_workers');
+        }
+        else
+        {
+            $worker_id = $this->input->post('worker_id');
+
+            // Check if is alreay exist
+            $row = $this->db->get_where('refuse_workers', array('worker_id' => $worker_id))->row();
+            if ($row && count($row))
+            {
+                $this->session->set_flashdata('error', 'This maid alreay refuse work before');
+                redirect('agent_worker/accepted_workers');
+            }
+
+            $contract_number = $this->input->post('contract_number');
+            $agent_id = $this->input->post('agent_id');
+            $refuse_date = str_replace('/', '-', $this->input->post('refuse_date'));
+            $refuse_date = date('Y-m-d', strtotime($refuse_date));
+            $passport_number = $this->input->post('passport_number');
+            $reason = $this->input->post('reason');
+            $data = [
+                'worker_id'     => $worker_id,
+                'refuse_date'   => $refuse_date,
+                'contract_number' => $contract_number,
+                'agent_id'          => $agent_id,
+                'passport_number'   => $passport_number,
+                'reason'        => $reason,
+            ];
+            $this->db->insert('refuse_workers', $data);
+            redirect('agent_worker/accepted_workers');
+        }
+
+    }
+
+
+
+    public function worker_documents()
+    {
+        $this->data['datatables'] = true;
+        $this->data['css_files'] = ['assets/admin_panel/css/lightbox.css'];
+        $this->data['js_files'][] = 'assets/admin_panel/js/lightbox.js';
+        $this->data['js_files'][] = 'assets/admin_panel/js/worker_documents.js';
+
+        $this->load->module('services_entry');
+        $this->data['agents'] = $this->services_entry->Service_model->get_agents();
+        $this->adminTemplate('worker_documents', $this->data);
+    }
+
+
+    public function load_worker_documents()
+    {
+        $this->Agent_worker_model->load_worker_documents();
     }
 
 }

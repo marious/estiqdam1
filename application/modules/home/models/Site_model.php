@@ -13,7 +13,9 @@ class Site_model extends MY_Model
                    INNER JOIN jobs ON agent_worker.job_id = jobs.id
                    INNER JOIN worker_nationality 
                    ON agent_worker.nationality_id = worker_nationality.id
-                   WHERE accepted = '0' ";
+                   WHERE accepted = '0'
+                   AND hide = '0'
+                    ";
         $search_keys = [];
         $search_values = [];
         foreach ($search_array as $key => $value)
@@ -46,7 +48,7 @@ class Site_model extends MY_Model
     public function get_workers_by_country($country_name)
     {
         $sql = "SELECT agent_worker.id AS worker_id, name,image,first_name, date_of_birth, religions.arabic_religion as religion, religions.religion AS english_religion, jobs.name_in_arabic AS job,
-jobs.name_in_english AS job_english
+jobs.name_in_english AS job_english, worker_nationality.id AS nationality_id
                   FROM agent_worker
                    INNER JOIN religions
                    ON religions.id = agent_worker.religion
@@ -70,14 +72,14 @@ jobs.name_in_english AS job_english
     {
         $sql = "SELECT name,image,first_name, date_of_birth, religions.arabic_religion as religion, religions.religion AS english_religion, jobs.name_in_arabic AS job,
                   jobs.name_in_english AS job_english,
-                  agent_worker.id as worker_id
+                  agent_worker.id as worker_id, agent_worker.nationality_id
                   FROM agent_worker
                    INNER JOIN religions
                    ON religions.id = agent_worker.religion
                    INNER JOIN jobs ON agent_worker.job_id = jobs.id
                    WHERE accepted = '0'
                    AND hide='0'
-                   ORDER BY agent_worker.created_at DESC
+                   ORDER BY nationality_id DESC, agent_worker.created_at DESC
                    ";
         $query = $this->db->query($sql);
         if ($query->num_rows())

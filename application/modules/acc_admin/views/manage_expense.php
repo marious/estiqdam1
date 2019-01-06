@@ -1,7 +1,7 @@
 
 <!--Statt Main Content-->
 <section>
-    <div class="main-content">
+    <div class="main-content <?= get_content_main_area_class();  ?>">
         <div class="row">
             <div class="inner-contatier">
                 <div class="col-md-12 col-lg-12 col-sm-12 content-title"><h4>Expense</h4></div>
@@ -15,10 +15,10 @@
                         <div class="panel-body manage-client">
                             <table id="manage-expense" class="display responsive nowrap" cellspacing="0" width="100%">
                                 <thead>
-                                <th>Date</th><th>Account</th><th>Category</th>
-                                <th>Payee</th><th>Method</th><th>Reference</th>
-                                <th>Note</th><th>Amount</th>
-                                <th class="single-action">Manage</th>
+                                <th><?= lang('date'); ?></th><th><?= lang('account'); ?></th><th><?= lang('category'); ?></th>
+                                <th><?= lang('method'); ?></th>
+                                <th><?= lang('note'); ?></th><th><?= lang('amount'); ?></th>
+                                <th class="single-action"><?= lang('manage'); ?></th>
                                 </thead>
 
                                 <tbody>
@@ -27,9 +27,7 @@
                                         <td><?php echo $expense->trans_date ?></td>
                                         <td><?php echo $expense->accounts_name ?></td>
                                         <td><?php echo $expense->category ?></td>
-                                        <td><?php echo $expense->payee ?></td>
                                         <td><?php echo $expense->p_method ?></td>
-                                        <td><?php echo $expense->ref ?></td>
                                         <td><?php echo $expense->note ?></td>
                                         <td><?php echo $expense->amount ?></td>
                                         <td><a class="mybtn btn-info btn-xs expense-manage-btn" href="<?php echo site_url('acc_admin/editTransaction/'.$expense->trans_id) ?>" data-toggle="tooltip"

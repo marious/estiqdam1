@@ -574,7 +574,7 @@ class Report_model extends MY_Model
                     ON services_finance.contract_number = contract.contract_number
                     WHERE contract_date BETWEEN '{$start_date}' AND '{$end_date}'
                     AND services_order.order_type_id = 4
-                    AND services_contract.contract_number NOT IN (select contract_number from cancelled_contracts)
+                    AND contract.created_at NOT IN (select contract_number from cancelled_contracts)
                     
                     ";
             }
@@ -590,10 +590,10 @@ class Report_model extends MY_Model
                     ON services_contract.contract_number = contract.contract_number
                     INNER JOIN services_finance
                     ON services_finance.contract_number = contract.contract_number
-                    WHERE contract_date BETWEEN '{$start_date}' AND '{$end_date}'
+                    WHERE contract.created_at BETWEEN '{$start_date}' AND '{$end_date}'
                     AND services_order.order_type_id = 4
                     AND services_contract.representative_id = $representative
-                    AND services_contract.contract_number NOT IN (select contract_number from cancelled_contracts)
+                   AND contract.contract_number NOT IN (select contract_number from cancelled_contracts)
                     ";
             }
            $result = $this->db->query($query);
@@ -627,7 +627,7 @@ class Report_model extends MY_Model
                     INNER JOIN services_finance
                     ON services_finance.contract_number = services_worker.contract_number
                     where services_order.order_type_id = 4
-                    AND (contract_date BETWEEN '{$start_date}' AND '{$end_date}')
+                    AND (contract.created_at BETWEEN '{$start_date}' AND '{$end_date}')
                     AND services_contract.contract_number NOT IN (select contract_number from cancelled_contracts)
                     GROUP BY services_worker.worker_nationality_id";
             }
@@ -648,7 +648,7 @@ class Report_model extends MY_Model
                     INNER JOIN services_finance
                     ON services_finance.contract_number = services_worker.contract_number
                     where services_order.order_type_id = 4
-                    AND (contract_date BETWEEN '{$start_date}' AND '{$end_date}')
+                    AND (contract.created_at BETWEEN '{$start_date}' AND '{$end_date}')
                     AND services_contract.representative_id = $representative
                     AND services_contract.contract_number NOT IN (select contract_number from cancelled_contracts)
                     GROUP BY services_worker.worker_nationality_id";
@@ -691,7 +691,8 @@ class Report_model extends MY_Model
             INNER JOIN staff 
             ON staff.id = services_worker.agent_id
             WHERE services_worker.worker_nationality_id = $nationality_id 
-            AND (contract.contract_date BETWEEN '{$start_date}' AND '$end_date')
+            AND (contract.created_at BETWEEN '{$start_date}' AND '$end_date')
+              AND services_contract.contract_number NOT IN (select contract_number from cancelled_contracts)
             AND services_order.order_type_id = 4
         ";
 
@@ -720,7 +721,7 @@ class Report_model extends MY_Model
                     ON services_contract.contract_number = contract.contract_number
                     INNER JOIN services_finance
                     ON services_finance.contract_number = contract.contract_number
-                    WHERE contract_date BETWEEN ? AND ?
+                    WHERE contract.created_at BETWEEN ? AND ?
                     AND services_order.order_type_id = 4
                     AND services_contract.representative_id = 3
                     AND services_contract.contract_number NOT IN (select contract_number from cancelled_contracts)";

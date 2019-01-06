@@ -32,7 +32,7 @@
                                             <div class="col-md-10">
                                                 <div class="form-group">
                                                     <div class='input-group date' id='dateyearpicker'>
-                                                        <input type='text' class="form-control" name="daterange" value="<?php if (isset($_GET['daterange']) && $_GET['daterange'] != '') { echo $_GET['daterange']; } ?>">
+                                                        <input type='text' class="form-control" name="daterange" value="<?php if (isset($_GET['daterange']) && $_GET['daterange'] != '') { echo $_GET['daterange']; } ?>" autocomplete="off">
                                                         <span class="input-group-addon">
                                                             <span class="glyphicon glyphicon-calendar">
                                                             </span>

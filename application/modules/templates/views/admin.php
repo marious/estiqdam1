@@ -108,7 +108,7 @@ $caret = '<span class="caret"></span> ';
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="<?= base_url('site_settings') ?>"><?= lang('site_settings'); ?></a></li>
-<!--                        <li><a href="--><?//= base_url('site_settings/tax'); ?><!--">--><?//= lang('tax_amount'); ?><!--</a></li>-->
+                        <li><a href="<?= base_url('site_settings/tax'); ?>"><?= lang('tax_amount'); ?></a></li>
                         <li><a href="<?= base_url('staff') ?>"><?= lang('staff'); ?></a></li>
                         <li><a href="<?= base_url('agents'); ?>"><?= lang('agents') ?></a></li>
                         <li><a href="<?= base_url('customers') ?>"><?= lang('customers'); ?></a></li>
@@ -126,9 +126,9 @@ $caret = '<span class="caret"></span> ';
                         <li><a href="<?= base_url('credit_card') ?>"><?= lang('credit_card'); ?></a></li>
                         <li><a href="<?= base_url('visa_issued_city') ?>"><?= lang('visa_issued_city'); ?></a></li>
                         <li><a href="<?= base_url('style_settings') ?>"><?= lang('style_settings'); ?></a></li>
-<!--                        <li><a href="--><?//= site_url('site_admin/contact_messages'); ?><!--">--><?//= lang('contact_messages'); ?><!--</a></li>-->
-<!--                        <li><a href="--><?//= site_url('seo_pages'); ?><!--">SEO Pages</a></li>-->
-<!--                        <li><a href="--><?//= site_url('tanazul'); ?><!--">Tanazul Control</a></li>-->
+                        <li><a href="<?= site_url('site_admin/contact_messages'); ?>"><?= lang('contact_messages'); ?></a></li>
+                        <li><a href="<?= site_url('seo_pages'); ?>">SEO Pages</a></li>
+                        <li><a href="<?= site_url('tanazul'); ?>">Tanazul Control</a></li>
                     </ul>
                 </li>
 
@@ -145,6 +145,8 @@ $caret = '<span class="caret"></span> ';
                          <li><a href="<?= site_url('agent_worker/accepted_workers'); ?>"><?= lang('accepted_workers'); ?></a></li>
                          <li><a href="<?= site_url('agent_worker/vfs'); ?>"><?= lang('vfs_workers'); ?></a></li>
                          <li><a href="<?= site_url('agent_worker/new_workers'); ?>"><?= lang('new_workers'); ?></a></li>
+                         <li><a href="<?= site_url('agent_worker/refuse_workers'); ?>"><?= lang('refuse_workers'); ?></a></li>
+                         <li><a href="<?= site_url('agent_worker/worker_documents'); ?>">Worker Documents</a></li>
                          <li><a href="<?= site_url('agent_worker/add_worker') ?>"><?= lang('add_worker'); ?></a></li>
                      </ul>
                  </li>
@@ -157,10 +159,8 @@ $caret = '<span class="caret"></span> ';
                             <li><a href="<?= site_url('reports/not_arrived'); ?>"><?= lang('not_arrived_report'); ?></a></li>
                             <li><a href="<?= site_url('reports/arrived'); ?>"><?= lang('arrived_report'); ?></a></li>
                             <li><a href="<?= site_url('reports/not_paid') ?>"><?= lang('customers_not_paid_remains_report'); ?></a></li>
-                            <li><a href="<?= site_url('reports/operation_reports'); ?>">Operation Reports</a></li>
+                            <li><a href="<?= site_url('reports/operation_reports'); ?>"><?= lang('operations_reports'); ?></a></li>
                             <?php if(isset($_SESSION['permission_role']) && $_SESSION['permission_role'] == 'admin'): ?>
-                            <li><a href="<?= site_url('reports/financial_reports'); ?>">Financial Reports</a></li>
-                            <li><a href="<?= site_url('reports/advanced_reports'); ?>">Advanced Reports</a></li>
                             <li><a href="<?= site_url('reports/chart_reports'); ?>">Chart Reports</a></li>
                             <?php endif; ?>
                         </ul>
@@ -176,6 +176,10 @@ $caret = '<span class="caret"></span> ';
                                         <?= lang('customers_payment'); ?>
                                     </a>
                                 </li>
+                                <?php if(isset($_SESSION['permission_role']) && $_SESSION['permission_role'] == 'admin'): ?>
+                                    <li><a href="<?= site_url('reports/financial_reports'); ?>"><?= lang('financial_reports'); ?></a></li>
+                                    <li><a href="<?= site_url('reports/advanced_reports'); ?>"><?= lang('financial_reports_rapid'); ?></a></li>
+                                <?php endif; ?>
                                 <li>
                                     <a href="<?= site_url('finance/agents_payment') ?>"><?= lang('agents_payment'); ?></a>
                                 </li>
@@ -281,16 +285,27 @@ if (isset($view_file)) {
 </script>
 
 <?php if (isset($ckeditor) && $ckeditor == true):   ?>
-    <script src="https://cdn.ckeditor.com/ckeditor5/10.1.0/classic/ckeditor.js"></script>
+<!--    <script src="https://cdn.ckeditor.com/ckeditor5/10.1.0/classic/ckeditor.js"></script>-->
+    <script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=0nzlvxmbd26ap1y8ar9oofd1ple1nzsylmgaia6tz3mm2hk1"></script>
     <script>
-        ClassicEditor
-            .create( document.querySelector( '#editor' ) )
-            .then( editor => {
-            console.log( editor );
-        } )
-        .catch( error => {
-            console.error( error );
-        } );
+        tinymce.init({selector: '#editor',
+            height: 500,
+            theme: 'modern',
+            plugins: 'print preview powerpaste searchreplace autolink directionality advcode visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists textcolor wordcount tinymcespellchecker a11ychecker imagetools mediaembed  linkchecker contextmenu colorpicker textpattern help',
+            toolbar1: 'formatselect | bold italic strikethrough forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
+            image_advtab: true,
+
+        });
+        // ClassicEditor
+        //     .create( document.querySelector( '#editor' ), {
+        //         toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'aligment' ],
+        //     } )
+        //     .then( editor => {
+        //     console.log( editor );
+        // } )
+        // .catch( error => {
+        //     console.error( error );
+        // } );
     </script>
 <?php endif; ?>
 

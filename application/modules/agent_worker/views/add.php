@@ -288,7 +288,7 @@
                                                         </div>
                                                     </div><!-- ./ form-group -->
 
-                                                    <?php if ($worker->nationality_id == 11): ?>
+                                                    <?php if ($worker->nationality_id == 11 || $worker->nationality_id == 21): ?>
                                                         <div class="form-group">
                                                             <label for="middle_name" class="control-label col-md-5"><?= lang('middle_name') ?></label>
                                                             <div class="col-md-7">

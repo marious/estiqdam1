@@ -28,6 +28,7 @@
                                             <th>Name Of Customer</th>
                                             <th>Customer ID</th>
                                             <th>Visa Number</th>
+                                            <th>Passport</th>
                                             <th>
                                                 <select name="agent" id="agent">
                                                     <option value="0">كل المكاتب</option>

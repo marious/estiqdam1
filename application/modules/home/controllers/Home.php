@@ -6,6 +6,7 @@ class Home extends MX_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->data['title'] = 'مكتب السلام للاستقدام استقدام خادمة عاملة منزلية';
         $this->load->library('config');
         $this->load->module('templates');
 
@@ -70,11 +71,11 @@ class Home extends MX_Controller
     }
 
 
-    public function seo_pages($page_title)
+    public function page($page_title = false)
     {
-
-//        echo $page_title;
         $page_title = str_replace('-', ' ', urldecode($page_title));
+        $this->data['title'] = $page_title;
+//        echo $page_title;exit;
         $this->load->module('seo_pages');
         $seo_page = $this->seo_pages->Seo_pages_model->get_by(['title' => $page_title], true);
         $this->data['seo_page'] = $seo_page;
@@ -83,13 +84,52 @@ class Home extends MX_Controller
         } else {
             redirect(site_url('home'));
         }
+    }
 
+    public function recruitment_paid()
+    {
+        $this->data['title'] = 'أسعار مكاتب الاستقدام';
+        $this->data['js_files'] = ['assets/js/recruitment_paid.js'];
+
+        $this->publicTemplate('recruitment_paid', $this->data);
+    }
+
+
+    public function get_recruitment_paid()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $region = isset($_POST['region']) ? $_POST['region'] : 0;
+            $nationality = isset($_POST['region']) ? $_POST['nationality'] : 0;
+
+            $url = "https://pros.musaned.com.sa/api/offices?region={$region}&occupation=5&nationality={$nationality}&page=1&per_page=20";
+            $ch = curl_init();
+// Disable SSL verification
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+// Will return the response, if false it print the response
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+// Set the url
+            curl_setopt($ch, CURLOPT_URL, $url);
+// Execute
+            $result = curl_exec($ch);
+// Closing
+            curl_close($ch);
+
+            echo $result;
+        }
+    }
+
+
+    public function test2()
+    {
+        $this->data['js_files'] = ['assets/js/test2.js'];
+
+        $this->publicTemplate('test2', $this->data);
     }
 
 
     public function tanazul()
     {
-
+        $this->data['title'] = 'تنازل عن العمالة المنزلية';
         $advs = $this->db->get('tanazul')->result();
         $this->data['advs'] = $advs;
 
@@ -136,6 +176,7 @@ class Home extends MX_Controller
 
     public function search()
     {
+        $this->data['title'] = 'بحث عن عاملة منزلية';
         $this->data['workers'] = $this->Site_model->get_workers_by_search($_GET);
         $this->data['search'] = true;
         $this->publicTemplate('all_jobs', $this->data);
@@ -146,7 +187,13 @@ class Home extends MX_Controller
     {
         if ($country_name)
         {
+            $this->data['title'] = "عاملة منزلية من " . urldecode($country_name);
             $country_name = urldecode($country_name);
+            $this->data['message'] = 'عذرا قريبا سيتم توفير عمالة من هذه الدولة';
+            if (in_array($country_name, ['نيجيريا', 'الفلبين'])) {
+                $this->data['message'] = 'شكرا لعملاءنا الكرام تم اكتمال الاعداد المطلوبه للدفعه الحاليه 
+سيتم توفير العماله المطلوبه قريبا';
+            }
             $workers = $this->Site_model->get_workers_by_country($country_name);
             $this->data['workers'] = $workers;
             $this->data['country'] = true;
@@ -192,6 +239,7 @@ class Home extends MX_Controller
                     $this->data['customer'] = $this->Site_model->get_customer($_SESSION['id']);
                 }
                 $this->data['worker'] = $worker;
+                $this->data['title'] = 'عاملة منزلية رقم ' . $this->data['worker']->id;
 //                $this->data['img_preview'] = true;
                 $this->publicTemplate('maid_info', $this->data);
             }
@@ -234,6 +282,7 @@ class Home extends MX_Controller
                 }
                 $this->data['worker'] = $worker;
 //                $this->data['img_preview'] = true;
+                $this->data['title'] = 'عاملة منزلية رقم ' . $this->data['worker']->id;
                 $this->publicTemplate('selected_maid_info', $this->data);
             }
             else
@@ -370,6 +419,7 @@ class Home extends MX_Controller
 
     public function contact()
     {
+        $this->data['title'] = 'اتصل بنا';
         $this->load->library('cicaptcha');
         $this->data['cicaptcha_html'] = $this->cicaptcha->show();
 

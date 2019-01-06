@@ -186,6 +186,38 @@ class Reports extends MY_Controller
     }
 
 
+    public function help_payment()
+    {
+        $this->check_permission();
+
+        $this->data['datepicker_range'] = true;
+        $this->data['payments'] = false;
+        if (isset($_GET['daterange']) && $_GET['daterange'] != '')
+        {
+            $when = $_GET['daterange'];
+            $when_date = explode(' - ', $when);
+            $start_date = date('Y-m-d', strtotime($when_date[0]));
+            $end_date = date('Y-m-d', strtotime($when_date[1]));
+            $query = "SELECT customers_payment.*, services_customer.customer_name_in_arabic, transfer_types.type
+                           FROM customers_payment
+                          INNER JOIN services_customer
+                          ON services_customer.contract_number = customers_payment.contract_number
+                          INNER JOIN transfer_types
+                          ON transfer_types.id = customers_payment.transfer_type
+                          WHERE customers_payment.payment_date BETWEEN '{$start_date}' AND '{$end_date}'
+                          ORDER BY customers_payment.payment_date 
+                       ";
+            $result = $this->db->query($query);
+            if ($result->num_rows())
+            {
+                $this->data['payments'] = $result->result();
+            }
+
+        }
+        $this->adminTemplate('help_paid', $this->data);
+    }
+
+
 
     public function details_advanced_reports()
     {

@@ -28,6 +28,7 @@ class Services_entry extends MY_Controller
         $this->data['css_arabic'] = true;
         $this->data['services'] = $this->Service_model->get_services_entry($contract_date);
 //        var_dump($this->data['services']);exit;
+//        var_dump($this->data['services']);exit;
         $this->adminTemplate('index', $this->data);
     }
 
@@ -588,29 +589,69 @@ class Services_entry extends MY_Controller
 
             if ($searched_key != '0')
             {
-                if ($searched_key == 'order_type')
-                {
-                    $searched_key = 'name_in_arabic';
-                    $tables[$searched_key] = 'order_types';
+                $searched_services = [];
+
+
+                switch ($searched_key) {
+                    case 'order_type':
+                        $searched_key = 'name_in_arabic';
+                        $tables[$searched_key] = 'order_types';
+                        $searched_key = $tables[$searched_key] . '.'. $searched_key;
+                        $searched_services = $this->Service_model->get_searched_services($searched_key, $searched_value);
+                    break;
+                    case 'month':
+                        $searched = explode('-', $searched_value);
+                        $month = isset($searched[0])? $searched[0] : 0;
+                        $year = isset($searched[1])? $searched[1] : 0;
+                        $searched_services = $this->Service_model->get_searched_services_by_month($month, $year);
+                    break;
+                    case 'customer_name_in_arabic':
+                    case 'worker_name_in_english':
+                        $searched_key = $tables[$searched_key] . '.'. $searched_key;
+                        $searched_value = '%' . $searched_value . '%';
+                        $searched_services = $this->Service_model->get_searched_services($searched_key, $searched_value, false, true);
+                    break;
+                    default:
+                        $searched_key = $tables[$searched_key] . '.'. $searched_key;
+                        $searched_services = $this->Service_model->get_searched_services($searched_key, $searched_value);
                 }
 
-                if ($searched_key == 'month')
-                {
-                    $searched = explode('-', $searched_value);
-                    $month = isset($searched[0])? $searched[0] : 0;
-                    $year = isset($searched[1])? $searched[1] : 0;
-                    $searched_services = $this->Service_model->get_searched_services_by_month($month, $year);
-                    $this->data['view_services'] = true;
-                    $this->data['services'] = $searched_services;
-                }
+                $this->data['view_services'] = true;
+                $this->data['services'] = $searched_services;
 
-                else
-                {
-                    $searched_key = $tables[$searched_key] . '.'. $searched_key;
-                    $searched_services = $this->Service_model->get_searched_services($searched_key, $searched_value);
-                    $this->data['view_services'] = true;
-                    $this->data['services'] = $searched_services;
-                }
+//                if ($searched_key == 'order_type')
+//                {
+//                    $searched_key = 'name_in_arabic';
+//                    $tables[$searched_key] = 'order_types';
+//                }
+
+//                if ($searched_key == 'month')
+//                {
+//                    $searched = explode('-', $searched_value);
+//                    $month = isset($searched[0])? $searched[0] : 0;
+//                    $year = isset($searched[1])? $searched[1] : 0;
+//                    $searched_services = $this->Service_model->get_searched_services_by_month($month, $year);
+//                    $this->data['view_services'] = true;
+//                    $this->data['services'] = $searched_services;
+//                }
+
+//                else
+//                {
+//                    if ($searched_key == 'customer_name_in_arabic' || $searched_key = 'worker_name_in_english') {
+//                        $searched_key = $tables[$searched_key] . '.'. $searched_key;
+//                        $searched_value = '%' . $searched_value . '%';
+//                        $searched_services = $this->Service_model->get_searched_services($searched_key, $searched_value, false, true);
+//                    } else {
+//                        $searched_key = $tables[$searched_key] . '.'. $searched_key;
+//
+//
+//                        $searched_services = $this->Service_model->get_searched_services($searched_key, $searched_value);
+//                    }
+//
+//
+//                    $this->data['view_services'] = true;
+//                    $this->data['services'] = $searched_services;
+//                }
             }
         }
 
@@ -773,7 +814,11 @@ class Services_entry extends MY_Controller
             $searched_value = trim(filter_input(INPUT_GET, 'searched_value'));
             $searched_services = $this->Service_model->get_searched_services('contract.contract_number', $searched_value);
             $this->load->module('agent_worker');
-            $this->data['worker'] = $this->agent_worker->Agent_worker_model->get_by(['passport_number' => $searched_services[0]->passport_number], true);
+            if (isset($searched_services[0]->passport_number)) {
+                $this->data['worker'] = $this->agent_worker->Agent_worker_model->get_by(['passport_number' => $searched_services[0]->passport_number], true);
+            } else {
+                $this->data['worker'] = false;
+            }
             $this->data['view_service'] = true;
             $this->data['service'] = $searched_services[0];
         }

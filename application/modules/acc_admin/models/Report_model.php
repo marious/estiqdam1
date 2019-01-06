@@ -4,6 +4,7 @@ class Report_model extends MY_Model {
 
 
 
+
     public function getIncomeExpense(){
 //Get Current Day Income, Expense AND Current Month Income, Expense
         date_default_timezone_set(get_current_setting('timezone'));
@@ -139,11 +140,11 @@ as balance FROM accounts as a");
         if($trans_type=='All'){
             return $this->db->query("SELECT trans_date,note,dr,cr,bal FROM
  transaction WHERE accounts_name='".$account."'  AND trans_date between
- '".$from_date."' AND '".$to_date."'")->result();
+ '".$from_date."' AND '".$to_date."' ORDER BY trans_date ASC")->result();
         }else{
             return $this->db->query("SELECT trans_date,note,dr,cr,bal FROM 
 transaction WHERE accounts_name='".$account."' AND $trans_type>0 AND trans_date
- between '".$from_date."' AND '".$to_date."'")->result();
+ between '".$from_date."' AND '".$to_date."' ORDER BY trans_date ASC")->result();
         }
 
     }
@@ -158,7 +159,7 @@ transaction WHERE accounts_name='".$account."' AND $trans_type>0 AND trans_date
             return $query->result();
         }else{
             $query = $this->db->query("SELECT * FROM transaction WHERE type='Income' 
-AND trans_date between '".$from_date."' AND '".$to_date."' ORDER BY accounts_name, trans_date");
+AND trans_date between '".$from_date."' AND '".$to_date."' ORDER BY trans_date");
             return $query->result();
         }
     }
@@ -173,7 +174,7 @@ AND trans_date between '".$from_date."' AND '".$to_date."' ORDER BY accounts_nam
             return $query->result();
         }else{
             $query = $this->db->query("SELECT * FROM transaction WHERE type='Expense' 
-AND trans_date between '".$from_date."' AND '".$to_date."'  ORDER BY accounts_name, trans_date");
+AND trans_date between '".$from_date."' AND '".$to_date."'  ORDER BY trans_date");
             return $query->result();
         }
     }
@@ -207,5 +208,26 @@ AND trans_date between '".$from_date."' AND '".$to_date."'");
         return $query->result();
     }
 
+
+
+    public function getAllExpensesAccounts()
+    {
+        $query = $this->db->query('SELECT * FROM chart_of_accounts WHERE accounts_type="Expense" AND accounts_name <> "تسوية بالسحب"');
+        return $query->result();
+    }
+
+    public function getExpenseAccountAmount($from_date, $to_date, $category)
+    {
+        $query = $this->db->query("SELECT SUM(`amount`) AS amount FROM transaction WHERE category='".$category."' AND trans_date between '".$from_date."' AND '".$to_date."'");
+        return $query->row()->amount;
+    }
+
+
+    public function getExpenseByCategory($date_from, $date_to, $category)
+    {
+        $query = $this->db->query("SELECT * FROM transaction WHERE category='".$category."' AND trans_date between '".$date_from."' AND '".$date_to."' ORDER BY trans_date");
+        return $query->result();
+
+    }
 
 }

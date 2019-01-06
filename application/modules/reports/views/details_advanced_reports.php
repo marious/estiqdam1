@@ -16,6 +16,7 @@
                                     <table class="table services-table table-bordered table-striped">
                                         <thead>
                                         <tr>
+                                            <th width="2%">#</th>
                                             <th>رقم العقد</th>
                                             <th>تاريخ العقد</th>
                                             <th>اسم العميل</th>
@@ -28,8 +29,10 @@
                                         </tr>
                                         </thead>
                                         <tbody>
+                                        <?php $i = 1; ?>
                                         <?php foreach ($info as $data): ?>
                                         <tr>
+                                            <td><?= $i; ?></td>
                                             <td><?= $data->contract_number; ?></td>
                                             <td><?= date('d-m-Y', strtotime($data->contract_date)); ?></td>
                                             <td><?= $data->customer_name_in_arabic; ?></td>
@@ -40,6 +43,7 @@
                                             <td><?= $data->prepaid_money; ?></td>
                                             <td><?= $data->remains_money; ?></td>
                                         </tr>
+                                        <?php $i++; ?>
                                         <?php endforeach; ?>
                                         </tbody>
                                     </table>

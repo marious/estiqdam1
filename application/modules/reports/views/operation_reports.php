@@ -123,9 +123,9 @@
                                         </tr>
                                         </thead>
                                         <?php if ($info && count($info)): ?>
-                                        <?php foreach ($info as $data): ?>
+                                        <?php $i = 1; foreach ($info as $data): ?>
                                             <tr>
-                                                <td><?= $data->contract_number; ?></td>
+                                                <td><?= $i; ?></td>
                                                 <td><?= date('d-m-Y', strtotime($data->contract_date)); ?></td>
                                                 <td><?= $data->customer_name_in_arabic;  ?></td>
                                                 <td><?= $data->visa_number; ?></td>
@@ -133,7 +133,7 @@
                                                 <td><?= $data->worker_name_in_english; ?></td>
                                                 <td><?= $data->agent_name; ?></td>
                                             </tr>
-                                        <?php endforeach; ?>
+                                        <?php $i++; endforeach; ?>
                                         <?php endif; ?>
                                     </table>
                                     <?php endif; ?>

@@ -1,7 +1,7 @@
 
 <!--Statt Main Content-->
 <section>
-    <div class="main-content">
+    <div class="main-content <?= get_content_main_area_class(); ?>">
         <div class="row">
             <div class="inner-contatier">
                 <div class="col-md-12 col-lg-12 col-sm-12 content-title"><h4>Income</h4></div>
@@ -16,13 +16,13 @@
                     <!--Start Panel-->
                     <div class="panel panel-default">
                         <!-- Default panel contents -->
-                        <div class="panel-heading">Add Income</div>
+                        <div class="panel-heading"><?= lang('add_income'); ?></div>
                         <div class="panel-body add-client">
                             <form id="add-income">
                                 <input type="hidden" name="action" id="action" value="insert"/>
                                 <input type="hidden" name="trans_id" id="trans_id" value=""/>
                                 <div class="form-group">
-                                    <label for="account">Account Name</label>
+                                    <label for="account"><?= lang('account_name'); ?></label>
                                     <select name="account" class="form-control" id="account">
                                         <?php foreach ($accounts as $account) {?>
                                             <option value="<?php echo $account->accounts_name ?>"><?php echo $account->accounts_name ?></option>
@@ -30,9 +30,9 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="income-date">Date</label>
+                                    <label for="income-date"><?= lang('date'); ?></label>
                                     <div class='input-group date' id='date'>
-                                        <input type='text' name="income-date" id="income-date" class="form-control" />
+                                        <input type='text' name="income-date" id="income-date" class="form-control" autocomplete="off">
                                         <span class="input-group-addon">
             <span class="glyphicon glyphicon-calendar"></span>
         </span>
@@ -40,7 +40,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="income-type">Income Type</label>
+                                    <label for="income-type"><?= lang('income_type'); ?></label>
                                     <select name="income-type" class="form-control" id="income-type">
                                         <?php foreach ($category as $cat) {?>
                                             <option value="<?php echo $cat->accounts_name ?>"><?php echo $cat->accounts_name ?></option>
@@ -49,7 +49,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="amount">Amount</label>
+                                    <label for="amount"><?= lang('amount'); ?></label>
                                     <div class='input-group date'>
                                         <div class="input-group-addon">$</div>
                                         <input type='text' name="amount" id="amount" class="form-control" />
@@ -57,7 +57,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="payer">Payer</label>
+                                    <label for="payer"><?= lang('payer'); ?></label>
                                     <select name="payer" class="form-control" id="payer">
                                         <?php foreach ($payers as $p) {?>
                                             <option value="<?php echo $p->payee_payers ?>"><?php echo $p->payee_payers ?></option>
@@ -66,7 +66,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="p-method">Payment Method</label>
+                                    <label for="p-method"><?= lang('payment_method'); ?></label>
                                     <select name="p-method" class="form-control" id="p-method">
                                         <?php foreach ($p_method as $method) {?>
                                             <option value="<?php echo $method->p_method_name ?>"><?php echo $method->p_method_name ?></option>
@@ -74,18 +74,18 @@
                                     </select>
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="reference">Reference No</label>
-                                    <input type="text" class="form-control" name="reference" id="reference">
-                                </div>
+<!--                                <div class="form-group">-->
+<!--                                    <label for="reference">Reference No</label>-->
+<!--                                    <input type="text" class="form-control" name="reference" id="reference">-->
+<!--                                </div>-->
 
                                 <div class="form-group">
-                                    <label for="note">Note</label>
+                                    <label for="note"><?= lang('note'); ?></label>
                                     <input type="text" class="form-control" name="note" id="note">
                                 </div>
 
 
-                                <button type="submit"  class="mybtn btn-submit"><i class="fa fa-check"></i> Submit</button>
+                                <button type="submit"  class="mybtn btn-submit"><i class="fa fa-check"></i> <?= lang('save'); ?></button>
                             </form>
                         </div>
                         <!--End Panel Body-->
@@ -101,7 +101,7 @@
                         <div class="panel-heading">Deposit</div>
                         <div class="panel-body">
                             <table class="table table-striped table-bordered table-condensed income-table">
-                                <th>Description</th><th class="text-right">Amount</th>
+                                <th><?= lang('description'); ?></th><th class="text-right"><?= lang('amount'); ?></th>
                                 <?php foreach($t_data as $t) {?>
                                     <tr>
                                         <td><?php echo $t->note ?></td>

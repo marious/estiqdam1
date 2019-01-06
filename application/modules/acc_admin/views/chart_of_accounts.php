@@ -1,6 +1,6 @@
 <!--Statt Main Content-->
 <section>
-    <div class="main-content">
+    <div class="main-content <?= get_content_main_area_class();  ?>">
         <div class="row">
             <div class="inner-contatier">
                 <div class="col-md-12 col-lg-12 col-sm-12 content-title"><h4>Chart Of Accounts</h4></div>

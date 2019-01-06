@@ -15,7 +15,7 @@
                             <li class="">
                                 <a href="<?= base_url() . 'credit_card/add'; ?>">Add New</a>
                             </li>
-
+                            <?php if ($name == 'ali') {echo 'hi'; } else { echo 'my name is ali abdelna'; } ?>
 
                         </ul>
 

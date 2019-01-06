@@ -13,25 +13,28 @@
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 
 <!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="<?php echo base_url() ?>/theme/js/metisMenu.js"></script>
-<script src="<?php echo base_url() ?>/theme/js/bootstrap.js"></script>
+<script>
+    var root = "<?= base_url(); ?>";
+</script>
+<script src="<?php echo base_url() ?>theme/js/metisMenu.js"></script>
+<script src="<?php echo base_url() ?>theme/js/bootstrap.js"></script>
 <!--<script src="--><?php //echo base_url() ?><!--/theme/js/nicescroll.js"></script>-->
-<script src="<?php echo base_url() ?>/theme/js/c3.min.js"></script>
-<script src="<?php echo base_url() ?>/theme/js/d3.min.js"></script>
-<script src="<?php echo base_url() ?>/theme/js/select2.min.js"></script>
-<script src="<?php echo base_url() ?>/theme/js/bootstrap-datepicker.js"></script>
-<script src="<?php echo base_url() ?>/theme/js/moment.min.js"></script>
-<script src="<?php echo base_url() ?>/theme/js/fullcalendar.min.js"></script>
-<script src="<?php echo base_url() ?>/theme/js/dataTables.min.js"></script>
-<script src="<?php echo base_url() ?>/theme/js/dataTables.responsive.min.js"></script>
-<script src="<?php echo base_url() ?>/theme/js/jquery.slicknav.min.js"></script>
-<script src="<?php echo base_url() ?>/theme/js/sweetalert.min.js"></script>
-<script src="<?php echo base_url() ?>/theme/js/pdf/jspdf.debug.js"></script>
-<script src="<?php echo base_url() ?>/theme/js/widgets/calculator.js"></script>
-<script src="<?php echo base_url() ?>/theme/js/material.min.js"></script>
-<script src="<?php echo base_url() ?>/theme/js/ripples.min.js"></script>
+<script src="<?php echo base_url() ?>theme/js/c3.min.js"></script>
+<script src="<?php echo base_url() ?>theme/js/d3.min.js"></script>
+<script src="<?php echo base_url() ?>theme/js/select2.min.js"></script>
+<script src="<?php echo base_url() ?>theme/js/bootstrap-datepicker.js"></script>
+<script src="<?php echo base_url() ?>theme/js/moment.min.js"></script>
+<script src="<?php echo base_url() ?>theme/js/fullcalendar.min.js"></script>
+<script src="<?php echo base_url() ?>theme/js/dataTables.min.js"></script>
+<script src="<?php echo base_url() ?>theme/js/dataTables.responsive.min.js"></script>
+<script src="<?php echo base_url() ?>theme/js/jquery.slicknav.min.js"></script>
+<script src="<?php echo base_url() ?>theme/js/sweetalert.min.js"></script>
+<script src="<?php echo base_url() ?>theme/js/pdf/jspdf.debug.js"></script>
+<script src="<?php echo base_url() ?>theme/js/widgets/calculator.js"></script>
+<script src="<?php echo base_url() ?>theme/js/material.min.js"></script>
+<script src="<?php echo base_url() ?>theme/js/ripples.min.js"></script>
 
-<script src="<?php echo base_url() ?>/theme/js/custom.js"></script>
+<script src="<?php echo base_url() ?>theme/js/custom.js?v=<?php echo filemtime(FCPATH . 'theme/js/custom.js') ?>"></script>
 <script type="text/javascript">
     $(document).on('ready',function() {
 

@@ -4,6 +4,7 @@ class Acc_reports extends MY_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->lang->load('acc_lang');
         $this->adminSecurity();
     }
 
@@ -49,10 +50,11 @@ class Acc_reports extends MY_Controller
                     $bal=$report->bal;
                     ?>
                     <tr>
-                        <td><?php echo $report->trans_date ?></td><td><?php echo $report->note ?></td>
-                        <td class="text-right"><?php echo get_current_setting('currency_code')." ".$report->dr ?></td>
-                        <td class="text-right"><?php echo get_current_setting('currency_code')." ".$report->cr ?></td>
-                        <td class="text-right"><?php echo get_current_setting('currency_code')." ".$report->bal ?></td>
+                        </td><td><?php echo $report->note ?></td>
+                        <td style="text-align: center;"><?php echo date('d-m-Y', strtotime($report->trans_date)); ?>
+                        <td class="text-right"><?php echo ($report->cr != 0) ? 'SAR ' . number_format($report->cr, 2) : ''; ?></td>
+                        <td class="text-right"><?php echo ($report->dr != 0) ? 'SAR '. number_format($report->dr, 2) : ''; ?></td>
+                        <td class="text-right"><?php echo ($report->bal != 0) ? 'SAR ' . $report->bal : $report->bal; ?></td>
                     </tr>
 
 
@@ -102,8 +104,8 @@ class Acc_reports extends MY_Controller
                     $sum = $sum + $report->amount;
                     ?>
                 <tr>
-                    <td><?php echo $i; ?></td>
-                    <td><?php echo $report->trans_date ?></td>
+                    <td width="1%"><?php echo $i; ?></td>
+                    <td style="text-align: center;"><?php echo $report->trans_date ?></td>
                     <td><?php echo $report->accounts_name ?></td>
                     <td><?php echo $report->ref ?></td>
                     <td><?php echo $report->payer ?></td>
@@ -151,8 +153,8 @@ class Acc_reports extends MY_Controller
                     $sum=$sum+$report->amount;
                     ?>
                     <tr>
-                        <td><?php echo $i; ?></td>
-                        <td><?php echo $report->trans_date ?></td><td><?php echo $report->accounts_name ?></td>
+                        <td width="1%"><?php echo $i; ?></td>
+                        <td style="text-align: center;"><?php echo $report->trans_date ?></td><td><?php echo $report->accounts_name ?></td>
                         <td><?php echo $report->payee ?></td>
                         <td class="text-right"><?php echo get_current_setting('currency_code')." ".$report->amount ?></td>
                         <td><?php echo get_current_setting('currency_code')." ".$sum; ?></td>
@@ -335,20 +337,35 @@ class Acc_reports extends MY_Controller
                         <td><?php echo $report->accounts_name ?></td>
                         <td><?php echo $report->category ?></td>
                         <td><?php echo $report->type ?></td>
-                        <td><?php echo $report->note ?></td>
                         <td><?php echo $report->payee ?></td>
                         <td class="text-right"><?php echo get_current_setting('currency_code')." ".$report->dr ?></td>
-                        <td class="text-right"><?php echo get_current_setting('currency_code')." ".$report->cr ?></td></tr>
 
                     <?php
                 }
-                echo "<tr><td colspan='6'><b>Total</b>";
+                echo "<tr><td colspan='5'><b>".lang('total')."</b>";
                 echo "<td class='text-right'><b>".get_current_setting('currency_code')." ".$dr."</b></td>";
-                echo "<td class='text-right'><b>".get_current_setting('currency_code')." ".$cr."</b></td></tr>";
+//                echo "<td class='text-right'><b>".get_current_setting('currency_code')." ".$cr."</b></td></tr>";
             }
         }
     }
 
+
+    public function categoryReport()
+    {
+        $this->load->module('acc_admin');
+
+        $date_from = filter_input(INPUT_GET, 'date-from');
+        $date_to = filter_input(INPUT_GET, 'date-to');
+        $category = filter_input(INPUT_GET, 'category');
+
+        $expenses = $this->acc_admin->Report_model->getExpenseByCategory($date_from, $date_to, $category);
+        $this->data['expenses'] = $expenses;
+        $this->data['date_from'] = $date_from;
+        $this->data['date_to'] = $date_to;
+        $this->data['category'] = $category;
+
+        $this->accountantTemplate('expense_category_report', $this->data);
+    }
 
 
 }

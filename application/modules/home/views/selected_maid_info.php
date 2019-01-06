@@ -22,7 +22,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div style="overflow: hidden; width: 100%; height: 350px;">
-                        <img src="<?= site_url('assets/img/workers/' . $worker->image); ?>" alt="" class="img-responsive maid-img" data-pic-title="Image 1"
+                        <img src="<?= site_url('assets/img/workers/' . $worker->image); ?>" alt="<?php echo "عاملة منزلية رقم {$worker->id}";  ?>" class="img-responsive maid-img" data-pic-title="Image 1"
                              data-pic-desc="Descript 1" data-pic="<?= site_url('assets/img/workers/' . $worker->image); ?>" style="height: 500px;">
                     </div>
                     <br>

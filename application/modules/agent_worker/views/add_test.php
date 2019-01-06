@@ -137,6 +137,26 @@
                                                             </div>
                                                         </div>
 
+
+
+                                                        <?php // for philipines
+                                                        if ($agent->nationality_id == 11 && $worker->accepted == '1'): ?>
+
+                                                            <div class="form-group">
+                                                                <label for="oec_image" class="col-sm-3 control-label">OEC Image</label>
+                                                                <div class="col-sm-3">
+                                                                    <input type="file" name="oec_image" class="form-control">
+                                                                </div>
+                                                            </div>
+
+                                                        <div class="form-group">
+                                                            <label for="stamping_image" class="col-sm-3 control-label">Visa Stamp Image</label>
+                                                            <div class="col-sm-3">
+                                                                <input type="file" name="stamping_image" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                        <?php endif; ?>
+
                                                     </fieldset>
                                                     <!--                                   </div>-->
                                                 </div>
@@ -289,7 +309,7 @@
                                                 </div><!-- ./ form-group -->
 
                                                 <!-- worker middle name -->
-                                                <?php if ($agent->nationality_id == 11): ?>
+                                                <?php if ($agent->nationality_id == 11 || $agent->nationality_id == 21): ?>
                                                     <div class="form-group">
                                                         <label for="middle_name" class="control-label col-md-5"><?= lang('middle_name') ?></label>
                                                         <div class="col-md-7">
@@ -504,15 +524,14 @@
 
                                                     <div class="form-group">
                                                         <label for="owwa_sched" class="control-label col-md-5">OWWA SCHED</label>
-                                                        <div class="col-md-7 col-md-push-1">
+                                                        <div class="col-md-5 col-md-push-1">
 
                                                             <?php
-                                                            $owwa_sched = ($worker->owwa_sched) ?
-                                                                date('d/m/Y', strtotime(str_replace('/', '-', $worker->owwa_sched))) : '';
+//                                                            $owwa_sched = ($worker->owwa_sched) ?
+//                                                                date('d/m/Y', strtotime(str_replace('/', '-', $worker->owwa_sched))) : '';
                                                             ?>
 
-                                                            <input type="text" name="owwa_sched" class="combodate form-control"  data-min-year="<?php echo date('Y') - 1; ?>" data-format="DD/MM/YYYY" data-template="D MMM YYYY"
-                                                                   value="<?php echo set_value('owwa_sched', $owwa_sched); ?>" data-max-year="<?php echo date('Y'); ?>">
+                                                            <input type="text" name="owwa_sched" class="form-control" value="<?php echo set_value('owwa_sched', $worker->owwa_sched); ?>">
 
                                                             <div><?php echo form_error('owwa_sched') ?></div>
 
@@ -543,7 +562,7 @@
                                                 <div class="form-group">
                                                     <label for="memo" class="control-label col-md-6">MEMO</label>
                                                     <div class="col-md-6">
-                                                            <textarea name="memo" id="memo" cols="30" rows="10"
+                                                            <textarea name="memo" id="memo" cols="25" rows="4"
                                                                       class="form-control"><?= set_value('memo', $worker->memo); ?></textarea>
                                                     </div>
                                                 </div>

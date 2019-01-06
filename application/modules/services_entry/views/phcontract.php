@@ -9,7 +9,7 @@
     <style>
         body {
             direction: rtl;
-            font-size: 13px;
+            font-size: 14px;
         }
         p {
             line-height: 1em;
@@ -61,11 +61,12 @@
         }
 
         .small-text td {
-            font-size: 10px;
+            font-size: 12px;
         }
 
         @page {
             margin-top: 4.5cm;
+            margin-bottom: 2cm;
         }
 
         @media print {
@@ -239,19 +240,19 @@
             <td>
                 <p>
                     ويمثل عنه / عنها فى الفلبين :
-                    <br>
+                    <br><br>
                     مكتب إرسال العمالة الفلبينية:
                     <br>
-                    <?php echo $agent->address; ?>
+                    <?php echo str_replace('Address', '<br>Address', $agent->address ); ?>
 
                 </p>
             </td>
             <td class="english-char">
                 <p>
-                    Represented in the Philippines by: <br>
+                    Represented in the Philippines by: <br><br>
                     Philippine Recruitment Agency:
-                    <br>
-                    <?php echo $agent->address; ?>
+                    <br><br>
+                    <?php echo str_replace('Address', '<br>Address', $agent->address ); ?>
                 </p>
             </td>
         </tr>

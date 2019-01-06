@@ -9,6 +9,7 @@ class Acc_admin extends MY_Controller
         $this->load->model('Acc_admin_model');
         $this->load->model('Report_model');
         $this->load->library('form_validation');
+        $this->lang->load('acc_lang');
         $this->adminSecurity();
     }
 
@@ -42,6 +43,21 @@ class Acc_admin extends MY_Controller
         }else if($action==''){
             $this->accountantTemplate('index', $this->data);
         }
+    }
+
+
+
+    public function get_income_expense_by_year()
+    {
+        $this->data['year'] = $_POST['year'];
+        $this->load->view('get_income_expense_by_year', $this->data);
+    }
+
+
+    public function get_expense_details_by_year()
+    {
+        $this->data['year'] = $_POST['year'];
+        $this->load->view('get_expense_details_by_year', $this->data);
     }
 
    /* Method for Add New Account And Account Page View */
@@ -240,7 +256,7 @@ class Acc_admin extends MY_Controller
             $data['payer'] = $this->input->post('payer', true);
             $data['payee'] = '';
             $data['p_method'] = $this->input->post('p-method', true);
-            $data['ref'] = $this->input->post('reference', true);
+            $data['ref'] = '123';
             $data['note']=$this->input->post('note',true);
             $data['dr']=0;
             $data['cr']=$this->input->post('amount',true);
@@ -253,7 +269,7 @@ class Acc_admin extends MY_Controller
             $this->form_validation->set_rules('amount', 'Amount', 'trim|required');
             $this->form_validation->set_rules('payer', 'Payer', 'trim|required');
             $this->form_validation->set_rules('p-method', 'Payment Method', 'trim|required');
-            $this->form_validation->set_rules('reference', 'Reference No', 'trim|required');
+//            $this->form_validation->set_rules('reference', 'Reference No', 'trim|required');
             $this->form_validation->set_rules('note', 'Note', 'trim|required|min_length[5]');
 
 
@@ -319,7 +335,7 @@ class Acc_admin extends MY_Controller
             $data['payer']='';
             $data['payee']=$this->input->post('payee',true);
             $data['p_method']=$this->input->post('p-method',true);
-            $data['ref']=$this->input->post('reference',true);
+            $data['ref']= '123';
             $data['note']=$this->input->post('note',true);
             $data['dr']=$this->input->post('amount',true);
             $data['cr']=0;
@@ -332,7 +348,7 @@ class Acc_admin extends MY_Controller
             $this->form_validation->set_rules('amount', 'Amount', 'trim|required');
             $this->form_validation->set_rules('payee', 'Payee', 'trim|required');
             $this->form_validation->set_rules('p-method', 'Payment Method', 'trim|required');
-            $this->form_validation->set_rules('reference', 'Reference No', 'trim|required');
+//            $this->form_validation->set_rules('reference', 'Reference No', 'trim|required');
             $this->form_validation->set_rules('note', 'Note', 'trim|required|min_length[5]');
 
             if ($this->form_validation->run() == true)
@@ -810,5 +826,4 @@ class Acc_admin extends MY_Controller
         print_r($payments);
         echo '</pre>';
     }
-
 }

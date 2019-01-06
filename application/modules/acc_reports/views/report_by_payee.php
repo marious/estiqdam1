@@ -1,6 +1,6 @@
 <!--Statt Main Content-->
 <section>
-    <div class="main-content">
+    <div class="main-content <?= get_content_main_area_class(); ?>">
         <div class="row">
             <div class="inner-contatier">
                 <div class="col-md-12 col-lg-12 col-sm-12 content-title"><h4>Tricky Report Viewer</h4></div>
@@ -8,7 +8,7 @@
                     <!--Start Panel-->
                     <div class="panel panel-default">
                         <!-- Default panel contents -->
-                        <div class="panel-heading">Report By Payee</div>
+                        <div class="panel-heading"><?= lang('report_by_payee'); ?></div>
                         <div class="panel-body">
                             <div class="col-md-12 col-lg-12 col-sm-12 report-params">
                                 <form id="payee-report" action="<?php echo site_url('acc_reports/reportByPayee/view') ?>">
@@ -17,7 +17,7 @@
                                     <div class="col-md-3 col-lg-3 col-sm-3">
                                         <div class="form-group">
                                             <div class='input-group date' id='date'>
-                                                <input type="text" class="form-control" placeholder="Date From" name="from-date" id="from-date"/>
+                                                <input type="text" class="form-control" placeholder="<?= lang('date_from') ?>" name="from-date" id="from-date" autocomplete="off">
                                                 <span class="input-group-addon">
 <span class="glyphicon glyphicon-calendar"></span>
 </span>
@@ -28,7 +28,7 @@
                                     <div class="col-md-3 col-lg-3 col-sm-3">
                                         <div class="form-group">
                                             <div class='input-group'>
-                                                <input type="text" class="form-control" placeholder="Date To" name="to-date" id="to-date"/>
+                                                <input type="text" class="form-control" placeholder="<?= lang('date_to'); ?>" name="to-date" id="to-date"/>
                                                 <span class="input-group-addon">
 <span class="glyphicon glyphicon-calendar"></span>
 </span>
@@ -55,22 +55,23 @@
                             </div>
 
 
-                            <div class="Report-Toolbox col-md-6 col-lg-6 col-sm-6 col-md-offset-6 col-lg-offset-6 col-sm-offset-6">
-                                <button type="button" class="btn btn-primary print-btn"><i class="fa fa-print"></i> Print</button>
-                                <button type="button" class="btn btn-info pdf-btn"><i class="fa fa-file-pdf-o"></i> PDF Export</button>
+                            <div class="Report-Toolbox col-md-6 col-lg-6 col-sm-6 col-md-offset-6 col-lg-offset-6 col-sm-offset-6" style="margin-bottom: 10px;">
+                                <button type="button" class="btn btn-primary print-btn"><i class="fa fa-print"></i> <?= lang('print'); ?></button>
+<!--                               <button type="button" class="btn btn-info pdf-btn"><i class="fa fa-file-pdf-o"></i> PDF Export</button>-->
                             </div>
+
                             <div id="Report-Table" class="col-md-12 col-lg-12 col-sm-12">
                                 <div class="preloader"><img src="<?php echo base_url() ?>theme/images/ring.gif"></div>
                                 <div class="report-heading">
-                                    <h4>Report By Payee</h4>
-                                    <p>Date From - - - - To - - - -</p>
+                                    <h4><?= lang('report_by_payee'); ?></h4>
+                                    <p><?= lang('date_from'); ?> - - - - <?= lang('to'); ?> - - - -</p>
                                 </div>
                                 <div id="Table-div">
                                     <table class="table table-bordered">
                                         <thead>
-                                        <th>Date</th><th>Account</th><th>Category</th>
-                                        <th>Type</th><th>Note</th><th>Payee</th>
-                                        <th class="text-right">Dr</th><th class="text-right">Cr</th>
+                                        <th><?= lang('date'); ?></th><th><?= lang('account'); ?></th><th><?= lang('category'); ?></th>
+                                        <th><?= lang('note'); ?></th><th><?= lang('payee'); ?></th>
+                                        <th class="text-right"><?= lang('amount'); ?></th>
                                         <tbody>
 
                                         </tbody>
@@ -110,10 +111,10 @@
                         $(".preloader").css("display","none");
                         if(data!="false"){
                             $("#Report-Table tbody").html(data);
-                            $(".report-heading p").html("Date From "+$("#from-date").val()+" To "+$("#to-date").val());
+                            $(".report-heading p").html("<?= lang('date_from'); ?> "+$("#from-date").val()+" <?= lang('to'); ?> "+$("#to-date").val());
                         }else{
                             $("#Report-Table tbody").html("");
-                            $(".report-heading p").html("Date From "+$("#from-date").val()+" To "+$("#to-date").val());
+                            $(".report-heading p").html("<?= lang('date_from'); ?> "+$("#from-date").val()+" <?= lang('to'); ?> "+$("#to-date").val());
                             swal("Alert","Sorry, No Data Found !", "info");
                         }
                     }

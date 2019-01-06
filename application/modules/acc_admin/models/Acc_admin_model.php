@@ -80,7 +80,7 @@ class Acc_admin_model extends MY_Model
         {
             $this->db->where('type', $type);
         }
-        $this->db->order_by('trans_id', 'desc');
+        $this->db->order_by('trans_date', 'desc');
         if ($limit != 'all')
         {
             $this->db->limit($limit);

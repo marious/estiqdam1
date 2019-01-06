@@ -26,6 +26,7 @@
                                                 <th>Visa Number</th>
                                                 <th>Contract Received</th>
                                                 <th>Biometric Date</th>
+                                                <th>Owwa Schedule</th>
                                                 <th>MEMO</th>
                                                 <th>Documents</th>
                                                 <th>Action</th>
@@ -33,7 +34,6 @@
                                         </thead>
                                         <tbody id="accepted-workers">
                                         <?php $i = 1; ?>
-                                        <?php if ($workers && count($workers)): ?>
                                         <?php foreach ($workers as $worker): ?>
                                            <tr>
                                                <td style="text-align: center; width: 3%;"><?=  $i; ?></td>
@@ -50,7 +50,9 @@
                                                <td style="width: 8%; text-align: center;" class="biometric_date" data-type="date" data-name="biometric_date" data-pk="<?= $worker->worker_id; ?>">
                                                    <?php if ($worker->biometric_date){ echo  strpos($worker->biometric_date, '/') ? DateTime::createFromFormat('d/m/Y', $worker->biometric_date)->format('j-M-y') : date('j-M-y', strtotime($worker->biometric_date)); }else {echo '';};?>
                                                </td>
-
+                                               <td style="width: 10%;" class="owwa_sched" data-type="textarea" data-name="owwa_sched" data-pk="<?= $worker->worker_id; ?>">
+                                                   <?= $worker->owwa_sched; ?>
+                                               </td>
                                                <td style="text-align; center;" class="memo" data-type="textarea"
                                                 data-name="memo" data-pk="<?= $worker->worker_id; ?>"><?= $worker->memo; ?></td>
                                                <td style="width: 5%; text-align: center">
@@ -62,7 +64,6 @@
                                            </tr>
 
                                         <?php $i++; endforeach; ?>
-                                        <?php endif; ?>
 
                                         </tbody>
                                     </table>

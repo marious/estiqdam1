@@ -9,7 +9,7 @@
             $nationality = $this->worker_nationality->Worker_nationality_model->get($worker->nationality_id, true)->$nationality;
         ?>
 
-    <div class="col-md-10 building-container">
+    <div class="col-md-9 building-container">
 
 
         <div class="profile-content">
@@ -20,20 +20,25 @@
             <hr>
 
             <div class="row">
-                <div class="col-md-5">
+                <div class="col-md-4">
+                    <?php if ($worker->image): ?>
                     <?php
-                    $img_size = getimagesize(FCPATH . '/assets/img/workers/' . $worker->image);
-                    $img_width = $img_size[0];
-                    $img_height = $img_size[1];
+                    if (file_exists(FCPATH . '/assets/img/workers/' . $worker->image)) {
+                        $img_size = getimagesize(FCPATH . '/assets/img/workers/' . $worker->image);
+                        $img_width = $img_size[0];
+                        $img_height = $img_size[1];
+                    }
                     ?>
                     <div style="width: 100%; height: 300px;overflow: hidden;">
-                        <img src="<?= site_url('assets/img/workers/' . $worker->image); ?>" alt="" class="img-responsive maid-img" data-pic-title="Image 1"
+                        <img src="<?= site_url('assets/img/workers/' . $worker->image); ?>" alt="<?php echo "عاملة منزلية رقم {$worker->id}";  ?>" class="img-responsive maid-img" data-pic-title="Image 1"
                              data-pic-desc="Descript 1" data-pic="<?= site_url('assets/img/workers/' . $worker->image); ?>"
                         >
                     </div>
+                    <?php endif; ?>
                     <br>
                     <div class="contact-us">
-                        <a href="tel:0508586858" title="0508586858"> <i class="fa fa-mobile"></i> 0508586858</a>
+                        <a href="tel:0541566633" title="0541566633"> <i class="fa fa-mobile"></i> 0541566633</a>
+                        <a href="tel:0547830004" title="0547830004"> <i class="fa fa-mobile"></i> 0547830004</a>
                     </div>
                     <?php if (isset($_SESSION['logged_in']) && isset($_SESSION['access_id']) && $_SESSION['access_id'] == 3): ?>
                         <?php if ($customer->selected_worker_id == '0'): ?>
@@ -49,13 +54,13 @@
                         <?php
                         $share_text = "عاملة منزلية من $nationality جاهزة للاستقدام من مكتب السلام للاستقدام ";
                         ?>
-                        <a href="https://api.whatsapp.com/send?phone=966508586858" class="btn btn-block whatsapp-share" target="_blank">تواصل واتس <i class="fa fa-whatsapp white"></i></a>
-                        <a href="whatsapp://send?text=<?= urlencode('عاملة منزلية من اثيوبيا') ?> http://peace4r.com/home/maidinfo/<?=  url_title($worker->first_name); ?>" data-action="share/whatsapp/share" class="btn btn-block whatsapp-share" target="_blank">مشاركة بالواتس <i class="fa fa-whatsapp white"></i></a>
-                        <a href="https://twitter.com/share?url=http://http://estgdam1.com/.com/home/maidinfo/<?= url_title($worker->first_name); ?>&amp;text=عاملة منزلية من <?=  $nationality; ?>  &amp;hashtags=" class="twitter-share btn btn-block" target="_blank">Tweet <i class="fa fa-twitter white"></i></a>
-                        <a href="http://www.facebook.com/sharer.php?u=http://http://estgdam1.com/.com/home/maidinfo/<?= url_title($worker->first_name) ?> . '.html'" class="facebook-share btn-block btn" target="_blank">Share <i class="fa fa-facebook-official white"></i></a>
+                        <a href="https://api.whatsapp.com/send?phone=966541566633" class="btn btn-block whatsapp-share" target="_blank">تواصل واتس <i class="fa fa-whatsapp white"></i></a>
+                        <a href="whatsapp://send?text=<?= urlencode($share_text) ?> http://peace4r.com/home/maidinfo/<?=  url_title($worker->first_name); ?>" data-action="share/whatsapp/share" class="btn btn-block whatsapp-share" target="_blank">مشاركة بالواتس <i class="fa fa-whatsapp white"></i></a>
+                        <a href="https://twitter.com/share?url=http://peace4r.com/home/maidinfo/<?= url_title($worker->first_name); ?>&amp;text=عاملة منزلية من <?=  $nationality; ?> مكتب السلام للاستقدام &amp;hashtags=السلام_للاستقدام" class="twitter-share btn btn-block" target="_blank">Tweet <i class="fa fa-twitter white"></i></a>
+                        <a href="http://www.facebook.com/sharer.php?u=http://peace4r.com/home/maidinfo/<?= url_title($worker->first_name) ?> . '.html'" class="facebook-share btn-block btn" target="_blank">Share <i class="fa fa-facebook-official white"></i></a>
                     </div>
                 </div>
-                <div class="col-md-7">
+                <div class="col-md-8">
                     <table class="table table-striped table-bordered maid-info-table">
                         <tr>
                             <th><?= lang('name');  ?></th>

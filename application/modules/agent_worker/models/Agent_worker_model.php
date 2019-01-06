@@ -157,6 +157,7 @@ class Agent_worker_model extends MY_Model
                     services_customer.customer_id,
                     contract.contract_date,
                     agent_worker.memo,
+                    agent_worker.owwa_sched,
                     agent_worker.contract_received_date
                     FROM services_worker
                     INNER JOIN services_contract
@@ -214,6 +215,7 @@ class Agent_worker_model extends MY_Model
         $q2 = $this->db->query($query, $binds);
         $data = [];
         $number_filter_row = $q2->num_rows();
+
         foreach ($q->result() as $row)
         {
             $sub_array = [];
@@ -273,7 +275,7 @@ class Agent_worker_model extends MY_Model
         $columns = ['agent_worker.id','agent_worker.image', 'agent_worker.passport_number', 'agent_worker.name', 'agent_worker.job',
                 'agent_worker.salary', 'staff.username', 'customer_name_in_arabic'];
         $query = "SELECT agent_worker.*, agent_worker.id AS worker_id, staff.username, staff.id, agent_worker.id AS worker_id,
-                  jobs.name_in_arabic AS job, customers.customer_name_in_arabic, customers.id AS customer_id
+                  jobs.name_in_arabic AS job, customers.customer_name_in_arabic, customers.id AS customer_id, customers.visa_number
                   FROM agent_worker 
                   INNER JOIN staff
                   ON agent_worker.agent_id = staff.id
@@ -281,9 +283,18 @@ class Agent_worker_model extends MY_Model
                   ON jobs.id = agent_worker.job_id
                   LEFT JOIN customers 
                   ON customers.selected_worker_id = agent_worker.id
+                  WHERE
               ";
-        $query .= ' WHERE ';
+
+        $query1 = '';
         $binds = [];
+
+        if (isset($_POST['length']) && $_POST['length'] != -1)
+        {
+            $query1 .= ' LIMIT ' . $_POST['start'] . ', ' . $_POST['length'];
+        }
+
+
         if (isset($_POST['is_agent']) && $_POST['is_agent'] != 'false')
         {
             $query .= ' staff.id = ? AND ';
@@ -291,7 +302,7 @@ class Agent_worker_model extends MY_Model
         if (isset($_POST['search']['value']))
         {
             $query .= ' (name LIKE ? ';
-            $query .= ' OR salary LIKE ? ';
+            $query .= ' OR customers.customer_name_in_arabic LIKE ? ';
             $query .= ' OR passport_number LIKE ? ) ';
         }
         if (isset($_POST['order']))
@@ -313,9 +324,20 @@ class Agent_worker_model extends MY_Model
             $binds[] = '%' . $_POST['search']['value'] . '%';
             $binds[] = '%' . $_POST['search']['value'] . '%';
         }
-        $q = $this->db->query($query, $binds);
+
+        if (isset($_POST['length']) && $_POST['length'] != -1)
+        {
+            $q = $this->db->query($query . ' ' . $query1, $binds);
+        }
+        else
+        {
+            $q = $this->db->query($query, $binds);
+        }
+
+
+        $q2 = $this->db->query($query, $binds);
         $data = [];
-        $number_filter_row = $q->num_rows();
+        $number_filter_row = $q2->num_rows();
         foreach ($q->result() as $row)
         {
             $sub_array = [];
@@ -327,6 +349,11 @@ class Agent_worker_model extends MY_Model
             $sub_array[] = $row->salary;
             $sub_array[] = $row->username;
             $sub_array[] = $row->customer_name_in_arabic;
+
+            $contract_number = $this->get_contract_number_by_visa($row->visa_number);
+            $view_documents = ($row->customer_name_in_arabic) ? '<li><a href="'.site_url('services_entry/processing?searched_value=' . $contract_number).'" target="_blank">View Documents</a></li>' : '';
+
+            $cv_link = ($row->nationality_id == 11) ? 'agent_worker/view_ph_cv/' . $row->worker_id : "agent_worker/view_cv/" . $row->worker_id;
             $cancel_selection = ($row->customer_name_in_arabic) ? '<li><a href="'.site_url('agent_worker/cancel_selection/' . $row->worker_id . '/' . $row->customer_id).'" class="delete-btn">
                         <i class="glyphicon glyphicon-hand-right"></i> Cancel Selection</a></li>' : '';
             if ($row->hide == '0') { $hide_link = '<li><a href="'.site_url("agent_worker/hide_worker/" . $row->worker_id).'"> <i class="glyphicon glyphicon-thumbs-down"></i> Hide
@@ -345,10 +372,11 @@ class Agent_worker_model extends MY_Model
                                                                 </button>
                                                                 <ul class="datatable-dropdown dropdown-menu icons-left" role="menu">
                                                                     <li>
-                                                                       <a href="'.site_url("agent_worker/view_cv/" . $row->worker_id).'" target="_blank"><i class="glyphicon glyphicon-eye-open"></i> View</a>
+                                                                       <a href="'.site_url($cv_link).'" target="_blank"><i class="glyphicon glyphicon-eye-open"></i> View</a>
                                                                     </li>
                                                                     <li><a href="'.site_url("agent_worker/testpdf/" . $row->worker_id).'" class="tips " title="" target="_blank">
                                                                             <i class="glyphicon glyphicon-file"></i>  View PDF</a> </li>
+                                                                            '.$view_documents.'
                                                                            '.$cancel_selection.'
                                                                             <li><a href="'.site_url("agent_worker/add_worker/" . $row->worker_id).'"><i class="	glyphicon glyphicon-edit"></i> Edit</a></li>
                                                                             '.$hide_link.'
@@ -368,6 +396,16 @@ class Agent_worker_model extends MY_Model
     }
 
 
+
+    public function get_contract_number_by_visa($visa_number)
+    {
+        $query = "SELECT contract_number FROM services_customer WHERE visa_number = ?";
+        $q = $this->db->query($query, array($visa_number));
+        if ($q->num_rows()) {
+            return $q->row()->contract_number;
+        }
+        return false;
+    }
 
 
     public function get_agents()
@@ -488,18 +526,34 @@ class Agent_worker_model extends MY_Model
     {
         $columns = ['agent_worker.id','agent_worker.image', 'agent_worker.name', 'agent_worker.passport_number', 'agent_worker.job',
             'agent_worker.salary', 'staff.username', 'customer_name_in_arabic'];
-        $query = "SELECT agent_worker.*, agent_worker.id AS worker_id, staff.username, staff.id, agent_worker.id AS worker_id,
-                  jobs.name_in_arabic AS job, customers.customer_name_in_arabic
+        $query = "SELECT agent_worker.*, agent_worker.id AS worker_id, staff.username, staff.id as agent_id, agent_worker.id AS worker_id,
+                  jobs.name_in_arabic AS job, customers.customer_name_in_arabic, customers.visa_number
+                   , services_worker.passport_number, services_contract.stamp_date, services_contract.contract_number
                   FROM agent_worker 
                   INNER JOIN staff
                   ON agent_worker.agent_id = staff.id
                   INNER JOIN jobs 
                   ON jobs.id = agent_worker.job_id
                   LEFT JOIN customers 
-                  ON customers.selected_worker_id = agent_worker.id
-                  WHERE agent_worker.accepted = '1' AND 
+                  ON customers.selected_worker_id = agent_worker.id 
+                  INNER JOIN services_worker
+                  ON services_worker.passport_number = agent_worker.passport_number
+                  INNER JOIN services_contract 
+                  ON services_worker.contract_number = services_contract.contract_number
+                  WHERE 
+                     agent_worker.accepted = '1'
+                   
+                    AND 
+                  
               ";
         $binds = [];
+
+        $query1 = '';
+        if (isset($_POST['length']) && $_POST['length'] != -1)
+        {
+            $query1 .= ' LIMIT ' . $_POST['start'] . ', ' . $_POST['length'];
+        }
+
         if (isset($_POST['is_agent']) && $_POST['is_agent'] != 'false')
         {
             $query .= ' staff.id = ? AND ';
@@ -508,8 +562,11 @@ class Agent_worker_model extends MY_Model
         {
             $query .= ' (name LIKE ? ';
             $query .= ' OR agent_worker.passport_number LIKE ? ';
-            $query .= ' OR salary LIKE ? )';
+            $query.= ' OR customers.customer_name_in_arabic LIKE ? )';
+//            $query .= ' OR salary LIKE ? )';
         }
+
+
         if (isset($_POST['order']))
         {
             $query .= ' ORDER BY  ' . $columns[$_POST['order'][0]['column']] . ' ' .  $_POST['order'][0]['dir'] . ' ';
@@ -518,6 +575,9 @@ class Agent_worker_model extends MY_Model
         {
             $query .= ' ORDER BY agent_worker.id DESC ';
         }
+
+
+
 
         if (isset($_POST['is_agent']) && $_POST['is_agent'] != 'false')
         {
@@ -529,9 +589,23 @@ class Agent_worker_model extends MY_Model
             $binds[] = '%' . $_POST['search']['value'] . '%';
             $binds[] = '%' . $_POST['search']['value'] . '%';
         }
-        $q = $this->db->query($query, $binds);
+
+
+        if (isset($_POST['length']) && $_POST['length'] != -1)
+        {
+            $q = $this->db->query($query . ' ' . $query1, $binds);
+        }
+        else
+        {
+            $q = $this->db->query($query, $binds);
+        }
+
+        $q2 = $this->db->query($query, $binds);
         $data = [];
-        $number_filter_row = $q->num_rows();
+        $number_filter_row = $q2->num_rows();
+
+
+
         foreach ($q->result() as $row)
         {
             $sub_array = [];
@@ -543,20 +617,28 @@ class Agent_worker_model extends MY_Model
             $sub_array[] = $row->salary;
             $sub_array[] = $row->username;
             $sub_array[] = $row->customer_name_in_arabic;
+
+            $contract_number = $this->get_contract_number_by_visa($row->visa_number);
+            $view_documents = ($row->customer_name_in_arabic) ? '<li><a href="'.site_url('services_entry/processing?searched_value=' . $row->contract_number).'" target="_blank">'.lang('view_documents').'</a></li>' : '';
+
+
             $sub_array[] = '
             <div class="btn-group">
-                                                                <button class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown">
-                                                                    <i class="glyphicon glyphicon-cog"></i> <span class="caret"></span>
-                                                                </button>
-                                                                <ul class="datatable-dropdown dropdown-menu icons-left" role="menu">
-                                                                    <li>
-                                                                       <a href="'.site_url("agent_worker/view_cv/" . $row->worker_id).'" target="_blank"><i class="glyphicon glyphicon-eye-open"></i> View</a>
-                                                                    </li>
-                                                                    <li><a href="'.site_url("agent_worker/testpdf/" . $row->worker_id).'" class="tips " title="" target="_blank">
-                                                                            <i class="glyphicon glyphicon-file"></i>  View PDF</a> </li>
-                                                                     <li><a href="'.site_url("agent_worker/add_worker/" . $row->worker_id).'">Edit</a></li>       
-                                                                </ul>
-                                                            </div>
+            <button class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown">
+                <i class="glyphicon glyphicon-cog"></i> <span class="caret"></span>
+            </button>
+            <ul class="datatable-dropdown dropdown-menu icons-left" role="menu">
+                <li>
+                   <a href="'.site_url("agent_worker/view_cv/" . $row->worker_id).'" target="_blank"><i class="glyphicon glyphicon-eye-open"></i> '.lang('view').'</a>
+                </li>
+                '.$view_documents.'
+                <li><a href="'.site_url("agent_worker/testpdf/" . $row->worker_id).'" class="tips " title="" target="_blank">
+                        <i class="glyphicon glyphicon-file"></i>  View PDF</a> </li>
+                <li><a href="'.site_url("").'" class="refuse-work" data-worker-id="'.$row->worker_id.'" data-contract-number="'.$contract_number.'" 
+                data-agent-id="'.$row->agent_id.'" data-passport-number="'.$row->passport_number.'"><i class="glyphicon glyphicon-remove"></i> '.lang('refuse_to_work').'</a></li>                        
+                 <li><a href="'.site_url("agent_worker/add_worker/" . $row->worker_id).'">'. lang('edit') .'</a></li>       
+            </ul>
+        </div>
             ';
             $data[] = $sub_array;
         }
@@ -574,8 +656,8 @@ class Agent_worker_model extends MY_Model
     public function get_accepted_workers_2()
     {
         $query = 'SELECT services_worker.worker_name_in_english,
-                  agent_worker.id AS worker_id,
-                  agent_worker.biometric_date,
+                    agent_worker.id AS worker_id,
+                    agent_worker.biometric_date,
                     services_worker.passport_number,
                     services_worker.contract_number,
                     services_contract.stamp_date,
@@ -588,6 +670,7 @@ class Agent_worker_model extends MY_Model
                     services_customer.customer_id,
                     contract.contract_date,
                     agent_worker.memo,
+                    agent_worker.passport_number,
                     agent_worker.contract_received_date,
                     staff.username AS agent_name
                     FROM services_worker
@@ -610,7 +693,7 @@ class Agent_worker_model extends MY_Model
 
                 if (isset($_POST['search']['value']) && $_POST['search']['value'] != '')
                 {
-                    $query .= ' AND services_worker.worker_name_in_english LIKE ? ';
+                    $query .= ' AND (services_worker.worker_name_in_english LIKE ? OR services_customer.customer_name_in_arabic LIKE ? )';
                 }
 
             if (isset($_POST['is_agent']) && $_POST['is_agent'] != 'false' && $_POST['is_agent'] != '0')
@@ -627,6 +710,7 @@ class Agent_worker_model extends MY_Model
             if (isset($_POST['search']['value']) && $_POST['search']['value'] != '')
             {
                 $binds[] =  '%' . $_POST['search']['value'] . '%';
+                $binds[] = '%' . $_POST['search']['value'] . '%';
             }
 
         if (isset($_POST['is_agent']) && $_POST['is_agent'] != 'false' && $_POST['is_agent'] != '0')
@@ -672,6 +756,7 @@ class Agent_worker_model extends MY_Model
             $sub_array[] = $row->customer_name_in_arabic;
             $sub_array[] = $row->customer_id;
             $sub_array[] = $row->visa_number;
+            $sub_array[] = $row->passport_number;
             $sub_array[] = $row->agent_name;
             $sub_array[] = $contract_received_date;
             $sub_array[] = $biometric_date;
@@ -754,6 +839,19 @@ class Agent_worker_model extends MY_Model
             $sub_array[] = $row->salary;
             $sub_array[] = $row->username;
             $sub_array[] = $row->customer_name_in_arabic;
+
+            $cv_link = ($row->nationality_id == 11) ? 'agent_worker/view_ph_cv/' . $row->worker_id : "agent_worker/view_cv/" . $row->worker_id;
+            $cancel_selection = ($row->customer_name_in_arabic) ? '<li><a href="'.site_url('agent_worker/cancel_selection/' . $row->worker_id . '/' . $row->customer_id).'" class="delete-btn">
+                        <i class="glyphicon glyphicon-hand-right"></i> Cancel Selection</a></li>' : '';
+            if ($row->hide == '0') { $hide_link = '<li><a href="'.site_url("agent_worker/hide_worker/" . $row->worker_id).'"> <i class="glyphicon glyphicon-thumbs-down"></i> Hide
+                                                                            
+                                                                            </a>
+                                                                          
+                                                                            </li>'; } else { $hide_link = '<li><a href="'.site_url("agent_worker/show_worker/" . $row->worker_id).'"> <i class="glyphicon glyphicon-thumbs-up"></i> Show
+                                                                            
+                                                                            </a>
+                                                                          
+                                                                            </li>'; }
             $sub_array[] = '
             <div class="btn-group">
                                                                 <button class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown">
@@ -761,11 +859,14 @@ class Agent_worker_model extends MY_Model
                                                                 </button>
                                                                 <ul class="datatable-dropdown dropdown-menu icons-left" role="menu">
                                                                     <li>
-                                                                       <a href="'.site_url("agent_worker/view_cv/" . $row->worker_id).'" target="_blank"><i class="glyphicon glyphicon-eye-open"></i> View</a>
+                                                                       <a href="'.site_url($cv_link).'" target="_blank"><i class="glyphicon glyphicon-eye-open"></i> View</a>
                                                                     </li>
                                                                     <li><a href="'.site_url("agent_worker/testpdf/" . $row->worker_id).'" class="tips " title="" target="_blank">
                                                                             <i class="glyphicon glyphicon-file"></i>  View PDF</a> </li>
-                                                                     <li><a href="'.site_url("agent_worker/add_worker/" . $row->worker_id).'">Edit</a></li>       
+                                                                           '.$cancel_selection.'
+                                                                            <li><a href="'.site_url("agent_worker/add_worker/" . $row->worker_id).'"><i class="	glyphicon glyphicon-edit"></i> Edit</a></li>
+                                                                            '.$hide_link.'
+                                                                            <li><a href="'.site_url("agent_worker/delete_worker/" . $row->worker_id).'" class="delete-btn"><i class="	glyphicon glyphicon-remove-sign"></i> Delete</a></li>
                                                                 </ul>
                                                             </div>
             ';
@@ -919,6 +1020,7 @@ class Agent_worker_model extends MY_Model
         LEFT JOIN agent_payment_note ON services_contract.contract_number = agent_payment_note.contract_number
         WHERE NOT ((services_contract.arrived_date IS NULL) OR (TRIM(services_contract.arrived_date) LIKE "")) 
         AND staff.id = ?
+        ORDER BY services_contract.arrived_date DESC
         ';
 
         $query = $this->db->query($sql, array($_SESSION['id']));
@@ -1091,6 +1193,185 @@ class Agent_worker_model extends MY_Model
 
 
 
+
+    public function get_refuse_workers()
+    {
+        $columns = [
+            'contract.contract_number',
+            'contract.contract_date',
+            'services_customer.customer_name_in_arabic',
+            'services_customer.visa_number',
+            'services_worker.worker_name_in_english',
+            'services_worker.passport_number',
+            'agent_name',
+            'refuse_workers.reason',
+        ];
+
+
+        $query = "SELECT refuse_workers.*, services_worker.worker_name_in_english, services_worker.worker_name_in_arabic, 
+                   services_customer.customer_name_in_arabic,
+                contract.contract_number, contract.contract_date, staff.username AS agent_name, agent_worker.name as worker_name
+                FROM refuse_workers
+                INNER JOIN services_worker
+                ON services_worker.id = refuse_workers.worker_id
+                INNER JOIN services_customer
+                ON services_customer.contract_number = refuse_workers.contract_number
+                INNER JOIN contract ON refuse_workers.contract_number = contract.contract_number
+                INNER JOIN staff ON refuse_workers.agent_id = staff.id
+                INNER JOIN agent_worker ON agent_worker.passport_number = refuse_workers.passport_number
+                ";
+
+
+        $binds = [];
+
+
+        if (isset($_POST['is_agent']) && $_POST['is_agent'] != 'false')
+        {
+            $query .= ' WHERE staff.id = ? ';
+        }
+
+
+        $query1 = '';
+        if (isset($_POST['length']) && $_POST['length'] != -1)
+        {
+            $query1 .= ' LIMIT ' . $_POST['start'] . ', ' . $_POST['length'];
+        }
+
+        if (isset($_POST['is_agent']) && $_POST['is_agent'] != 'false')
+        {
+            $binds[] = $_POST['is_agent'];
+        }
+
+        if (isset($_POST['length']) && $_POST['length'] != -1)
+        {
+            $q = $this->db->query($query . ' ' . $query1, $binds);
+        }
+        else
+        {
+            $q = $this->db->query($query, $binds);
+        }
+
+        $q2 = $this->db->query($query, $binds);
+
+        $data = [];
+        $number_filter_row = $q2->num_rows();
+
+        foreach ($q->result() as $row)
+        {
+            $sub_array = [];
+            $sub_array[] = $row->contract_number;
+            $sub_array[] = $row->contract_date;
+            $sub_array[] = $row->customer_name_in_arabic;
+           $sub_array[] = $row->worker_name;
+            $sub_array[] = $row->passport_number;
+            $sub_array[] = $row->agent_name;
+            $sub_array[] = $row->refuse_date;
+            $sub_array[] = $row->reason;
+            $data[] = $sub_array;
+        }
+
+        $output = [
+            "draw" => intval($_POST['draw']),
+            "recordsTotal"  	=>  $q->num_rows(),
+            "recordsFiltered" 	=> $number_filter_row,
+            "data"    			=> $data,
+        ];
+        echo json_encode($output);
+
+    }
+
+
+
+    public function load_worker_documents()
+    {
+        $query = "
+            SELECT contract.contract_number,contract.contract_date,
+                services_contract.visa_image, services_contract.id_image,
+                services_contract.contract_image, services_contract.delegation_image,
+                services_contract.stamping_image, services_contract.passport_image,
+                services_worker.passport_number,
+                agent_worker.name AS worker_name,
+                services_customer.customer_name_in_arabic,
+                staff.username AS agent_name
+            FROM services_worker
+            INNER JOIN contract 
+            ON services_worker.contract_number = contract.contract_number
+            INNER JOIN agent_worker
+            ON agent_worker.passport_number = services_worker.passport_number
+            INNER JOIN services_customer 
+            ON services_worker.contract_number = services_customer.contract_number
+            INNER JOIN services_contract 
+            ON services_worker.contract_number = services_contract.contract_number
+             INNER JOIN staff ON services_worker.agent_id = staff.id
+             WHERE services_worker.contract_number NOT IN (select contract_number from cancelled_contracts)
+
+             
+        ";
+
+        $binds = [];
+
+
+        if (isset($_POST['is_agent']) && $_POST['is_agent'] != 'false')
+        {
+            $query .= ' AND staff.id = ? ';
+        }
+
+
+        $query1 = '';
+        if (isset($_POST['length']) && $_POST['length'] != -1)
+        {
+            $query1 .= ' LIMIT ' . $_POST['start'] . ', ' . $_POST['length'];
+        }
+
+        if (isset($_POST['is_agent']) && $_POST['is_agent'] != 'false')
+        {
+            $binds[] = $_POST['is_agent'];
+        }
+
+        if (isset($_POST['length']) && $_POST['length'] != -1)
+        {
+            $q = $this->db->query($query . ' ORDER BY contract.contract_date DESC ' . $query1, $binds);
+        }
+        else
+        {
+            $q = $this->db->query($query . ' ORDER BY contract.contract_date DESC ', $binds);
+        }
+
+        $q2 = $this->db->query($query . ' ORDER BY contract.contract_date DESC', $binds);
+
+        $data = [];
+        $number_filter_row = $q2->num_rows();
+
+        foreach ($q->result() as $row)
+        {
+            $sub_array = [];
+            $sub_array[] = $row->customer_name_in_arabic;
+            $sub_array[] = $row->worker_name;
+            $sub_array[] =  '<a href="'.site_url('assets/contracts/' . $row->contract_number . '/' . $row->visa_image).'" data-lightbox="image-gallery">
+                                    <img  class="small-img img-thumbnail" src="'.site_url('assets/contracts/' . $row->contract_number . '/' . $row->visa_image).'" data-title="Visa Image"></a>';
+            $sub_array[] =  '<a href="'.site_url('assets/contracts/' . $row->contract_number . '/' . $row->id_image).'" data-lightbox="image-gallery" data-title="ID image">
+                                                       <img class="small-img img-thumbnail" src="'.site_url('assets/contracts/' . $row->contract_number . '/' . $row->id_image).'"></a>';
+            $sub_array[] =  '<a data-lightbox="image-gallery" href="'.site_url('assets/contracts/' . $row->contract_number . '/' . $row->passport_image).'" data-title="passport image">
+                                        <img class="small-img img-thumbnail" src="'.site_url('assets/contracts/' . $row->contract_number . '/' . $row->passport_image).'"></a>';
+            $sub_array[] =  '<a href="'.site_url('assets/contracts/' . $row->contract_number . '/' . $row->contract_image).'" data-lightbox="image-gallery" data-title="Contract Image">
+                                        <img class="small-img img-thumbnail" src="'.site_url('assets/contracts/' . $row->contract_number . '/' . $row->contract_image).'"></a>';
+            $sub_array[] =  '<a href="'.site_url('assets/contracts/' . $row->contract_number . '/' . $row->delegation_image).'" data-lightbox="image-gallery" data-title="delegation iamge">
+                                            <img class="small-img img-thumbnail" src="'.site_url('assets/contracts/' . $row->contract_number . '/' . $row->delegation_image).'"></a>';
+            $sub_array[] =  '<a href="'.site_url('assets/contracts/' . $row->contract_number . '/' . $row->stamping_image).'" data-lightbox="image-gallery" data-title="Stamping Image">
+                                    <img class="small-img img-thumbnail" src="'.site_url('assets/contracts/' . $row->contract_number . '/' . $row->stamping_image).'">';
+            $sub_array[] = $row->agent_name;
+            $data[] = $sub_array;
+        }
+
+        $output = [
+            "draw" => intval($_POST['draw']),
+            "recordsTotal"  	=>  $q->num_rows(),
+            "recordsFiltered" 	=> $number_filter_row,
+            "data"    			=> $data,
+        ];
+        echo json_encode($output);
+
+    }
 
 
 

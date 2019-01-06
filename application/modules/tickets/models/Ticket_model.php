@@ -230,6 +230,7 @@ class Ticket_model extends MY_Model
         INNER JOIN departure_airports ON agent_worker.departure_airport = departure_airports.id
         INNER JOIN services_finance ON services_finance.contract_number = services_worker.contract_number
         WHERE agent_worker.agent_id = ?
+        AND services_contract.contract_number NOT IN (select contract_number from cancelled_contracts)
         ';
 
         $query .= " AND (services_contract.arrived_date IS NULL OR  TRIM(services_contract.arrived_date) LIKE '' )

@@ -1,9 +1,9 @@
 <!--Statt Main Content-->
 <section>
-    <div class="main-content">
+    <div class="main-content <?= get_content_main_area_class();  ?>">
         <div class="row">
             <div class="inner-contatier">
-                <div class="col-md-12 col-lg-12 col-sm-12 content-title"><h4>Account</h4></div>
+                <div class="col-md-12 col-lg-12 col-sm-12 content-title"><h4><?= lang('accounts'); ?></h4></div>
 
                 <!--Alert-->
                 <div class="system-alert-box">
@@ -16,26 +16,26 @@
                     <!--Start Panel-->
                     <div class="panel panel-default">
                         <!-- Default panel contents -->
-                        <div class="panel-heading">Add Account</div>
+                        <div class="panel-heading"><?= lang('add_account'); ?></div>
                         <div class="panel-body add-client">
                             <?php if(!isset($edit_account)){ ?>
                                 <form id="add-accounts">
                                     <input type="hidden" name="action" id="action" value="insert"/>
                                     <input type="hidden" name="chart_id" id="accounts_id" value=""/>
                                     <div class="form-group">
-                                        <label for="acc_name">Account Name</label>
+                                        <label for="acc_name"><?= lang('account_name') ?></label>
                                         <input type="text" class="form-control" name="accounts_name" id="acc_name">
                                     </div>
                                     <div class="form-group">
-                                        <label for="balance">Account Balance</label>
+                                        <label for="balance"><?= lang('account_balance'); ?></label>
                                         <input type="text" class="form-control" name="opening_balance" id="balance">
                                     </div>
                                     <div class="form-group">
-                                        <label for="note">Note</label>
+                                        <label for="note"><?= lang('note'); ?></label>
                                         <input type="text" class="form-control" name="note" id="note">
                                     </div>
 
-                                    <button type="submit"  class="mybtn btn-submit"><i class="fa fa-check"></i> Save</button>
+                                    <button type="submit"  class="mybtn btn-submit"><i class="fa fa-check"></i> <?= lang('save'); ?></button>
                                 </form>
                             <?php }else{ ?>
 

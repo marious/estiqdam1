@@ -28,7 +28,7 @@
                                     <div class="col-md-3 col-lg-3 col-sm-3">
                                         <div class="form-group">
                                             <div class='input-group'>
-                                                <input type="text" class="form-control" placeholder="Date To" name="to-date" id="to-date"/>
+                                                <input type="text" class="form-control" placeholder="Date To" name="to-date" id="to-date" autocomplete="off">
                                                 <span class="input-group-addon">
 <span class="glyphicon glyphicon-calendar"></span>
 </span>

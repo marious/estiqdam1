@@ -64,15 +64,17 @@
                                             <table id="services_table" class="table table-bordered table-striped services-table">
                                                 <thead>
                                                 <tr>
-                                                    <th width="2%">الرقم</th>
-                                                    <th width="28%">اسم العميل</th>
-                                                    <th width="10%">جهة القدوم</th>
-                                                    <th width="10%">المهنة</th>
-                                                    <th width="8%">رقم التأشيرة</th>
-                                                    <th width="8%">رقم الهوية</th>
-                                                    <th width="8%">نوع الطلب</th>
-                                                    <th width="10%">رقم الطلب</th>
-                                                    <th width="12%">وكيل الاستقدام</th>
+                                                    <th width="1%" style="font-size: 14px;">#</th>
+                                                    <th width="15%" style="font-size: 14px;">اسم العميل</th>
+                                                    <th width="7%" style="font-size: 14px;">جهة القدوم</th>
+                                                    <th width="7%" style="font-size: 14px;">المهنة</th>
+                                                    <th width="7%" style="font-size: 14px;">رقم التأشيرة</th>
+                                                    <th width="7%" style="font-size: 14px;">رقم الهوية</th>
+                                                    <th width="6%" style="font-size: 14px;">نوع الطلب</th>
+                                                    <th width="7%" style="font-size: 14px;">رقم الطلب</th>
+                                                    <th width="7%" style="font-size: 14px;">جواز العاملة</th>
+                                                    <th width="19%" style="font-size: 14px;">اسم العاملة</th>
+                                                    <th width="" style="font-size: 14px;">جهة الوصول</th>
                                                     <th>البطاقة</th>
                                                     <th>العمليات</th>
                                                 </tr>
@@ -84,13 +86,15 @@
                                                     <tr>
                                                         <td><?php echo $i; $i++; ?></td>
                                                         <td><?php echo $service->customer_name_in_arabic; ?></td>
-                                                        <td><?php echo $service->city; ?></td>
+                                                        <td style="text-align: center;"><?php echo $service->city; ?></td>
                                                         <td><?php echo $service->job_name_arabic; ?></td>
                                                         <td><?php echo $service->visa_number; ?></td>
                                                         <td><?php echo $service->customer_id; ?></td>
                                                         <td><?php echo $service->order_name_arabic; ?></td>
                                                         <td><?php echo $service->order_number; ?></td>
-                                                        <td><?php echo $service->representative_name; ?></td>
+                                                        <td><?php echo $service->passport_number; ?></td>
+                                                        <td><?= $service->worker_name_in_english; ?></td>
+                                                        <td><?= $service->arrival_airport; ?></td>
                                                         <td><?php echo $service->credit_card; ?></td>
                                                         <td>
                                                             <div class="btn-group">

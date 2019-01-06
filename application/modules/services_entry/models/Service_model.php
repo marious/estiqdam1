@@ -231,9 +231,11 @@ class Service_model extends MY_Model
             $current_date = date('Y-m-d');
         }
 
-        $query = 'select services_worker.contract_number, services_customer.* , representatives.name AS \'representative_name\', contract.contract_date, services_finance.credit_card_id, credit_card.credit_card, 	services_contract.* 
+        $query = 'select services_worker.contract_number, services_worker.worker_name_in_english, services_worker.passport_number
+                    ,services_customer.* , representatives.name AS \'representative_name\', contract.contract_date, services_finance.credit_card_id, credit_card.credit_card, 	services_contract.* 
                           ,visa_issued_city.city, services_order.order_number, order_types.name_in_english AS order_name_english
                           , order_types.name_in_arabic AS order_name_arabic, jobs.name_in_english AS job_name_english, jobs.name_in_arabic AS job_name_arabic, staff.username AS agent_name
+                          ,arrival_airports.name_in_english AS arrival_airport
 FROM services_worker
 INNER JOIN 	services_contract ON services_worker.contract_number = 	services_contract.contract_number
 INNER JOIN services_customer ON services_worker.contract_number = services_customer.contract_number
@@ -246,6 +248,7 @@ INNER JOIN services_finance ON services_worker.contract_number = services_financ
 INNER JOIN credit_card ON services_finance.credit_card_id = credit_card.id
 INNER JOIN contract ON services_worker.contract_number = contract.contract_number
 INNER JOIN staff ON services_worker.agent_id = staff.id
+        INNER JOIN arrival_airports ON services_worker.arrival_airport_id = arrival_airports.id
 WHERE contract.contract_date = ?
 AND services_contract.contract_number NOT IN (select contract_number from cancelled_contracts)
 ';
@@ -259,7 +262,7 @@ AND services_contract.contract_number NOT IN (select contract_number from cancel
     }
 
 
-    public function get_searched_services($searched_key, $searched_value, $not = false)
+    public function get_searched_services($searched_key, $searched_value, $not = false, $name_search = false)
     {
         $query = 'select 
       services_worker.contract_number,
@@ -286,6 +289,10 @@ WHERE services_contract.contract_number NOT IN (select contract_number from canc
         if ($not)
         {
             $query .= ' AND ' . $searched_key . '!=?;';
+        }
+        else if ($name_search)
+        {
+            $query .= ' AND ' . $searched_key . ' LIKE ?';
         }
         else
         {
@@ -357,7 +364,7 @@ WHERE MONTH(contract.contract_date) = ? AND YEAR(contract.contract_date) = ?
             'services_finance.prepaid_money',
             'services_finance.remains_money',
             'arrival_airports.name_in_arabic',
-            'services_contract.contract_date',
+            'services_contract.delegation_date',
             'services_contract.stamp_date',
             'services_contract.arrived_date',
             ];
@@ -415,7 +422,12 @@ WHERE MONTH(contract.contract_date) = ? AND YEAR(contract.contract_date) = ?
             $query .= ' OR arrival_airports.name_in_arabic LIKE ? ) ';
         }
 
-        if (isset($_POST['order']))
+        if (isset($_POST['order']) && ($columns[$_POST['order'][0]['column']] == 'services_contract.delegation_date') ) {
+            $query .= ' ORDER BY STR_TO_DATE(' . $columns[$_POST['order'][0]['column']] . ', "%Y-%m-%d") ' .
+                $_POST['order'][0]['dir'] . ' ';
+        }
+
+        else if (isset($_POST['order']))
         {
             $query .= ' ORDER BY ' . $columns[$_POST['order'][0]['column']] . ' ' .
                 $_POST['order'][0]['dir'] . ' ';
@@ -493,7 +505,7 @@ WHERE MONTH(contract.contract_date) = ? AND YEAR(contract.contract_date) = ?
                 $sub_array[] = $row->prepaid_money;
                 $sub_array[] = $row->remains_money;
                 $sub_array[] = $row->arrival_airport;
-                $sub_array[] = $row->contract_date;
+                $sub_array[] = $row->delegation_date;
                 $sub_array[] = $row->stamp_date;
                 $sub_array[] = $row->arrived_date;
                 $data[] = $sub_array;
@@ -524,7 +536,7 @@ WHERE MONTH(contract.contract_date) = ? AND YEAR(contract.contract_date) = ?
 
     public function save_contract_number($contract_number, $contract_date = false)
     {
-        $this->db->set(['contract_number' => $contract_number, 'contract_date' => $contract_date]);
+        $this->db->set(['contract_number' => $contract_number, 'contract_date' => $contract_date, 'created_at' => $contract_date]);
         $this->db->insert('contract');
         $id = $this->db->insert_id();
         return $id;

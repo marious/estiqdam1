@@ -1,14 +1,15 @@
 <!--Statt Main Content-->
-<?php if ($_SESSION['permission_role'] == 'admin'): ?>
 <section>
-    <div class="main-content">
+    <div class="main-content <?= get_content_main_area_class(); ?>">
         <div class="row">
-            <div class="col-md-12 col-lg-12 col-sm-12 content-title"><h4>Dashboard</h4></div>
+
+
+            <div class="col-md-12 col-lg-12 col-sm-12 content-title"><h4><?= lang('dashboard'); ?></h4></div>
             <div class="clo-md-3 col-lg-3 col-sm-6">
                 <div class="card-box">
                     <div class="box-callout-green">
                         <div class="rightside-cart">
-                            <p class="card-head">Current Day Income<br>
+                            <p class="card-head"><?= lang('current_day_income'); ?><br>
                                 <canvas id="current-day-income" height="100" width="160"></canvas>
                             <div class="cart-caption">
                                 <div class="cart-symbol"><b><?php echo get_current_setting('currency_code') ?></b></div>
@@ -23,7 +24,7 @@
                     <div class="box-callout-orange">
 
                         <div class="rightside-cart">
-                            <p class="card-head">Current Day Expense<br>
+                            <p class="card-head"><?= lang('current_day_expense'); ?><br>
                                 <canvas id="current-day-expense" height="100" width="160"></canvas>
                             <div class="cart-caption">
                                 <div class="cart-symbol"><b><?php echo get_current_setting('currency_code') ?></b></div>
@@ -37,7 +38,7 @@
                 <div class="card-box">
                     <div class="box-callout-green">
                         <div class="rightside-cart">
-                            <p class="card-head">Current Month Income<br>
+                            <p class="card-head"><?= lang('current_month_income'); ?><br>
                                 <canvas id="current-month-income" height="100" width="160"></canvas>
                             <div class="cart-caption">
                                 <div class="cart-symbol"><b><?php echo get_current_setting('currency_code') ?></b></div>
@@ -53,7 +54,7 @@
                 <div class="card-box">
                     <div class="box-callout-orange">
                         <div class="rightside-cart">
-                            <p class="card-head">Current Month Expense<br>
+                            <p class="card-head"><?= lang('current_month_expense'); ?><br>
                                 <canvas id="current-month-expense" height="100" width="160"></canvas>
                             <div class="cart-caption">
                                 <div class="cart-symbol"><b><?php echo get_current_setting('currency_code') ?></b></div>
@@ -72,7 +73,7 @@
                 <!--Start Panel-->
                 <div class="panel panel-default custom-box">
                     <!-- Default panel contents -->
-                    <div class="panel-heading">Income Vs Expense - April <?= date('Y'); ?></div>
+                    <div class="panel-heading"><?= lang('income_vs_expense') ?> -  <?= date('Y'); ?></div>
                     <div class="panel-body">
                         <!--<canvas id="inc_vs_exp2"></canvas>-->
                         <div id="inc_vs_exp2"></div>
@@ -86,9 +87,25 @@
 
             <div class="col-md-12">
                 <div class="panel panel-default custom-box">
-                    <div class="panel-heading">All Expanses And Incomes</div>
+                    <div class="panel-heading"><?= lang('all_expenses_and_income'); ?></div>
                     <div class="panel-body">
-                        <table class="table table-bordered" style="table-layout: fixed;">
+
+                            <div class="form-inline">
+                                <label for="">السنة</label>
+                                <select name="" id="income-expense-year">
+                                    <option value="2018">2018</option>
+                                    <option value="2019" selected>2019</option>
+                                </select>
+                            </div>
+                        <br>
+
+                        <?php
+                        $current_year = date('Y');
+                        $num_feb_days = cal_days_in_month(CAL_GREGORIAN, 2, $current_year);
+
+                        ?>
+
+                        <table class="table table-bordered" style="table-layout: fixed;" id="income_expense_table">
                             <tr style="text-align: center;">
                                 <th>الشهر</th>
                                 <td>يناير</td>
@@ -103,14 +120,34 @@
                                 <td>اكتوبر</td>
                                 <td>نوفمبر</td>
                                 <td>ديسمبر</td>
+                                <td>الإجمالى السنوى</td>
+
                             </tr>
                             <tr style="text-align: center;">
                                 <th>الدخل</th>
-                                <td></td>
-                                <td></td>
                                 <td>
                                     <?php
-                                    $income_data = $this->Report_model->getIncomeReport('2018-03-01', '2018-03-31');
+                                    $income_data = $this->Report_model->getIncomeReport($current_year.'-01-01', $current_year.'-01-31');
+                                    $sum_income_1 = 0;
+                                    foreach ($income_data as $income) {
+                                        $sum_income_1 = $sum_income_1 + $income->amount;
+                                    }
+                                    echo $sum_income_1;
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    $income_data = $this->Report_model->getIncomeReport($current_year.'-02-01', $current_year.'-02-' . $num_feb_days);
+                                    $sum_income_2 = 0;
+                                    foreach ($income_data as $income) {
+                                        $sum_income_2 = $sum_income_2 + $income->amount;
+                                    }
+                                    echo $sum_income_2;
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    $income_data = $this->Report_model->getIncomeReport($current_year.'-03-01', $current_year.'-03-31');
                                     $sum_income_3 = 0;
                                     foreach ($income_data as $income) {
                                         $sum_income_3 = $sum_income_3 + $income->amount;
@@ -120,7 +157,7 @@
                                 </td>
                                 <td>
                                     <?php
-                                    $income_data = $this->Report_model->getIncomeReport('2018-04-01', '2018-04-30');
+                                    $income_data = $this->Report_model->getIncomeReport($current_year.'-04-01', $current_year.'-04-30');
                                     $sum_income_4 = 0;
                                     foreach ($income_data as $income) {
                                         $sum_income_4 = $sum_income_4 + $income->amount;
@@ -130,7 +167,7 @@
                                 </td>
                                 <td>
                                     <?php
-                                    $income_data = $this->Report_model->getIncomeReport('2018-05-01', '2018-05-31');
+                                    $income_data = $this->Report_model->getIncomeReport($current_year.'-05-01', $current_year.'-05-31');
                                     $sum_income_5 = 0;
                                     foreach ($income_data as $income) {
                                         $sum_income_5 = $sum_income_5 + $income->amount;
@@ -140,7 +177,7 @@
                                 </td>
                                 <td>
                                     <?php
-                                    $income_data = $this->Report_model->getIncomeReport('2018-06-01', '2018-06-30');
+                                    $income_data = $this->Report_model->getIncomeReport($current_year.'-06-01', $current_year.'-06-30');
                                     $sum_income_6 = 0;
                                     foreach ($income_data as $income) {
                                         $sum_income_6 = $sum_income_6 + $income->amount;
@@ -150,7 +187,7 @@
                                 </td>
                                 <td>
                                     <?php
-                                    $income_data = $this->Report_model->getIncomeReport('2018-07-01', '2018-07-31');
+                                    $income_data = $this->Report_model->getIncomeReport($current_year.'-07-01', $current_year.'-07-31');
                                     $sum_income_7 = 0;
                                     foreach ($income_data as $income) {
                                         $sum_income_7 = $sum_income_7 + $income->amount;
@@ -158,19 +195,82 @@
                                     echo $sum_income_7;
                                     ?>
                                 </td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>
+                                    <?php
+                                    $income_data = $this->Report_model->getIncomeReport($current_year.'-08-01', $current_year.'-08-31');
+                                    $sum_income_8 = 0;
+                                    foreach ($income_data as $income) {
+                                        $sum_income_8 = $sum_income_8 + $income->amount;
+                                    }
+                                    echo $sum_income_8;
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    $income_data = $this->Report_model->getIncomeReport($current_year.'-09-01', $current_year.'-09-30');
+                                    $sum_income_9 = 0;
+                                    foreach ($income_data as $income) {
+                                        $sum_income_9 = $sum_income_9 + $income->amount;
+                                    }
+                                    echo $sum_income_9;
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    $income_data = $this->Report_model->getIncomeReport($current_year.'-10-01', $current_year.'-10-31');
+                                    $sum_income_10 = 0;
+                                    foreach ($income_data as $income) {
+                                        $sum_income_10 = $sum_income_10 + $income->amount;
+                                    }
+                                    echo $sum_income_10;
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    $income_data = $this->Report_model->getIncomeReport($current_year.'-11-01', $current_year.'-11-30');
+                                    $sum_income_11 = 0;
+                                    foreach ($income_data as $income) {
+                                        $sum_income_11 = $sum_income_11 + $income->amount;
+                                    }
+                                    echo $sum_income_11;
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    $income_data = $this->Report_model->getIncomeReport($current_year.'-12-01', $current_year.'-12-31');
+                                    $sum_income_12 = 0;
+                                    foreach ($income_data as $income) {
+                                        $sum_income_12 = $sum_income_12 + $income->amount;
+                                    }
+                                    echo $sum_income_12;
+                                    ?>
+                                </td>
                             </tr>
                             <tr style="text-align: center;">
                                 <th>المصروفات</th>
-                                <td></td>
-                                <td></td>
                                 <td>
                                     <?php
-                                    $expense_data = $this->Report_model->getExpenseReport('2018-03-01', '2018-03-31');
+                                    $expense_data = $this->Report_model->getExpenseReport($current_year.'-01-01', $current_year.'-01-31');
+                                    $sum_expense_1 = 0;
+                                    foreach ($expense_data as $expense) {
+                                        $sum_expense_1 = $sum_expense_1 + $expense->amount;
+                                    }
+                                    echo $sum_expense_1;
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    $expense_data = $this->Report_model->getExpenseReport($current_year.'-02-01', $current_year.'-02-28');
+                                    $sum_expense_2 = 0;
+                                    foreach ($expense_data as $expense) {
+                                        $sum_expense_2 = $sum_expense_2 + $expense->amount;
+                                    }
+                                    echo $sum_expense_2;
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    $expense_data = $this->Report_model->getExpenseReport($current_year.'-03-01', $current_year.'-03-31');
                                     $sum_expense_3 = 0;
                                     foreach ($expense_data as $expense) {
                                         $sum_expense_3 = $sum_expense_3 + $expense->amount;
@@ -180,7 +280,7 @@
                                 </td>
                                 <td>
                                     <?php
-                                    $expense_data = $this->Report_model->getExpenseReport('2018-04-01', '2018-04-30');
+                                    $expense_data = $this->Report_model->getExpenseReport($current_year.'-04-01', $current_year.'-04-30');
                                     $sum_expense_4 = 0;
                                     foreach ($expense_data as $expense) {
                                         $sum_expense_4 = $sum_expense_4 + $expense->amount;
@@ -190,7 +290,7 @@
                                 </td>
                                 <td>
                                     <?php
-                                    $expense_data = $this->Report_model->getExpenseReport('2018-05-01', '2018-05-31');
+                                    $expense_data = $this->Report_model->getExpenseReport($current_year.'-05-01', $current_year.'-05-31');
                                     $sum_expense_5 = 0;
                                     foreach ($expense_data as $expense) {
                                         $sum_expense_5 = $sum_expense_5 + $expense->amount;
@@ -200,7 +300,7 @@
                                 </td>
                                 <td>
                                     <?php
-                                    $expense_data = $this->Report_model->getExpenseReport('2018-06-01', '2018-06-30');
+                                    $expense_data = $this->Report_model->getExpenseReport($current_year.'-06-01', $current_year.'-06-30');
                                     $sum_expense_6 = 0;
                                     foreach ($expense_data as $expense) {
                                         $sum_expense_6 = $sum_expense_6 + $expense->amount;
@@ -210,7 +310,7 @@
                                 </td>
                                 <td>
                                     <?php
-                                    $expense_data = $this->Report_model->getExpenseReport('2018-07-01', '2018-07-31');
+                                    $expense_data = $this->Report_model->getExpenseReport($current_year.'-07-01', $current_year.'-07-31');
                                     $sum_expense_7 = 0;
                                     foreach ($expense_data as $expense) {
                                         $sum_expense_7 = $sum_expense_7 + $expense->amount;
@@ -218,37 +318,257 @@
                                     echo $sum_expense_7;
                                     ?>
                                 </td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>
+                                    <?php
+                                    $expense_data = $this->Report_model->getExpenseReport($current_year.'-08-01', $current_year.'-08-31');
+                                    $sum_expense_8 = 0;
+                                    foreach ($expense_data as $expense) {
+                                        $sum_expense_8 = $sum_expense_8 + $expense->amount;
+                                    }
+                                    echo $sum_expense_8;
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    $expense_data = $this->Report_model->getExpenseReport($current_year.'-09-01', $current_year.'-09-30');
+                                    $sum_expense_9 = 0;
+                                    foreach ($expense_data as $expense) {
+                                        $sum_expense_9 = $sum_expense_9 + $expense->amount;
+                                    }
+                                    echo $sum_expense_9;
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    $expense_data = $this->Report_model->getExpenseReport($current_year.'-10-01', $current_year.'-10-31');
+                                    $sum_expense_10 = 0;
+                                    foreach ($expense_data as $expense) {
+                                        $sum_expense_10 = $sum_expense_10 + $expense->amount;
+                                    }
+                                    echo $sum_expense_10;
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    $expense_data = $this->Report_model->getExpenseReport($current_year.'-11-01', $current_year.'-11-30');
+                                    $sum_expense_11 = 0;
+                                    foreach ($expense_data as $expense) {
+                                        $sum_expense_11 = $sum_expense_11 + $expense->amount;
+                                    }
+                                    echo $sum_expense_11;
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    $expense_data = $this->Report_model->getExpenseReport($current_year.'-12-01', $current_year.'-12-31');
+                                    $sum_expense_12 = 0;
+                                    foreach ($expense_data as $expense) {
+                                        $sum_expense_12 = $sum_expense_12 + $expense->amount;
+                                    }
+                                    echo $sum_expense_12;
+                                    ?>
+                                </td>
                             </tr>
                             <tr style="text-align: center;">
                                 <th>الصافى</th>
-                                <td></td>
-                                <td></td>
+                                <td> <?php $sum1 = $sum_income_1 - $sum_expense_1;
+                                    echo round((float) $sum1, 2);
+                                    ?></td>
                                 <td>
-                                    <?php echo $sum_income_3 - $sum_expense_3; ?>
+                                    <?php $sum2 = $sum_income_2 - $sum_expense_2;
+                                    echo round((float) $sum2, 2);
+                                    ?>
                                 </td>
                                 <td>
-                                    <?php echo $sum_income_4 - $sum_expense_4; ?>
+                                    <?php $sum3 = $sum_income_3 - $sum_expense_3;
+                                    echo round((float) $sum3, 2);
+                                    ?>
                                 </td>
                                 <td>
-                                    <?php echo $sum_income_5 - $sum_expense_5; ?>
+                                    <?php $sum4 = $sum_income_4 - $sum_expense_4;
+                                    echo round((float) $sum4, 2);
+                                    ?>
                                 </td>
                                 <td>
-                                    <?php echo $sum_income_6 - $sum_expense_6; ?>
+                                    <?php $sum5 = $sum_income_5 - $sum_expense_5;
+                                    echo round((float) $sum5, 2);
+                                    ?>
                                 </td>
                                 <td>
-                                    <?php echo $sum_income_7 - $sum_expense_7; ?>
+                                    <?php $sum6 = $sum_income_6 - $sum_expense_6;
+                                    echo round((float) $sum6, 2);
+                                    ?>
                                 </td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>
+                                    <?php $sum7 = $sum_income_7 - $sum_expense_7;
+                                        echo round((float) $sum7, 2);
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php $sum8 = $sum_income_8 - $sum_expense_8;
+                                        echo round((float) $sum8, 2);
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php $sum9 =  $sum_income_9 - $sum_expense_9;
+                                    echo round((float) $sum9, 2);
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php $sum10 =  $sum_income_10 - $sum_expense_10;
+                                    echo round((float) $sum10, 2);
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php $sum11 =  $sum_income_11 - $sum_expense_11;
+                                    echo round((float) $sum11, 2);
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php $sum12 =  $sum_income_12 - $sum_expense_12;
+                                    echo round((float) $sum12, 2);
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    $balance = $sum1 + $sum2 + $sum3 + $sum4 + $sum5 + $sum6 + $sum7 + $sum8 + $sum9 + $sum10 + $sum11 + $sum12;
+                                    echo number_format($balance, 2);
+                                    ?>
+                                </td>
                             </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-12">
+                <div class="panel panel-default custom-box" style="min-height: 490px;">
+                    <div class="panel-heading"><?= lang('expenses_details'); ?></div>
+                    <div class="panel-body">
+
+
+                        <div class="form-inline">
+                            <label for="">السنة</label>
+                            <select name="" id="expense-details-year">
+                                <option value="2018">2018</option>
+                                <option value="2019" selected>2019</option>
+                            </select>
+                        </div>
+                        <br>
+
+                        <table class="table table-bordered" style="table-layout: fixed;" id="expense_details_table">
+                            <tr style="text-align: center;">
+                                <th>الشهر</th>
+                                <th>يناير</th>
+                                <th>فبراير</th>
+                                <th>مارس</th>
+                                <th>ابريل</th>
+                                <th>مايو</th>
+                                <th>يونيو</th>
+                                <th>يوليو</th>
+                                <th>اغسطس</th>
+                                <th>سبتمبر</th>
+                                <th>اكتوبر</th>
+                                <th>نوفمبر</th>
+                                <th>ديسمبر</th>
+
+                            </tr>
+                            <?php $expenseAccountsType = $this->Report_model->getAllExpensesAccounts(); ?>
+                            <?php if ($expenseAccountsType && count($expenseAccountsType)): ?>
+                            <?php foreach ($expenseAccountsType as $expenseAccount): ?>
+                                <tr>
+                                    <th><?php echo $expenseAccount->accounts_name; ?></th>
+                                    <th>
+                                        <?php
+                                        $amount = $this->Report_model->getExpenseAccountAmount( $current_year . '-01-01', $current_year . '-01-31', $expenseAccount->accounts_name);
+                                        echo '<a target="_blank" href="'.site_url('acc_reports/categoryReport?date-from='.$current_year.'-01-01&date-to='.$current_year.'-01-31&category=' . $expenseAccount->accounts_name).'">'
+                                            . number_format($amount, 2) . '</a>';
+                                        ?>
+                                    </th>
+                                    <th>
+                                        <?php
+                                        $amount = $this->Report_model->getExpenseAccountAmount( $current_year . '-02-01', $current_year . '-02-'.$num_feb_days, $expenseAccount->accounts_name);
+                                        echo '<a target="_blank" href="'.site_url('acc_reports/categoryReport?date-from='.$current_year.'-02-01&date-to='.$current_year.'-02-'.$num_feb_days.'&category=' . $expenseAccount->accounts_name).'">'
+                                            . number_format($amount, 2) . '</a>';
+                                        ?>
+                                    </th>
+                                    <th>
+                                        <?php
+                                        $amount = $this->Report_model->getExpenseAccountAmount( $current_year . '-03-01', $current_year . '-03-31', $expenseAccount->accounts_name);
+                                        echo '<a target="_blank" href="'.site_url('acc_reports/categoryReport?date-from='.$current_year.'-03-01&date-to='.$current_year.'-03-31&category=' . $expenseAccount->accounts_name).'">'
+                                            . number_format($amount, 2) . '</a>';
+                                    ?>
+                                    </th>
+                                    <th>
+                                        <?php
+                                        $amount = $this->Report_model->getExpenseAccountAmount($current_year.'-04-01', $current_year.'-04-30', $expenseAccount->accounts_name);
+                                        echo '<a target="_blank" href="'.site_url('acc_reports/categoryReport?date-from='.$current_year.'-04-01&date-to='.$current_year.'-04-30&category=' . $expenseAccount->accounts_name).'">'
+                                            . number_format($amount, 2) . '</a>';
+                                        ?>
+                                    </th>
+                                    <th>
+                                        <?php
+                                        $amount = $this->Report_model->getExpenseAccountAmount($current_year.'-05-01', $current_year.'-05-31', $expenseAccount->accounts_name);
+                                        echo '<a target="_blank" href="'.site_url('acc_reports/categoryReport?date-from='.$current_year.'-05-01&date-to='.$current_year.'-05-31&category=' . $expenseAccount->accounts_name).'">'
+                                            . number_format($amount, 2) . '</a>';
+                                        ?>
+                                    </th>
+                                    <th>
+                                        <?php
+                                        $amount = $this->Report_model->getExpenseAccountAmount($current_year.'-06-01', $current_year.'-06-30', $expenseAccount->accounts_name);
+                                        echo '<a target="_blank" href="'.site_url('acc_reports/categoryReport?date-from='.$current_year.'-06-01&date-to='.$current_year.'-06-30&category=' . $expenseAccount->accounts_name).'">'
+                                            . number_format($amount, 2) . '</a>';
+                                        ?>
+                                    </th>
+                                    <th>
+                                        <?php
+                                        $amount = $this->Report_model->getExpenseAccountAmount($current_year . '-07-01', $current_year . '-07-31', $expenseAccount->accounts_name);
+                                        echo '<a target="_blank" href="'.site_url('acc_reports/categoryReport?date-from='.$current_year.'-07-01&date-to='.$current_year.'-07-31&category=' . $expenseAccount->accounts_name).'">'
+                                            . number_format($amount, 2) . '</a>';
+                                        ?>
+                                    </th>
+                                    <th>
+                                        <?php
+                                        $amount = $this->Report_model->getExpenseAccountAmount($current_year.'-08-01', $current_year.'-08-31', $expenseAccount->accounts_name);
+                                        echo '<a target="_blank" href="'.site_url('acc_reports/categoryReport?date-from='.$current_year.'-08-01&date-to='.$current_year.'-08-31&category=' . $expenseAccount->accounts_name).'">'
+                                            . number_format($amount, 2) . '</a>';
+                                        ?>
+                                    </th>
+                                    <th>
+                                        <?php
+                                        $amount = $this->Report_model->getExpenseAccountAmount($current_year.'-09-01', $current_year.'-09-30', $expenseAccount->accounts_name);
+                                        echo '<a target="_blank" href="'.site_url('acc_reports/categoryReport?date-from='.$current_year.'-09-01&date-to='.$current_year.'-09-30&category=' . $expenseAccount->accounts_name).'">'
+                                            . number_format($amount, 2) . '</a>';
+                                        ?>
+                                    </th>
+                                    <th>
+                                        <?php
+                                        $amount = $this->Report_model->getExpenseAccountAmount($current_year.'-10-01', $current_year . '-10-31', $expenseAccount->accounts_name);
+                                        echo '<a target="_blank" href="'.site_url('acc_reports/categoryReport?date-from='.$current_year.'-10-01&date-to='.$current_year.'-10-31&category=' . $expenseAccount->accounts_name).'">'
+                                            . number_format($amount, 2) . '</a>';
+                                        ?>
+                                    </th>
+                                    <th>
+                                        <?php
+                                        $amount = $this->Report_model->getExpenseAccountAmount($current_year.'-11-01', $current_year.'-11-30', $expenseAccount->accounts_name);
+                                        echo '<a target="_blank" href="'.site_url('acc_reports/categoryReport?date-from='.$current_year.'-11-01&date-to='.$current_year.'-11-30&category=' . $expenseAccount->accounts_name).'">'
+                                            . number_format($amount, 2) . '</a>';
+                                        ?>
+                                    </th>
+                                    <th>
+                                        <?php
+                                        $amount = $this->Report_model->getExpenseAccountAmount($current_year . '-12-01', $current_year . '-12-31', $expenseAccount->accounts_name);
+                                        echo '<a target="_blank" href="'.site_url('acc_reports/categoryReport?date-from='.$current_year.'-12-01&date-to='.$current_year.'-12-31&category=' . $expenseAccount->accounts_name).'">'
+                                            . number_format($amount, 2) . '</a>';
+                                        ?>
+                                    </th>
+
+                                </tr>
+                            <?php endforeach; ?>
+
+                            
+                            <?php endif; ?>
                         </table>
                     </div>
                 </div>
@@ -261,13 +581,13 @@
                 <!--Start Panel-->
                 <div class="panel panel-default custom-box">
                     <!-- Default panel contents -->
-                    <div class="panel-heading">Latest 5 Income</div>
+                    <div class="panel-heading"><?= lang('last_5_income'); ?></div>
                     <div class="panel-body">
                         <!--Income Table-->
                         <table class="table table-bordered">
-                            <th>Date</th>
-                            <th>Description</th>
-                            <th class="text-right">Amount</th>
+                            <th><?= lang('date'); ?></th>
+                            <th><?= lang('description'); ?></th>
+                            <th class="text-right"><?= lang('amount'); ?></th>
                             <?php foreach($latest_income as $income){ ?>
                                 <tr>
                                     <td><?php echo $income->trans_date ?></td>
@@ -291,12 +611,12 @@
                 <!--Start Panel-->
                 <div class="panel panel-default custom-box">
                     <!-- Default panel contents -->
-                    <div class="panel-heading">Latest 5 Expense</div>
+                    <div class="panel-heading"><?= lang('last_5_expense') ?></div>
                     <div class="panel-body">
                         <table class="table table-bordered">
-                            <th>Date</th>
-                            <th>Description</th>
-                            <th class="text-right">Amount</th>
+                            <th><?= lang('date'); ?></th>
+                            <th><?= lang('description'); ?></th>
+                            <th class="text-right"><?= lang('amount'); ?></th>
                             <?php foreach($latest_expense as $expense){ ?>
                                 <tr>
                                     <td><?php echo $expense->trans_date ?></td>
@@ -317,7 +637,7 @@
             <div class="col-md-6 col-sm-6 col-lg-6">
                 <div class="panel panel-default medium-box">
                     <!-- Default panel contents -->
-                    <div class="panel-heading">Income Vs Expense - <?= date('Y') ?></div>
+                    <div class="panel-heading"><?= lang('income_vs_expense');  ?> -  <?= get_arabic_month(date('F')); ?> - <?= date('Y') ?></div>
                     <div class="panel-body">
                         <div id="inc_vs_exp"></div>
 
@@ -333,7 +653,7 @@
                 <!--Start Panel-->
                 <div class="panel panel-default medium-box">
                     <!-- Default panel contents -->
-                    <div class="panel-heading">Financial Balance Status</div>
+                    <div class="panel-heading"><?= lang('financial_balance_status'); ?></div>
                     <div class="panel-body financial-bal">
                         <table class="table table-bordered ">
                             <th>Account</th>
@@ -525,4 +845,3 @@
 
 
 </script>
-<?php endif; ?>
