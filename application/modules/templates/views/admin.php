@@ -108,7 +108,7 @@ $caret = '<span class="caret"></span> ';
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="<?= base_url('site_settings') ?>"><?= lang('site_settings'); ?></a></li>
-                        <li><a href="<?= base_url('site_settings/tax'); ?>"><?= lang('tax_amount'); ?></a></li>
+<!--                        <li><a href="--><?//= base_url('site_settings/tax'); ?><!--">--><?//= lang('tax_amount'); ?><!--</a></li>-->
                         <li><a href="<?= base_url('staff') ?>"><?= lang('staff'); ?></a></li>
                         <li><a href="<?= base_url('agents'); ?>"><?= lang('agents') ?></a></li>
                         <li><a href="<?= base_url('customers') ?>"><?= lang('customers'); ?></a></li>
@@ -127,8 +127,8 @@ $caret = '<span class="caret"></span> ';
                         <li><a href="<?= base_url('visa_issued_city') ?>"><?= lang('visa_issued_city'); ?></a></li>
                         <li><a href="<?= base_url('style_settings') ?>"><?= lang('style_settings'); ?></a></li>
                         <li><a href="<?= site_url('site_admin/contact_messages'); ?>"><?= lang('contact_messages'); ?></a></li>
-                        <li><a href="<?= site_url('seo_pages'); ?>">SEO Pages</a></li>
-                        <li><a href="<?= site_url('tanazul'); ?>">Tanazul Control</a></li>
+<!--                        <li><a href="--><?//= site_url('seo_pages'); ?><!--">SEO Pages</a></li>-->
+<!--                        <li><a href="--><?//= site_url('tanazul'); ?><!--">Tanazul Control</a></li>-->
                     </ul>
                 </li>
 
