@@ -8,17 +8,17 @@
                <!-- page header -->
                    <div class="page-content-wrapper m-t">
                        <div class="block-content">
-                           <ul class="nav nav-tabs">
-                               <li class="active">
-                                   <a href="<?= base_url() . 'site_settings'; ?>"><?= lang('institution_details'); ?></a>
-                               </li>
-                               <li class="">
-                                   <a href="<?= base_url() . 'site_settings/site_logo'; ?>">Site Logo</a>
-                               </li>
-                               <li class="">
-                                   <a href="<?= base_url() . 'site_settings/get_translation'; ?>">Translation</a>
-                               </li>
-                           </ul>
+<!--                           <ul class="nav nav-tabs">-->
+<!--                               <li class="active">-->
+<!--                                   <a href="--><?//= base_url() . 'site_settings'; ?><!--">--><?//= lang('institution_details'); ?><!--</a>-->
+<!--                               </li>-->
+<!--                               <li class="">-->
+<!--                                   <a href="--><?//= base_url() . 'site_settings/site_logo'; ?><!--">Site Logo</a>-->
+<!--                               </li>-->
+<!--                               <li class="">-->
+<!--                                   <a href="--><?//= base_url() . 'site_settings/get_translation'; ?><!--">Translation</a>-->
+<!--                               </li>-->
+<!--                           </ul>-->
 
                            <div class="panel panel-default m-t">
                                <div class="panel-heading"><?= lang('institution_details'); ?></div>
