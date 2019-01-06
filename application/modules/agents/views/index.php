@@ -27,9 +27,9 @@
                                         <table id="agents_table" class="table table-bordered table-striped">
                                            <thead>
                                            <tr>
-                                               <th>Name</th>
-                                               <th>Country</th>
-                                               <th>Action</th>
+                                               <th><?= lang('name'); ?></th>
+                                               <th><?= lang('country'); ?></th>
+                                               <th><?= lang('action'); ?></th>
                                            </tr>
                                            <tbody>
                                             <?php foreach ($agents as $agent): ?>
