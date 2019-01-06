@@ -111,7 +111,7 @@ $caret = '<span class="caret"></span> ';
 <!--                        <li><a href="--><?//= base_url('site_settings/tax'); ?><!--">--><?//= lang('tax_amount'); ?><!--</a></li>-->
                         <li><a href="<?= base_url('staff') ?>"><?= lang('staff'); ?></a></li>
                         <li><a href="<?= base_url('agents'); ?>"><?= lang('agents') ?></a></li>
-                        <li><a href="<?= base_url('customers') ?>"><?= lang('customers'); ?></a></li>
+<!--                        <li><a href="--><?//= base_url('customers') ?><!--">--><?//= lang('customers'); ?><!--</a></li>-->
                         <li><a href="<?= base_url('arrival_airports') ?>"><?= lang('arrival_airports'); ?></a></li>
                         <li>
                             <a href="<?= base_url('departure_airports'); ?>">
