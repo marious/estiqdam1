@@ -1,6 +1,6 @@
 <?php
 $lang['institution_details'] = 'بيانات المكتب';
-$lang['institution_english_name'] = 'اسم المكتب بالنجليزى';
+$lang['institution_english_name'] = 'اسم المكتب بالانجليزى';
 $lang['institution_arabic_name'] = 'اسم المكتب بالعربى';
 $lang['phone_number'] = 'رقم الهاتف';
 $lang['mobile_number'] = 'رقم الجوال';
