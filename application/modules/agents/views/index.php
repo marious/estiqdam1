@@ -19,7 +19,7 @@
                         </ul>
 
                         <div class="panel panel-default m-t">
-                            <div class="panel-heading"><span class="glyphicon glyphicon-user"></span> Agent</div>
+                            <div class="panel-heading"><span class="glyphicon glyphicon-user"></span> <?= lang('agents'); ?></div>
                             <div class="panel-body">
                                 <div class="tab-content m-t">
                                     <?php $this->load->view('includes/flash_messages'); ?>
@@ -37,11 +37,11 @@
                                                     <td><?= $agent->username; ?></td>
                                                     <td><?= $agent->country_name_in_arabic; ?></td>
                                                     <td>
-                                                        <a href="<?= site_url('agents/add/' . $agent->id) ?>" class="btn btn-primary" data-toggle="tooltip" title="" data-original-title="Edit">
+                                                        <a href="<?= site_url('agents/add/' . $agent->id) ?>" class="btn btn-primary" data-toggle="tooltip" title="" data-original-title="<?= lang('edit') ?>">
                                                             <span class="glyphicon glyphicon-edit"></span>
                                                         </a>
 
-                                                        <a href="<?= site_url('agents/delete/' . $agent->id); ?>" class="btn btn-danger delete-btn" data-toggle="tooltip" title="Delete" data-original-title="Delete">
+                                                        <a href="<?= site_url('agents/delete/' . $agent->id); ?>" class="btn btn-danger delete-btn" data-toggle="tooltip" title="<?= lang('delete'); ?>" data-original-title="<?= lang('delete') ?>">
                                                             <span class="glyphicon glyphicon-trash"></span>
                                                         </a>
                                                         <?php if ($agent->suspended == 1): ?>
