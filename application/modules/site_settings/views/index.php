@@ -8,17 +8,17 @@
                <!-- page header -->
                    <div class="page-content-wrapper m-t">
                        <div class="block-content">
-                           <ul class="nav nav-tabs">
-                               <li class="active">
-                                   <a href="<?= base_url() . 'site_settings'; ?>"><?= lang('institution_details'); ?></a>
-                               </li>
-                               <li class="">
-                                   <a href="<?= base_url() . 'site_settings/site_logo'; ?>">Site Logo</a>
-                               </li>
-                               <li class="">
-                                   <a href="<?= base_url() . 'site_settings/get_translation'; ?>">Translation</a>
-                               </li>
-                           </ul>
+<!--                           <ul class="nav nav-tabs">-->
+<!--                               <li class="active">-->
+<!--                                   <a href="--><?//= base_url() . 'site_settings'; ?><!--">--><?//= lang('institution_details'); ?><!--</a>-->
+<!--                               </li>-->
+<!--                               <li class="">-->
+<!--                                   <a href="--><?//= base_url() . 'site_settings/site_logo'; ?><!--">Site Logo</a>-->
+<!--                               </li>-->
+<!--                               <li class="">-->
+<!--                                   <a href="--><?//= base_url() . 'site_settings/get_translation'; ?><!--">Translation</a>-->
+<!--                               </li>-->
+<!--                           </ul>-->
 
                            <div class="panel panel-default m-t">
                                <div class="panel-heading"><?= lang('institution_details'); ?></div>
@@ -36,7 +36,7 @@
                                                            'class'         => 'form-control',
                                                            'id'            => 'name_in_english',
                                                            'value'         => set_value('name_in_english', $institution->name_in_english),
-                                                           'placeholder'   => 'Name In English',
+                                                           'placeholder'   => lang('institution_english_name'),
                                                        ];
                                                        ?>
                                                        <?= form_input($data); ?>
@@ -52,7 +52,7 @@
                                                            'class'         => 'form-control',
                                                            'id'            => 'name_in_arabic',
                                                            'value'         => set_value('name_in_arabic', $institution->name_in_arabic),
-                                                           'placeholder'   => 'Name In Arabic',
+                                                           'placeholder'   => lang('institution_arabic_name'),
                                                        ];
                                                        ?>
                                                        <?= form_input($data); ?>
@@ -68,7 +68,7 @@
                                                            'class'         => 'form-control',
                                                            'id'            => 'phone',
                                                            'value'         => set_value('phone', $institution->phone),
-                                                           'placeholder'   => 'Phone Number',
+                                                           'placeholder'   => lang('phone_number'),
                                                        ];
                                                        ?>
                                                        <?= form_input($data); ?>
@@ -84,7 +84,7 @@
                                                            'class'         => 'form-control',
                                                            'id'            => 'mobile',
                                                            'value'         => set_value('mobile', $institution->mobile),
-                                                           'placeholder'   => 'Mobile Number',
+                                                           'placeholder'   => lang('mobile_number'),
                                                        ];
                                                        ?>
                                                        <?= form_input($data); ?>
@@ -100,7 +100,7 @@
                                                            'class'         => 'form-control',
                                                            'id'            => 'fax',
                                                            'value'         => set_value('fax', $institution->fax),
-                                                           'placeholder'   => 'Fax',
+                                                           'placeholder'   => lang('fax'),
                                                        ];
                                                        ?>
                                                        <?= form_input($data); ?>
@@ -117,7 +117,7 @@
                                                            'id'            => 'email',
                                                            'value'         => set_value('email', $institution->email),
                                                            'placeholder'   => 'Email Address',
-                                                           'type'           => 'email',
+                                                           'type'           => lang('email_address'),
                                                        ];
                                                        ?>
                                                        <?= form_input($data); ?>
@@ -133,7 +133,7 @@
                                                            'class'         => 'form-control',
                                                            'id'            => 'address_in_english',
                                                            'value'         => set_value('address_in_english', $institution->address_in_english),
-                                                           'placeholder'   => 'Address In English',
+                                                           'placeholder'   => lang('address_in_english'),
                                                        ];
                                                        ?>
                                                        <?= form_input($data); ?>
@@ -149,7 +149,7 @@
                                                            'class'         => 'form-control',
                                                            'id'            => 'address_in_arabic',
                                                            'value'         => set_value('address_in_arabic', $institution->address_in_arabic),
-                                                           'placeholder'   => 'Address In Arabic',
+                                                           'placeholder'   => lang('address_in_arabic'),
                                                        ];
                                                        ?>
                                                        <?= form_input($data); ?>
@@ -166,7 +166,7 @@
                                                            'class'         => 'form-control',
                                                            'id'            => 'licence_number',
                                                            'value'         => set_value('licence_number', $institution->licence_number),
-                                                           'placeholder'   => 'Licence Number',
+                                                           'placeholder'   => lang('licence_number'),
                                                        ];
                                                        ?>
                                                        <?= form_input($data); ?>
@@ -182,7 +182,7 @@
                                                            'class'         => 'form-control',
                                                            'id'            => 'commercial_licence',
                                                            'value'         => set_value('commercial_licence', $institution->commercial_licence),
-                                                           'placeholder'   => 'Commercial Licence',
+                                                           'placeholder'   => lang('commercial_licence'),
                                                        ];
                                                        ?>
                                                        <?= form_input($data); ?>
@@ -198,7 +198,7 @@
                                                            'class'         => 'form-control',
                                                            'id'            => 'website',
                                                            'value'         => set_value('website', $institution->website),
-                                                           'placeholder'   => 'Website',
+                                                           'placeholder'   => lang('website'),
                                                        ];
                                                        ?>
                                                        <?= form_input($data); ?>
