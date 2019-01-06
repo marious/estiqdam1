@@ -87,5 +87,6 @@ $lang['country'] = 'الدولة';
 $lang['suspend'] = 'حظر';
 $lang['activate'] = 'تنشيط';
 $lang['no_agent_added'] = 'لم يتم إضافة أى مكتب حتى الان';
+$lang['add_new_agent'] = 'إضافة مكتب جديد';
 
 
