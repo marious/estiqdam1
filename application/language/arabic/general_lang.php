@@ -10,6 +10,7 @@ $lang["settings"]  = "اﻻعدادات";
  $lang["customer_nationality"]  = "جنسيات العملاء";  
  $lang["customers"]  = "الزبائن";  
  $lang["agents"]  = "مكاتب الوكلاء";
+ $lang['add_new_agent'] = 'اضافة مكتب جديد';
  $lang["representatives"]  = "المندوبين";
  $lang["jobs"]  = "الوظائف";  
  $lang["order_types"]  = "رقم الطلب";  
