@@ -5,7 +5,7 @@
                <div class="page-header">
                    <h3 class="page-title"><?= lang('site_settings'); ?></h3>
                </div>
-               <!-- page header -->
+               <!-- page header - -->
                    <div class="page-content-wrapper m-t">
                        <div class="block-content">
 <!--                           <ul class="nav nav-tabs">-->
