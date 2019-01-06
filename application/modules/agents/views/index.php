@@ -3,17 +3,17 @@
         <div class="row">
             <div class="content">
                 <div class="page-header">
-                    <h3 class="page-title">Agents</h3>
+                    <h3 class="page-title"><?= lang('agents'); ?></h3>
                 </div>
                 <!-- page header -->
                 <div class="page-content-wrapper m-t">
                     <div class="block-content">
                         <ul class="nav nav-tabs">
                             <li class="active">
-                                <a href="#">Agents</a>
+                                <a href="#"><?= lang('agents') ?></a>
                             </li>
                             <li class="">
-                                <a href="<?= base_url() . 'agents/add'; ?>">Add New Agent</a>
+                                <a href="<?= base_url() . 'agents/add'; ?>"><?= lang('add_new_agent'); ?></a>
                             </li>
 
                         </ul>
