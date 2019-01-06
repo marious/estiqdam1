@@ -11,6 +11,7 @@ $lang["settings"]  = "Settings";
  $lang["customers"]  = "Customers";
 $lang['accountant'] = 'Accountant';
 $lang["agents"]  = "Agents";
+$lang['add_new_agent']  = 'Add New Agent';
  $lang["representatives"]  = "Representatives";
  $lang["jobs"]  = "Jobs";  
  $lang["order_types"]  = "Order Types";  
