@@ -8,15 +8,15 @@
                     <div class="block-content">
                         <ul class="nav nav-tabs">
                             <li class="">
-                                <a href="<?= base_url() . 'agent_worker'; ?>">Workers</a>
+                                <a href="<?= base_url() . 'agent_worker'; ?>"><?= lang('workers'); ?></a>
                             </li>
                             <li class="active">
-                                <a href="">Add New</a>
+                                <a href=""><?= lang('add_new'); ?></a>
                             </li>
 
                             <div class="col-md-12">
                                 <div class="panel panel-default m-t">
-                                    <div class="panel-heading"><span class="glyphicon glyphicon-user"></span> BIO DATA</div>
+                                    <div class="panel-heading"><span class="glyphicon glyphicon-user"></span> <?= lang('bio_data'); ?></div>
                                     <div class="panel-body">
                                         <div class="tab-content m-t">
 
@@ -26,7 +26,7 @@
 
                                                         <!-- Agent Office -->
                                                         <div class="form-group">
-                                                            <label for="agent_id" class="control-label col-md-3">Agent Office</label>
+                                                            <label for="agent_id" class="control-label col-md-3"><?= lang('agent_office'); ?></label>
                                                             <div class="col-md-3">
                                                                 <select name="agent_id" id="agent_id" class="form-control">
                                                                     <option value="">-- Select --</option>
@@ -40,7 +40,7 @@
 
                                                         <!-- job -->
                                                         <div class="form-group">
-                                                            <label for="job" class="control-label col-md-3">POSITION APPLIED</label>
+                                                            <label for="job" class="control-label col-md-3"><?= lang('position_applied'); ?></label>
                                                             <div class="col-md-3">
                                                                 <select class="form-control" name="job_id">
                                                                     <option value="">-- Select --</option>
@@ -54,7 +54,7 @@
 
                                                         <!-- MONTHLY SALARY -->
                                                         <div class="form-group">
-                                                            <label for="salary" class="control-label col-md-3">MONTHLY SALARY</label>
+                                                            <label for="salary" class="control-label col-md-3"><?= lang('monthly_salary'); ?></label>
                                                             <div class="col-md-3">
                                                                 <input type="number" class="form-control" name="salary" id="salary" value="<?=  set_value('salary', $worker->salary); ?>">
                                                             </div>
@@ -66,7 +66,7 @@
 
                                                         <!-- CONTRACT PERIOD -->
                                                         <div class="form-group">
-                                                            <label for="contract_period" class="control-label col-md-3">Contract Period</label>
+                                                            <label for="contract_period" class="control-label col-md-3"><?= lang('contract_period'); ?></label>
                                                             <div class="col-md-3">
                                                                 <input type="text" class="form-control" name="contract_period" value="2 Years" disabled>
                                                                 <?= form_error('contract_period'); ?>
@@ -75,7 +75,7 @@
 
                                                         <!-- NAME -->
                                                         <div class="form-group">
-                                                            <label for="name" class="control-label col-md-3">Name</label>
+                                                            <label for="name" class="control-label col-md-3"><?= lang('name'); ?></label>
                                                             <div class="col-md-7">
                                                                 <input type="text" name="name" id="name" class="form-control" value="<?= set_value('name', $worker->name) ?>">
                                                                 <?= form_error('name'); ?>
@@ -84,7 +84,7 @@
 
                                                         <!-- name in arabic -->
                                                         <div class="form-group">
-                                                            <label for="name_in_arabic" class="control-label col-md-3">Name In Arabic</label>
+                                                            <label for="name_in_arabic" class="control-label col-md-3"><?= lang('name_in_arabic'); ?></label>
                                                             <div class="col-md-7">
                                                                 <input type="text" class="form-control" name="name_in_arabic" id="name_in_arabic" value="<?= set_value('name_in_arabic', $worker->name_in_arabic); ?>">
                                                                 <?= form_error('name_in_arabic'); ?>
