@@ -29,3 +29,5 @@ $lang['cooking'] = 'Cooking';
 $lang['baby_sitting'] = 'Baby Sitting';
 $lang['old_care'] = 'Old Care';
 $lang['experience_period'] = 'Experience Period';
+$lang['workers'] = 'Workers';
+$lang['agent_office'] =  'Agent Office';
