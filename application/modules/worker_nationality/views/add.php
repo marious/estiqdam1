@@ -3,23 +3,23 @@
         <div class="row">
             <div class="content">
                 <div class="page-header">
-                    <h3 class="page-title">Worker Nationality / <?php echo (null == $id) ? 'Add New' : 'Edit'; ?> Worker Nationality</h3>
+                    <h3 class="page-title"><?= lang('worker_nationalities'); ?> / <?php echo (null == $id) ? lang('add_new') : lang('edit'); ?> </h3>
                 </div>
                 <!-- page header -->
                 <div class="page-content-wrapper m-t">
                     <div class="block-content">
                         <ul class="nav nav-tabs">
                             <li class="">
-                                <a href="<?= base_url() . 'worker_nationality'; ?>">Worker Nationality</a>
+                                <a href="<?= base_url() . 'worker_nationality'; ?>"><?= lang('worker_nationalities') ?></a>
                             </li>
                             <li class="<?php echo (null == $id) ? 'active' : ''; ?>">
-                                <a href="<?php echo (null == $id) ? '' : site_url('worker_nationality/add'); ?>">Add New</a>
+                                <a href="<?php echo (null == $id) ? '' : site_url('worker_nationality/add'); ?>"><?= lang('add_new'); ?></a>
                             </li>
 
                         </ul>
 
                         <div class="panel panel-default m-t">
-                            <div class="panel-heading"><span class="glyphicon glyphicon-eye-open"></span> Worker Nationality</div>
+                            <div class="panel-heading"><span class="glyphicon glyphicon-eye-open"></span> <?= lang('worker_nationalities') ?></div>
                             <div class="panel-body">
                                 <div class="tab-content m-t">
 
@@ -27,7 +27,7 @@
                                     <form action="" class="form-horizontal" method="post">
                                         <fieldset>
                                             <div class="form-group">
-                                                <label for="name_in_english" class="control-label col-md-3">Nationality In English</label>
+                                                <label for="name_in_english" class="control-label col-md-3"><?= lang('nationality_in_english') ?></label>
                                                 <div class="col-md-8">
                                                     <?php
                                                     $data = [
@@ -35,7 +35,7 @@
                                                         'class'         => 'form-control',
                                                         'id'            => 'nationality_in_english',
                                                         'value'         => set_value('nationality_in_english', $worker_nationality->nationality_in_english),
-                                                        'placeholder'   => 'Nationality In English',
+                                                        'placeholder'   => lang('nationality_in_english'),
                                                     ];
                                                     ?>
                                                     <?= form_input($data); ?>
@@ -44,7 +44,7 @@
                                             </div><!-- ./ form-group -->
 
                                             <div class="form-group">
-                                                <label for="name_in_arabic" class="control-label col-md-3">Nationality In Arabic</label>
+                                                <label for="name_in_arabic" class="control-label col-md-3"><?= lang('nationality_in_arabic'); ?></label>
                                                 <div class="col-md-8">
                                                     <?php
                                                     $data = [
@@ -52,7 +52,7 @@
                                                         'class'         => 'form-control',
                                                         'id'            => 'nationality_in_arabic',
                                                         'value'         => set_value('nationality_in_arabic', $worker_nationality->nationality_in_arabic),
-                                                        'placeholder'   => 'Nationality In Arabic',
+                                                        'placeholder'   => lang('nationality_in_arabic'),
                                                     ];
                                                     ?>
                                                     <?= form_input($data); ?>
@@ -62,7 +62,7 @@
 
 
                                             <div class="form-group">
-                                                <label for="country_in_arabic" class="control-label col-md-3">Country Name In Arabic</label>
+                                                <label for="country_in_arabic" class="control-label col-md-3"><?= lang('country_name_in_arabic') ?></label>
                                                 <div class="col-md-8">
                                                     <?php
                                                     $data = [
@@ -70,7 +70,7 @@
                                                         'class' => 'form-control',
                                                         'id' => 'country_name_in_arabic',
                                                         'value' => set_value('country_name_in_arabic', $worker_nationality->country_name_in_arabic),
-                                                        'placeholder' => 'Country Name in arabic',
+                                                        'placeholder' => lang('country_name_in_arabic'),
                                                     ];
                                                     echo form_input($data);
                                                     echo form_error('country_name_in_arabic');
@@ -79,7 +79,7 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <label for="country_name_in_english" class="control-label col-md-3">Country Name In English</label>
+                                                <label for="country_name_in_english" class="control-label col-md-3"><?= lang('country_name_in_english') ?></label>
                                                 <div class="col-md-8">
                                                     <?php
                                                     $data = [
@@ -87,7 +87,7 @@
                                                         'class' => 'form-control',
                                                         'id' => 'country_name_in_english',
                                                         'value' => set_value('country_name_in_english', $worker_nationality->country_name_in_english),
-                                                        'placeholder' => 'Country Name in Engish',
+                                                        'placeholder' => lang('country_name_in_english'),
                                                     ];
                                                     echo form_input($data);
                                                     echo form_error('country_name_in_english');
@@ -97,7 +97,7 @@
 
                                             <div class="box-footer">
                                                 <div class="col-md-6 col-md-push-3">
-                                                    <button type="submit" class="btn btn-primary btn-block">Save</button>
+                                                    <button type="submit" class="btn btn-primary btn-block"><?= lang('save'); ?></button>
                                                 </div>
                                             </div>
 
