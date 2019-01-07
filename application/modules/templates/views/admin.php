@@ -75,7 +75,7 @@ $caret = '<span class="caret"></span> ';
 <div class="navbar navbar-default">
     <div class="fluid-container">
         <div class="navbar-header">
-            <a href="<?= site_url('services_entry/all_contracts'); ?>" class="navbar-brand"><?= lang('peace_office'); ?></a>
+            <a href="<?= site_url('services_entry/all_contracts'); ?>" class="navbar-brand"><?= lang('prog_name'); ?></a>
             <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
