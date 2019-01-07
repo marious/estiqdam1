@@ -30,3 +30,5 @@ $lang['baby_sitting'] = 'الجلوس بالاطفال';
 $lang['old_care'] = 'العناية بالكبار';
 $lang['experience_period'] = 'مدة الخبرة';
 $lang['experience_country'] = 'دولة الخبرة';
+$lang['workers'] = 'العاملين';
+$lang['agent_office'] = 'المكتب الاجنبى';
