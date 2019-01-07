@@ -92,3 +92,13 @@ $lang['delete'] = 'حذف';
 $lang['name_in_arabic'] = 'الإسم بالانجليزى';
 $lang['name_in_english'] = 'الإسم بالعربى';
 $lang['add_new'] = 'إضافة جديد';
+$lang['departure_airports'] = 'مطارات الاقلاع';
+$lang['worker_nationalities'] = 'جنسيات العاملين';
+$lang['nationality_in_arabic'] = 'الحنسية بالعربى';
+$lang['nationality_in_english'] = 'الجنسية بالإنجليزى';
+$lang['country_name_in_english'] = 'إسم الدولة بالعربية';
+$lang['country_name_in_arabic'] = 'إسم الدولة بالإنجليزية';
+$lang['customer_nationalities'] = 'جنسيات العملاء';
+$lang['no_customer_nationality'] = 'لم يتم اضافة بيانات';
+$lang['no_data'] = 'لم يتم اضافة بيانات';
+
