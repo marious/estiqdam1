@@ -123,7 +123,7 @@ $caret = '<span class="caret"></span> ';
                         <li><a href="<?= base_url('representatives') ?>"><?= lang('representatives'); ?></a></li>
                         <li><a href="<?= base_url('jobs') ?>"><?= lang('jobs'); ?></a></li>
                         <li><a href="<?= base_url('order_types') ?>"><?= lang('order_types'); ?></a></li>
-                        <li><a href="<?= base_url('credit_card') ?>"><?= lang('credit_card'); ?></a></li>
+<!--                        <li><a href="--><?//= base_url('credit_card') ?><!--">--><?//= lang('credit_card'); ?><!--</a></li>-->
                         <li><a href="<?= base_url('visa_issued_city') ?>"><?= lang('visa_issued_city'); ?></a></li>
                         <li><a href="<?= base_url('style_settings') ?>"><?= lang('style_settings'); ?></a></li>
 <!--                        <li><a href="--><?//= site_url('site_admin/contact_messages'); ?><!--">--><?//= lang('contact_messages'); ?><!--</a></li>-->
