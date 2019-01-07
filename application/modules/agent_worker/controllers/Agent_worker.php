@@ -596,6 +596,7 @@ class Agent_worker extends MY_Controller
     public function add_worker($id = null)
     {
         $this->lang->load('services_entry');
+        $this->lang->load('worker_cv');
         $this->load->module('religions');
         $this->load->module('staff');
         $this->load->module('jobs');
