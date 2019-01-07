@@ -49,73 +49,9 @@
   <body direction="rtl">
 
   <div class="header navbar navbar-default">
-      <div class="container"> <a class="navbar-brand pull-right" href="<?= site_url(); ?>"><img src="<?= site_url('assets/img/peace_logo.png'); ?>" class="site-logo"></a>
+      <div class="container">
+          <h1>برنامج الاستقدام الشامل</h1>
           <div class="menu pull-left"> <a class="toggleMenu" href="#"><img src="<?= site_url('assets/img/nav_icon.png'); ?>" alt="" /> </a>
-              <ul class="nav" id="nav">
-                  <li><a href="<?= site_url('home'); ?>"><?= lang('home'); ?></a></li>
-
-                  <li class="dropdown">
-                      <a href="#" class="dropdown-toggle parent" data-toggle="dropdown" role="button" aria-expanded="false">
-                          خدمات الموقع <span class="caret"></span>
-                      </a>
-                      <ul class="dropdown-menu" role="menu">
-                          <li><a href="<?= site_url('home/recruitment_paid'); ?>">أسعار مكاتب الاستقدام</a></li>
-                          <li><a href="<?= site_url('home/page/إصدار-التأشيرة'); ?>">إصدار التاشيرة</a></li>
-                          <li><a href="<?= site_url('home/page/وثائق-الاستقدام'); ?>">وثائق الاستقدام</a></li>
-                          <li><a href="<?= site_url('home/page/قوانين-الاستقدام'); ?>">قوانين الاستقدام</a></li>
-                          <li><a href="<?= site_url('home/page/مكاتب-الاستقدام-بجدة'); ?>">مكاتب الاستقدام بجدة</a></li>
-                          <li><a href="<?= site_url('home/page/مكاتب-الاستقدام-بالرياض'); ?>">مكاتب الاستقدام بالرياض</a></li>
-                          <li><a href="<?= site_url('home/page/مكاتب-استقدام-القصيم'); ?>">مكاتب استقدام القصيم</a></li>
-                          <li><a href="<?= site_url('home/page/مكاتب-استقدام-حائل'); ?>">مكاتب استقدام حائل</a></li>
-                      </ul>
-                  </li>
-
-                  <li><a href="<?= site_url('home/contact'); ?>"><?= lang('contact_us'); ?></a></li>
-                  <li><a href="<?= site_url('home/tanazul'); ?>">للتنازل</a></li>
-
-
-                  <!-- Authentication Links -->
-                  <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true): ?>
-                      <li>
-                          <a href="<?= site_url('home/customer_favorite_list') ?>">
-                              قائمة التفضيلات
-                          </a>
-                      </li>
-                      <li>
-                          <a href="<?= site_url('home/demand_list'); ?>">قائمة الطلبات</a>
-                      </li>
-                      <li class="dropdown">
-                          <a href="#" class="dropdown-toggle parent" data-toggle="dropdown" role="button" aria-expanded="false">
-                              <?= $_SESSION['username'] ?> <span class="caret"></span>
-                          </a>
-
-                          <ul class="dropdown-menu" role="menu">
-                              <li>
-                                  <a href="<?= site_url('home/change_password'); ?>">تغيير الرقم السرى</a>
-                              </li>
-
-                              <li>
-                                  <a href="#" onclick="event.preventDefault();
-                                     document.getElementById('logout-form').submit();" class="parent">
-                                      تسجيل الخروج
-                                  </a>
-
-                                  <form id="logout-form" action="<?= site_url('site_security/logout_customer'); ?>" method="POST" style="display: none;">
-                                  </form>
-                              </li>
-                          </ul>
-                      </li>
-                  <?php else: ?>
-                  <li><a href="<?= site_url('home/login'); ?>"><?= lang('register'); ?></a></li>
-<!--                  <li><a href="http://buildingsite.dev/register">تسجيل عضوية جديدة</a></li>-->
-                  <?php endif; ?>
-                  <?php if (isset($_SESSION['public_site_language']) && $_SESSION['public_site_language'] == 'english'): ?>
-                      <li><a href="<?= site_url('home/lang/arabic') ?>">AR</a></li>
-                  <?php else: ?>
-                      <li><a href="<?= site_url('home/lang/english') ?>">EN</a></li>
-                  <?php endif; ?>
-                  <div class="clear"></div>
-              </ul>
           </div>
       </div>
   </div>
@@ -138,17 +74,17 @@
 
 
 
-  <div class="footer">
-      <div class="footer_bottom">
-          <div class="follow-us">
-              <a class="fa fa-facebook social-icon" href="https://www.facebook.com/profile.php?id=100009223012865" title="Facebook Page" target="_blank"></a>
-              <a class="fa fa-twitter social-icon" href="https://twitter.com/Upeacet" target="_blank" title="Twitter Page"></a>
-              <a class="fa fa-youtube social-icon" href="https://www.youtube.com/channel/UCAd74izRxuMkA5UsTEQ0xnA?view_as=subscriber" title="Youtube Page" target="_blank"></a> </div>
-          <div class="copy">
-              <p>Copyright &copy; <?= date('Y'); ?> Peace For Recruitment</p>
-          </div>
-      </div>
-  </div>
+<!--  <div class="footer">-->
+<!--      <div class="footer_bottom">-->
+<!--          <div class="follow-us">-->
+<!--              <a class="fa fa-facebook social-icon" href="https://www.facebook.com/profile.php?id=100009223012865" title="Facebook Page" target="_blank"></a>-->
+<!--              <a class="fa fa-twitter social-icon" href="https://twitter.com/Upeacet" target="_blank" title="Twitter Page"></a>-->
+<!--              <a class="fa fa-youtube social-icon" href="https://www.youtube.com/channel/UCAd74izRxuMkA5UsTEQ0xnA?view_as=subscriber" title="Youtube Page" target="_blank"></a> </div>-->
+<!--          <div class="copy">-->
+<!--              <p>Copyright &copy; --><?//= date('Y'); ?><!-- Peace For Recruitment</p>-->
+<!--          </div>-->
+<!--      </div>-->
+<!--  </div>-->
 
 
 
