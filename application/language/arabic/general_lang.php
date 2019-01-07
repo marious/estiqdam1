@@ -103,3 +103,4 @@ $lang['no_customer_nationality'] = 'لم يتم اضافة بيانات';
 $lang['no_data'] = 'لم يتم اضافة بيانات';
 $lang['worker_documents'] = 'وثائق العاملين';
 $lang['transfer_types'] = 'أنواع التحويلات';
+$lang['prog_name'] = 'برنامج الاستقدام الشامل';
