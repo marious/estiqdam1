@@ -101,4 +101,4 @@ $lang['country_name_in_arabic'] = 'إسم الدولة بالإنجليزية';
 $lang['customer_nationalities'] = 'جنسيات العملاء';
 $lang['no_customer_nationality'] = 'لم يتم اضافة بيانات';
 $lang['no_data'] = 'لم يتم اضافة بيانات';
-
+$lang['worker_documents'] = 'وثائق العاملين';
