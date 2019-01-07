@@ -100,3 +100,4 @@ $lang['customer_nationalities'] = 'Customer Nationalities';
 $lang['no_customer_nationality'] = 'There is no customer Nationality added Yet';
 $lang['no_data'] = 'No Data Entered Yet !';
 $lang['worker_documents'] = 'Worker Documents';
+$lang['transfer_types'] = 'Transfer Types';
