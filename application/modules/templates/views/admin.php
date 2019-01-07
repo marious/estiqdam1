@@ -146,7 +146,7 @@ $caret = '<span class="caret"></span> ';
                          <li><a href="<?= site_url('agent_worker/vfs'); ?>"><?= lang('vfs_workers'); ?></a></li>
                          <li><a href="<?= site_url('agent_worker/new_workers'); ?>"><?= lang('new_workers'); ?></a></li>
                          <li><a href="<?= site_url('agent_worker/refuse_workers'); ?>"><?= lang('refuse_workers'); ?></a></li>
-                         <li><a href="<?= site_url('agent_worker/worker_documents'); ?>">Worker Documents</a></li>
+                         <li><a href="<?= site_url('agent_worker/worker_documents'); ?>"><?= lang('worker_documents'); ?></a></li>
                          <li><a href="<?= site_url('agent_worker/add_worker') ?>"><?= lang('add_worker'); ?></a></li>
                      </ul>
                  </li>
