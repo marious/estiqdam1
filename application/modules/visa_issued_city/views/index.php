@@ -3,23 +3,23 @@
         <div class="row">
             <div class="content">
                 <div class="page-header">
-                    <h3 class="page-title">Visa Issued City</h3>
+                    <h3 class="page-title"><?= lang('visa_issued_city'); ?></h3>
                 </div>
                 <!-- page header -->
                 <div class="page-content-wrapper m-t">
                     <div class="block-content">
                         <ul class="nav nav-tabs">
                             <li class="active">
-                                <a href="#">Visa Issued City</a>
+                                <a href="#"><?= lang('visa_issued_city'); ?></a>
                             </li>
                             <li class="">
-                                <a href="<?= base_url() . 'visa_issued_city/add'; ?>">Add New</a>
+                                <a href="<?= base_url() . 'visa_issued_city/add'; ?>"><?= lang('add_new'); ?></a>
                             </li>
 
                         </ul>
 
                         <div class="panel panel-default m-t">
-                            <div class="panel-heading"><span class="glyphicon glyphicon-eye-open"></span> Visa Issued City</div>
+                            <div class="panel-heading"><span class="glyphicon glyphicon-eye-open"></span> <?= lang('visa_issued_city'); ?></div>
                             <div class="panel-body">
                                 <div class="tab-content m-t">
                                     <?php $this->load->view('includes/flash_messages'); ?>
@@ -27,8 +27,8 @@
                                         <table class="table table-striped table-bordered">
                                             <tr>
                                                 <th>#</th>
-                                                <th>City</th>
-                                                <th>Action</th>
+                                                <th><?= lang('city'); ?></th>
+                                                <th><?= lang('action'); ?></th>
                                             </tr>
                                             <?php $i = 1; ?>
                                             <?php foreach ($cities as $city): ?>
@@ -38,12 +38,12 @@
                                                     <td>
                                                         <a href="<?= site_url('visa_issued_city/add/' . $city->id) ?>" class="btn btn-primary"
                                                            data-toggle="tooltip"
-                                                           title="Edit">
+                                                           title="<?= lang('edit'); ?>">
                                                             <span class="glyphicon glyphicon-edit"></span>
                                                         </a>
 
                                                         <a href="<?= site_url('visa_issued_city/delete/' . $city->id); ?>" class="btn btn-danger delete-btn" data-toggle="tooltip"
-                                                           title="Delete">
+                                                           title="<?= lang('delete'); ?>">
                                                             <span class="glyphicon glyphicon-trash"></span>
                                                         </a>
                                                     </td>
@@ -52,7 +52,7 @@
                                             <?php endforeach; ?>
                                         </table>
                                     <?php else: ?>
-                                        <h2>There is no Visa Issued City added Yet</h2>
+                                        <h2><?= lang('no_data'); ?></h2>
                                     <?php endif; ?>
                                 </div>
                             </div>
