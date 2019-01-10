@@ -6,7 +6,7 @@ class Home extends MX_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->data['title'] = 'مكتب السلام للاستقدام استقدام خادمة عاملة منزلية';
+        $this->data['title'] = 'برنامج الاستقدام الشامل';
         $this->load->library('config');
         $this->load->module('templates');
 
@@ -57,18 +57,10 @@ class Home extends MX_Controller
 
     public function index()
     {
-        // Get agent worker not accepted
-        $workers = $this->Site_model->get_not_accepted_agent_workers();
-        $accepted_workers = false;
-        if (file_exists(FCPATH . '/workers.json'))
-        {
-            $accepted_workers = json_decode(file_get_contents(FCPATH . '/workers.json'));
-        }
-        $this->data['workers'] = $workers;
-        $this->data['accepted_workers'] = $accepted_workers;
 
-        $this->publicTemplate('all_jobs', $this->data);
+        $this->publicTemplate('index', $this->data);
     }
+
 
 
     public function page($page_title = false)
