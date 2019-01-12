@@ -115,7 +115,7 @@ class Services_entry extends MY_Controller
                 $data_service_finance['contract_number']        = $contract_number;
                 $data_service_finance['recruitment_cost']       = $this->input->post('recruitment_cost');
                 $data_service_finance['prepaid_money']          = $this->input->post('prepaid_money');
-                $data_service_finance['credit_card_id']         = $this->input->post('credit_card_id');
+                $data_service_finance['credit_card_id']         = 1;
                 $data_service_finance['remains_money']          = ($data_service_finance['recruitment_cost'] - $data_service_finance['prepaid_money']);
 
                 $this->Service_model->save_service_finance($data_service_finance);
