@@ -117,7 +117,7 @@ class MY_Controller extends MX_Controller {
 
 	protected function adminSecurity()
 	{
-		$this->load->module('Admin');
+		$this->load->module('admin');
 		$this->admin->_make_sure_is_admin();
 	}
 
