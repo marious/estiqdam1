@@ -124,24 +124,6 @@
                         </div><!-- ./col-md-3 -->
 
 
-                        <div class="col-md-3">
-                            <div class="form-group entry-style">
-                                <label for="credit_card_id" class="control-label col-md-6"><?= lang('credit_card') ?></label>
-                                <div class="col-md-6">
-                                    <?php
-                                    $data = [
-                                        'name'          => 'credit_card_id',
-                                        'class'         => 'form-control',
-                                        'id'            => 'credit_card_id',
-                                    ];
-                                    ?>
-                                    <?php
-                                    echo form_dropdown('credit_card_id', $credit_cards, set_value('credit_card'), $data);
-                                    ?>
-                                    <?php echo form_error('credit_card_id'); ?>
-                                </div>
-                            </div><!-- ./ form-group -->
-                        </div><!-- ./col-md-3 -->
 
                         <!-- ./representative -->
                         <div class="col-md-3">
