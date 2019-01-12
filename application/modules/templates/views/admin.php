@@ -188,9 +188,9 @@ $caret = '<span class="caret"></span> ';
                                 <li>
                                     <a href="<?= site_url('transfer_types'); ?>"><?= lang('transfer_types') ?></a>
                                 </li>
-                                <li>
-                                    <a href="<?= site_url('acc_admin') ?>"><?= lang('accountant'); ?></a>
-                                </li>
+<!--                                <li>-->
+<!--                                    <a href="--><?//= site_url('acc_admin') ?><!--">--><?//= lang('accountant'); ?><!--</a>-->
+<!--                                </li>-->
                             </ul>
                         </a>
                     </li>
