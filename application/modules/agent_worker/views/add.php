@@ -325,8 +325,8 @@
 
                                                     <!-- DATE OF BIRTH -->
                                                     <div class="form-group">
-                                                        <label for="date_of_birth" class="control-label col-md-4"><?= lang('date_of_birth'); ?></label>
-                                                        <div class="col-md-8 col-md-push-1">
+                                                        <label for="date_of_birth" class="control-label col-md-5"><?= lang('date_of_birth'); ?></label>
+                                                        <div class="col-md-5">
 
                                                                 <?php
                                                                 $date_of_birth = date('d/m/Y', strtotime(str_replace('/', '-', $worker->date_of_birth)));
@@ -368,7 +368,7 @@
 
                                                     <!-- date of issue -->
                                                     <div class="form-group">
-                                                        <label for="date_of_issue" class="control-label col-md-4">
+                                                        <label for="date_of_issue" class="control-label col-md-4 col-md-push-1">
                                                             <?= lang('date_of_issue'); ?>
                                                         </label>
                                                         <div class="col-md-8 col-md-push-1">
@@ -397,7 +397,7 @@
                                                     $date_of_expiry = date('d/m/Y', strtotime(str_replace('/', '-', $worker->date_of_expiry)));
                                                     ?>
                                                     <div class="form-group">
-                                                        <label for="date_of_expiry" class="control-label col-md-4">Date Of Expiry</label>
+                                                        <label for="date_of_expiry" class="control-label col-md-4 col-md-push-1"><?= lang('date_of_expiry'); ?></label>
                                                         <div class="col-md-8 col-md-push-1">
                                                             <input type="text" name="date_of_expiry" class="combodate form-control"  data-min-year="<?= date('Y'); ?>" data-format="DD/MM/YYYY" data-template="D MMMM YYYY"
                                                                    value="<?= set_value('date_of_expiry', $date_of_expiry); ?>" data-max-year="<?= date('Y') + 15; ?>">
@@ -407,7 +407,7 @@
 
                                                     <!-- departure airport -->
                                                     <div class="form-group">
-                                                        <label for="departure_airport" class="control-label col-md-5">Departure Airport</label>
+                                                        <label for="departure_airport" class="control-label col-md-5"><?= lang('departure_airport') ?></label>
                                                         <div class="col-md-7">
                                                             <select name="departure_airport" id="departure_airport" class="form-control">
                                                                 <option value="">-- Select --</option>
@@ -442,29 +442,29 @@
                                                             <div>
                                                                 <input type="checkbox" name="english_language" value="1" id="english_language"
                                                                     <?php if ($worker->english_language == '1') echo 'checked'; ?>>
-                                                                <label for="english_language">ENGLISH LANGUAGE</label>
+                                                                <label for="english_language"><?= lang('english_language'); ?></label>
                                                             </div>
                                                             <div>
                                                                 <input type="checkbox" name="arabic_language" value="1" id="arabic_language" <?php if ($worker->arabic_language == '1') echo 'checked'; ?>>
-                                                                <label for="arabic_language">ARABIC LANGUAGE</label>
+                                                                <label for="arabic_language"><?= lang('arabic_language'); ?></label>
                                                             </div>
                                                             <div><input type="checkbox" name="cleaning" value="1" id="cleaning" <?php if ($worker->cleaning == '1') echo 'checked'; ?>>
-                                                                <label for="cleaning">CLEANING</label></div>
+                                                                <label for="cleaning"><?= lang('cleaning') ?></label></div>
                                                             <div><input type="checkbox" name="ironing" value="1" id="ironing" <?php if ($worker->ironing == '1') echo 'checked'; ?>>
-                                                                <label for="ironing">IRONING</label></div>
+                                                                <label for="ironing"><?= lang('ironing') ?></label></div>
                                                             <div><input type="checkbox" name="cooking" value="1" id="cooking" <?php if ($worker->cooking == '1') echo 'checked'; ?>>
-                                                                <label for="cooking">COOKING</label></div>
+                                                                <label for="cooking"><?= lang('cooking') ?></label></div>
                                                             <div><input type="checkbox" name="baby_sitting" value="1" id="baby_sitting" <?php if ($worker->baby_sitting == '1') echo 'checked'; ?>>
-                                                                <label for="baby_sitting">BABY SITTING</label></div>
+                                                                <label for="baby_sitting"><?= lang('baby_sitting') ?></label></div>
 
 
                                                             <div> <input type="checkbox" name="old_care" value="1" id="old_care" <?php if ($worker->old_care == '1') echo 'checked'; ?>>
-                                                                <label for="old_care">OLD CARE</label></div>
+                                                                <label for="old_care"><?= lang('old_care'); ?></label></div>
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="experience" class="control-label col-md-6">Experience Period</label>
+                                                        <label for="experience" class="control-label col-md-6"><?= lang('experience_period') ?></label>
                                                         <div class="col-md-5">
                                                             <input type="text" name="experience_period" id="experience" class="form-control" value="<?= set_value('experience_period', $worker->experience_period); ?>">
                                                         </div>
@@ -472,7 +472,7 @@
 
                                                     <!-- experience country -->
                                                     <div class="form-group">
-                                                        <label for="experience_country" class="control-label col-md-6">Experience Country
+                                                        <label for="experience_country" class="control-label col-md-6"><?= lang('experience_country') ?>
                                                         </label>
                                                         <div class="col-md-5">
                                                             <input type="text" name="experience_country" id="experience_country" class="form-control" value="<?= set_value('experience_country', $worker->experience_country) ?>">
@@ -480,7 +480,7 @@
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="memo" class="control-label col-md-6">MEMO</label>
+                                                        <label for="memo" class="control-label col-md-6"><?= lang('memo'); ?></label>
                                                         <div class="col-md-6">
                                                             <textarea name="memo" id="memo" cols="30" rows="10"
                                                                       class="form-control"><?= set_value('memo', $worker->memo); ?></textarea>
