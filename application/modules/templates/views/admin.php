@@ -137,7 +137,7 @@ $caret = '<span class="caret"></span> ';
                 <li>
                     <a href="<?= site_url('services_entry'); ?>" class="dropdown-toggle"><?= lang('services'); ?></a>
                 </li>
-                    <li><a href="<?= base_url('customers') ?>"><?= lang('customers'); ?></a></li>
+<!--                    <li><a href="--><?//= base_url('customers') ?><!--">--><?//= lang('customers'); ?><!--</a></li>-->
                  <li class="dropdown">
                      <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                          <?php if ($dir == 'left') echo $caret; ?>  <?= lang('agent_workers') ?> <?php if ($dir != 'left') echo $caret; ?>
