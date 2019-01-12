@@ -27,7 +27,7 @@
             <link rel="stylesheet" href="<?= site_url($css_file); ?>">
         <?php endforeach; ?>
     <?php endif; ?>
-    <?php if ($_SESSION['language'] == 'english'): ?>
+    <?php if (isset($_SESSION['language']) && $_SESSION['language'] == 'english'): ?>
         <style>
             .entry-form label {
                 padding-right: 0 !important;
@@ -43,14 +43,14 @@
 
         </style>
     <?php endif; ?>
-    <?php if ($_SESSION['language'] == 'arabic'): ?>
+    <?php if (isset($_SESSION['language']) && $_SESSION['language'] == 'arabic'): ?>
         <style>
             .btn-group .dropdown-menu {
                 left: 0 !important;;
                 right: auto !important;
             }
         </style>
-    <?php elseif ($_SESSION['language'] == 'english'): ?>
+    <?php elseif (isset($_SESSION['language']) && $_SESSION['language'] == 'english'): ?>
         <style>
             .btn-group .dropdown-menu {
                 right: 0 !important;
@@ -109,7 +109,9 @@ $caret = '<span class="caret"></span> ';
                     <ul class="dropdown-menu">
                         <li><a href="<?= base_url('site_settings') ?>"><?= lang('site_settings'); ?></a></li>
 <!--                        <li><a href="--><?//= base_url('site_settings/tax'); ?><!--">--><?//= lang('tax_amount'); ?><!--</a></li>-->
+                        <?php if ($_SESSION['username'] != 'demo'): ?>
                         <li><a href="<?= base_url('staff') ?>"><?= lang('staff'); ?></a></li>
+                        <?php endif; ?>
                         <li><a href="<?= base_url('agents'); ?>"><?= lang('agents') ?></a></li>
 <!--                        <li><a href="--><?//= base_url('customers') ?><!--">--><?//= lang('customers'); ?><!--</a></li>-->
                         <li><a href="<?= base_url('arrival_airports') ?>"><?= lang('arrival_airports'); ?></a></li>
@@ -204,7 +206,7 @@ $caret = '<span class="caret"></span> ';
                         <span class="glyphicon glyphicon-user"></span> <?= $_SESSION['username'] ?> <?php if ($dir != 'left') {echo $caret;} ?>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="<?= site_url('site_security/logout'); ?>"><?= lang('logout'); ?></a></li>
+                        <li><a href="<?= site_url('admin/logout'); ?>"><?= lang('logout'); ?></a></li>
                     </ul>
                 </li>
 

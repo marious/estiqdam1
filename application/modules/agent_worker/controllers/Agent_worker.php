@@ -8,7 +8,7 @@ class Agent_worker extends MY_Controller
         parent::__construct();
         if (! isset($_SESSION['logged_in']) && $_SESSION['logged_in'] != true && !in_array($_SESSION['access_id'], array(4)))
         {
-            redirect('site_security/login');
+            redirect('admin/login');
         }
         $this->load->model('Agent_worker_model');
     }

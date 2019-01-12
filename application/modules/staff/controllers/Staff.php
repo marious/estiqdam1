@@ -70,13 +70,13 @@ class Staff extends MY_Controller
         if ($this->form_validation->run($this) == true)
         {
             $data = $this->Staff_model->array_from_post([
-                'username', 'access_id',
+                'username', 'access_id', 'user_language',
             ]);
             if (!$id)
             {
-                $data['password'] = $this->site_security->_hash_string($this->input->post('password'));
+                $data['password'] = $this->admin->_hash_string($this->input->post('password'));
             } else if($this->input->post('password') != '') {
-                $data['password'] = $this->site_security->_hash_string($this->input->post('password'));
+                $data['password'] = $this->admin->_hash_string($this->input->post('password'));
             }
             $this->Staff_model->save($data, $id);
             $message = ($id == null) ? 'New Staff User Added Successfully' : 'Staff User Updated Successfully';

@@ -38,16 +38,16 @@
                                                     <?php
                                                     switch ($user->access_id) {
                                                         case 4:
-                                                            $link = 'staff/add_user_agent/' . $user->id;
+                                                            $link = 'staff/add_user_staff/' . $user->id;
                                                             break;
                                                         case 1:
                                                             $link = 'staff/add_user_staff/' . $user->id;
                                                             break;
                                                         case 2:
-                                                            $link = 'staff/add_user_admin/' . $user->id;
+                                                            $link = 'staff/add_user_staff/' . $user->id;
                                                             break;
                                                         case 3:
-                                                            $link = 'staff/add_user_customer/' . $user->id;
+                                                            $link = 'staff/add_user_staff/' . $user->id;
                                                             break;
                                                     }
                                                     ?>

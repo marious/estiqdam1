@@ -483,7 +483,7 @@ class Home extends MX_Controller
 
             if ($this->form_validation->run($this) == true)
             {
-                $this->load->module('site_security');
+                $this->load->module('Admin');
                 $password = $this->site_security->_hash_string($this->input->post('password'));
                 $this->db->where('id', $_SESSION['id']);
                 $this->db->set(['password' => $password]);

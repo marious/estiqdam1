@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Site_security extends MY_Controller {
+class Admin extends MY_Controller {
 
 
 	public function __construct()
@@ -48,6 +48,10 @@ class Site_security extends MY_Controller {
         }
 
 
+
+        $this->data['username'] = isset($_GET['user']) && $_GET['user'] == 'demo' ? 'demo' : '';
+        $this->data['password'] = isset($_GET['user']) && $_GET['user'] == 'demo' ? 'password' : '';
+
 //		$this->load->library('cicaptcha');
 //		$this->data['cicaptcha_html'] = $this->cicaptcha->show();
 //		$this->data['cicaptcha_html'];
@@ -77,7 +81,7 @@ class Site_security extends MY_Controller {
 //			  // $this->session->set_userdata(array(
 //			  //   '_POST_DATA' => $_POST,
 //			  // ));
-//			  redirect("site_security/login", 301 );
+//			  redirect("admin/login", 301 );
 //			}
 //
 			$user = $this->Staff_model->do_login($this->input->post('username'), $this->input->post('password'));
@@ -88,7 +92,7 @@ class Site_security extends MY_Controller {
 			}
 			
 			$this->session->set_flashdata('error_message', 'Invalid Username or password');
-			redirect('site_security/login', 301);
+			redirect('admin/login', 301);
 
 		}
 
@@ -132,7 +136,7 @@ class Site_security extends MY_Controller {
 	{
 		if (! isset($_SESSION['logged_in']) && $_SESSION['logged_in'] != true && !in_array($_SESSION['access_id'], array(1,2)))
 		{
-			redirect('site_security/login');
+			redirect('admin/login');
 		}
 
 		// $is_admin = TRUE;

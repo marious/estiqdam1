@@ -1,4 +1,4 @@
-<form action="<?= site_url('staff/add_user_staff'); ?>" class="form-horizontal" method="post">
+<form action="" class="form-horizontal" method="post">
     <fieldset>
         <?php //if (null != $id): ?>
 <!--            <p class="warngin-msg password-warn">! Note You can keep password fields empty-->
@@ -28,20 +28,20 @@
             <label for="user_language" class="control-label col-md-3"><?= lang('default_language'); ?></label>
             <div class="col-md-5">
                 <select name="user_language" id="user_language" class="form-control">
-                    <option value="ar">Arabic</option>
-                    <option value="en">English</option>
+                    <option value>-- <?= lang('select'); ?> --</option>
+                    <option value="ar" <?php if ($staff->user_language == 'ar') echo 'selected';?>>Arabic</option>
+                    <option value="en" <?php if ($staff->user_language == 'en') echo 'selected';?>>English</option>
                 </select>
             </div>
         </div><!-- ./ form-group -->
-
         <!-- ./ user type -->
         <div class="form-group">
             <label for="access_id" class="control-label col-md-3"><?= lang('user_type') ?></label>
             <div class="col-md-5">
                 <select name="access_id" id="access_id" class="form-control">
                     <option value>-- <?= lang('select'); ?> --</option>
-                    <option value="1">Staff</option>
-                    <option value="2">Admin</option>
+                    <option value="1" <?php if ($staff->access_id == 1) echo 'selected'; ?>>Staff</option>
+                    <option value="2" <?php if ($staff->access_id == 2) echo 'selected'; ?>>Admin</option>
                 </select>
                 <?php echo form_error('access_id'); ?>
             </div>

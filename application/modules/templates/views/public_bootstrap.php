@@ -50,7 +50,7 @@
 
   <div class="header navbar navbar-default">
       <div class="container">
-          <h1>برنامج الاستقدام الشامل</h1>
+          <h1 style="color: #C54747; text-align: center; font-size: 40px;">برنامج الاستقدام الشامل <a style="color: #fff;" class="btn btn-danger btn-lg" href="<?= site_url('admin/login?user=demo') ?>">تجربة البرنامج</a></h1>
           <div class="menu pull-left"> <a class="toggleMenu" href="#"><img src="<?= site_url('assets/img/nav_icon.png'); ?>" alt="" /> </a>
           </div>
       </div>

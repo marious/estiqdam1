@@ -2,9 +2,7 @@
               scroll; padding-bottom: 100px; width: 100%; height: auto; margin: 0 auto;">
     <div class="container">
         <div class="banner-info">
-            <h1 style="color: #C54747; font-size: 100px; transform: rotate(-20deg); margin-top: 80px;">
-                برنامج الاستقدام الشامل
-            </h1>
+
             <div class="row">
                 <div class="search-menu-page">
 
@@ -62,7 +60,7 @@
             <div class="row">
                 <div class="col-md-8">
                     <div class="block-heading-two">
-                        <h2>للطلب والاستفسار تواصل معنا على الارقام التالية</h2>
+                        <h2>   للطلب والاستفسار تواصل معنا على الارقام التالية :  0555169344 </h2>
                     </div>
 
             </div>

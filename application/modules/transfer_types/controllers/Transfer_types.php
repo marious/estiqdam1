@@ -7,7 +7,7 @@ class Transfer_types extends MY_Controller
         parent::__construct();
         $this->load->model('Transfer_type_model');
         $this->adminSecurity();
-        modules::run('site_security/_make_sure_is_admin');
+        modules::run('admin/_make_sure_is_admin');
     }
 
     public function index()
