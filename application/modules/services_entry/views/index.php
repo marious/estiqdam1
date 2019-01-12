@@ -26,9 +26,9 @@
                                 <li class="">
                                     <a href="<?= base_url() . 'services_entry/add'; ?>"><?= lang('add_new_service'); ?></a>
                                 </li>
-                                <li>
-                                    <a href="<?= site_url('services_entry/customer_worker_contract') ?>">Auto Contract</a>
-                                </li>
+<!--                                <li>-->
+<!--                                    <a href="--><?//= site_url('services_entry/customer_worker_contract') ?><!--">Auto Contract</a>-->
+<!--                                </li>-->
                                 <li>
                                     <a href="<?= site_url('services_entry/advanced_search'); ?>">
                                         <?= lang('advanced_search'); ?>
