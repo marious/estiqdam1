@@ -38,6 +38,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
+                                            <?php if ($contracts && count($contracts)): ?>
                                             <?php foreach ($contracts as $contract): ?>
                                                 <tr>
                                                     <td><?= $contract->contract_number; ?></td>
@@ -48,6 +49,7 @@
 
                                                 </tr>
                                                 <?php endforeach; ?>
+                                            <?php endif; ?>
                                             </tbody>
                                         </table>
                                         <?php  endif; ?>
