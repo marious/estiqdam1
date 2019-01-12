@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MY_Controller extends MX_Controller {
 
-	const ADMIN_NOTALLOWED_REDIRECT = 'site_security/not_allowed';
+	const ADMIN_NOTALLOWED_REDIRECT = 'admin/not_allowed';
 
 	public $data = [];
 
@@ -18,6 +18,7 @@ class MY_Controller extends MX_Controller {
             {
             $this->data['view_module'] = $this->uri->segment(1);
         }
+
         if (!isset($_SESSION['language']) || empty($_SESSION['language']))
         {
             if (isset($_SESSION['user_language']) && !empty($_SESSION['user_language'])) {
@@ -116,8 +117,8 @@ class MY_Controller extends MX_Controller {
 
 	protected function adminSecurity()
 	{
-		$this->load->module('site_security');
-		$this->site_security->_make_sure_is_admin();
+		$this->load->module('Admin');
+		$this->admin->_make_sure_is_admin();
 	}
 
 
