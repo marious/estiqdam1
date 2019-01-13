@@ -1,3 +1,4 @@
+<?php var_dump(validation_errors()); ?>
 <section>
     <div class="container-fluid">
         <div class="row">
