@@ -181,19 +181,19 @@ class Services_entry extends MY_Controller
 
         $contract           = $this->db->get_where('contract', ['contract_number' => $contract_id])->row();
         $service_finance    = $this->db->get_where('services_finance', ['contract_number' => $contract_id])->row();
-        $credit_card        = $this->db->get_where('credit_card', ['id' => $service_finance->credit_card_id])->row();
+//        $credit_card        = $this->db->get_where('credit_card', ['id' => $service_finance->credit_card_id])->row();
         $order_type         = $this->db->get_where('services_order', ['contract_number' => $contract_id])->row();
         $services_contract  = $this->db->get_where('services_contract', ['contract_number' => $contract_id])->row();
         $services_customer  = $this->db->get_where('services_customer', ['contract_number' => $contract_id])->row();
         $services_worker    = $this->db->get_where('services_worker', ['contract_number' => $contract_id])->row();
 
-        if (count($contract) && count($service_finance) && count($credit_card) && count($order_type))
+        if (count($contract) && count($service_finance)  && count($order_type))
         {
             $contract_number = $contract->contract_number;
             $this->data['contract']                 = $contract;
             $this->data['service_finance']          = $service_finance;
             $this->data['credit_cards']             = $this->get_credit_cards();
-            $this->data['credit_card_id']           = $credit_card->id;
+            $this->data['credit_card_id']           = 1;
             $this->data['order_types']              = $this->get_order_types();
             $this->data['order_type_id']            = $this->db->get_where('order_types', ['id' => $order_type->order_type_id])->row()->id;
             $this->data['order_number']             = $order_type->order_number;
