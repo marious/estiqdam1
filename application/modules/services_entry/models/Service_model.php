@@ -39,11 +39,7 @@ class Service_model extends MY_Model
             'rules' => 'trim|required',
         ],
 
-        [
-            'field' => 'credit_card_id',
-            'label' => 'lang:credit_card',
-            'rules' => 'trim|required',
-        ],
+
 
         [
             'field' => 'order_type',
