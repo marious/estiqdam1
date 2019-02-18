@@ -225,26 +225,26 @@
 
     {if has_access($user->roleid,'appearance')}
 
-        <li class="{if $_application_menu eq 'appearance'}active{/if}" id="li_appearance">
-            <a href="#"><i class="icon-params"></i> <span class="nav-label">{$_L['Appearance']} </span><span class="fa arrow"></span></a>
-            <ul class="nav nav-second-level">
+        {*<li class="{if $_application_menu eq 'appearance'}active{/if}" id="li_appearance">*}
+            {*<a href="#"><i class="icon-params"></i> <span class="nav-label">{$_L['Appearance']} </span><span class="fa arrow"></span></a>*}
+            {*<ul class="nav nav-second-level">*}
 
-                <li><a href="{$_url}appearance/ui/">{$_L['User Interface']}</a></li>
-                <li><a href="{$_url}appearance/customize/">{$_L['Customize']}</a></li>
+                {*<li><a href="{$_url}appearance/ui/">{$_L['User Interface']}</a></li>*}
+                {*<li><a href="{$_url}appearance/customize/">{$_L['Customize']}</a></li>*}
 
-                {foreach $sub_menu_admin['appearance'] as $sm_appearance}
+                {*{foreach $sub_menu_admin['appearance'] as $sm_appearance}*}
 
-                    {$sm_appearance}
+                    {*{$sm_appearance}*}
 
 
-                {/foreach}
+                {*{/foreach}*}
 
-                <li><a href="{$_url}appearance/editor/">{$_L['Editor']}</a></li>
+                {*<li><a href="{$_url}appearance/editor/">{$_L['Editor']}</a></li>*}
 
                 {*<li><a href="{$_url}appearance/themes/">{$_L['Themes']}</a></li>*}
 
-            </ul>
-        </li>
+            {*</ul>*}
+        {*</li>*}
 
 {/if}
 
