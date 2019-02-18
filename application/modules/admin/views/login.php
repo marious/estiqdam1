@@ -100,14 +100,14 @@
 						<div class="form-group">
 							<label class="control-label col-sm-3" for="username">Username</label>
                             <div class="col-sm-9">
-                                <input type="text" title="username" required id="username" name="username" class="form-control" value="<?= $username; ?>">
+                                <input type="text" title="username" required id="username" name="username" class="form-control">
                             </div>
 						</div>
 						<div class="form-group">
 							<label for="password" class="control-label col-sm-3">Password</label>
 							<div class="col-sm-9">
                                 <input type="password" title="Please enter your password"
-                                       required name="password" id="password" class="form-control" value="<?= $password; ?>">
+                                       required name="password" id="password" class="form-control">
                             </div>
 						</div>
 
