@@ -11,11 +11,11 @@ switch (ENV) {
         define('IS_PROD',false);
     break;
     case 'prod':
-        define('DB_NAME','b24_20817550_my_twitter_app');
-        define('DB_USER','b24_20817550');
-        define('DB_PASSWORD','2634231f16');
-        define('DB_HOST', 'sql303.byethost24.com');
-        define('URL_ROOT', 'http://mytwitter.byethost24.com/');
+        define('DB_NAME','u501603252_mytw');
+        define('DB_USER','u501603252_twitt');
+        define('DB_PASSWORD','2634231561472');
+        define('DB_HOST', 'mysql.hostinger.co.uk');
+        define('URL_ROOT', 'http://estgdam1.com//mytwitter/');
         define('IS_PROD',false);
         break;
 
