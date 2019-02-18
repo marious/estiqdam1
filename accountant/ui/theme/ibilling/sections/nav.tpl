@@ -91,15 +91,15 @@
                     {if $_c['invoicing'] eq '1'}
                         <li><a href="{$_url}invoices/list/">{$_L['Invoices']}</a></li>
                         <li><a href="{$_url}invoices/add/">{$_L['New Invoice']}</a></li>
-                        <li><a href="{$_url}invoices/list-recurring/">{$_L['Recurring Invoices']}</a></li>
-                        <li><a href="{$_url}invoices/add/recurring/">{$_L['New Recurring Invoice']}</a></li>
+                        {*<li><a href="{$_url}invoices/list-recurring/">{$_L['Recurring Invoices']}</a></li>*}
+                        {*<li><a href="{$_url}invoices/add/recurring/">{$_L['New Recurring Invoice']}</a></li>*}
                     {/if}
 
                     {if $_c['quotes'] eq '1'}
-                        <li><a href="{$_url}quotes/list/">{$_L['Quotes']}</a></li>
-                        <li><a href="{$_url}quotes/new/">{$_L['Create New Quote']}</a></li>
+                        {*<li><a href="{$_url}quotes/list/">{$_L['Quotes']}</a></li>*}
+                        {*<li><a href="{$_url}quotes/new/">{$_L['Create New Quote']}</a></li>*}
                     {/if}
-                    <li><a href="{$_url}invoices/payments/">{$_L['Payments']}</a></li>
+                    {*<li><a href="{$_url}invoices/payments/">{$_L['Payments']}</a></li>*}
                 </ul>
             </li>
 
@@ -161,33 +161,33 @@
 
             {if $_c['accounting'] eq '1'}
 
-            <li class="{if $_application_menu eq 'reports'}active{/if}">
-            <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">{$_L['Reports']} </span><span class="fa arrow"></span></a>
-            <ul class="nav nav-second-level">
+            {*<li class="{if $_application_menu eq 'reports'}active{/if}">*}
+            {*<a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">{$_L['Reports']} </span><span class="fa arrow"></span></a>*}
+            {*<ul class="nav nav-second-level">*}
 
 
-                <li><a href="{$_url}reports/statement/">{$_L['Account Statement']}</a></li>
-                <li><a href="{$_url}reports/income/">{$_L['Income Reports']}</a></li>
-                <li><a href="{$_url}reports/expense/">{$_L['Expense Reports']}</a></li>
-                <li><a href="{$_url}reports/income-vs-expense/">{$_L['Income Vs Expense']}</a></li>
+                {*<li><a href="{$_url}reports/statement/">{$_L['Account Statement']}</a></li>*}
+                {*<li><a href="{$_url}reports/income/">{$_L['Income Reports']}</a></li>*}
+                {*<li><a href="{$_url}reports/expense/">{$_L['Expense Reports']}</a></li>*}
+                {*<li><a href="{$_url}reports/income-vs-expense/">{$_L['Income Vs Expense']}</a></li>*}
 
-                <li><a href="{$_url}reports/by-date/">{$_L['Reports by Date']}</a></li>
+                {*<li><a href="{$_url}reports/by-date/">{$_L['Reports by Date']}</a></li>*}
                 {*<li><a href="{$_url}reports/cats/">{$_L['Reports by Category']}</a></li>*}
-                <li><a href="{$_url}transactions/list-income/">{$_L['All Income']}</a></li>
-                <li><a href="{$_url}transactions/list-expense/">{$_L['All Expense']}</a></li>
-                <li><a href="{$_url}transactions/list/">{$_L['All Transactions']}</a></li>
+                {*<li><a href="{$_url}transactions/list-income/">{$_L['All Income']}</a></li>*}
+                {*<li><a href="{$_url}transactions/list-expense/">{$_L['All Expense']}</a></li>*}
+                {*<li><a href="{$_url}transactions/list/">{$_L['All Transactions']}</a></li>*}
 
 
-                {foreach $sub_menu_admin['reports'] as $sm_report}
+                {*{foreach $sub_menu_admin['reports'] as $sm_report}*}
 
-                    {$sm_report}
-
-
-                {/foreach}
+                    {*{$sm_report}*}
 
 
-            </ul>
-            </li>
+                {*{/foreach}*}
+
+
+            {*</ul>*}
+            {*</li>*}
 
         {/if}
 
@@ -195,17 +195,17 @@
 
     {if has_access($user->roleid,'utilities')}
 
-        <li class="{if $_application_menu eq 'util'}active{/if}">
-            <a href="#"><i class="icon-article"></i> <span class="nav-label">{$_L['Utilities']} </span><span class="fa arrow"></span></a>
-            <ul class="nav nav-second-level">
-                <li><a href="{$_url}util/activity/">{$_L['Activity Log']}</a></li>
-                <li><a href="{$_url}util/sent-emails/">{$_L['Email Message Log']}</a></li>
-                <li><a href="{$_url}util/dbstatus/">{$_L['Database Status']}</a></li>
-                <li><a href="{$_url}util/cronlogs/">{$_L['CRON Log']}</a></li>
-                <li><a href="{$_url}util/integrationcode/">{$_L['Integration Code']}</a></li>
-                <li><a href="{$_url}util/sys_status/">{$_L['System Status']}</a></li>
-            </ul>
-        </li>
+        {*<li class="{if $_application_menu eq 'util'}active{/if}">*}
+            {*<a href="#"><i class="icon-article"></i> <span class="nav-label">{$_L['Utilities']} </span><span class="fa arrow"></span></a>*}
+            {*<ul class="nav nav-second-level">*}
+                {*<li><a href="{$_url}util/activity/">{$_L['Activity Log']}</a></li>*}
+                {*<li><a href="{$_url}util/sent-emails/">{$_L['Email Message Log']}</a></li>*}
+                {*<li><a href="{$_url}util/dbstatus/">{$_L['Database Status']}</a></li>*}
+                {*<li><a href="{$_url}util/cronlogs/">{$_L['CRON Log']}</a></li>*}
+                {*<li><a href="{$_url}util/integrationcode/">{$_L['Integration Code']}</a></li>*}
+                {*<li><a href="{$_url}util/sys_status/">{$_L['System Status']}</a></li>*}
+            {*</ul>*}
+        {*</li>*}
 
     {/if}
 
@@ -241,7 +241,7 @@
 
                 <li><a href="{$_url}appearance/editor/">{$_L['Editor']}</a></li>
 
-                <li><a href="{$_url}appearance/themes/">{$_L['Themes']}</a></li>
+                {*<li><a href="{$_url}appearance/themes/">{$_L['Themes']}</a></li>*}
 
             </ul>
         </li>
@@ -249,7 +249,7 @@
 {/if}
 
     {if has_access($user->roleid,'plugins')}
-        <li {if $_application_menu eq 'plugins'}class="active"{/if}><a href="{$_url}settings/plugins/"><i class="fa fa-plug"></i> <span class="nav-label">{$_L['Plugins']}</span></a></li>
+        {*<li {if $_application_menu eq 'plugins'}class="active"{/if}><a href="{$_url}settings/plugins/"><i class="fa fa-plug"></i> <span class="nav-label">{$_L['Plugins']}</span></a></li>*}
         {/if}
     {if has_access($user->roleid,'settings')}
     <li class="{if $_application_menu eq 'settings'}active{/if}" id="li_settings">
@@ -273,19 +273,19 @@
                 {/if}
 
 
-                <li><a href="{$_url}settings/emls/">{$_L['Email Settings']}</a></li>
-                <li><a href="{$_url}settings/email-templates/">{$_L['Email Templates']}</a></li>
-                <li><a href="{$_url}settings/customfields/">{$_L['Custom Contact Fields']}</a></li>
-                <li><a href="{$_url}settings/automation/">{$_L['Automation Settings']}</a></li>
-                <li><a href="{$_url}settings/api/">{$_L['API Access']}</a></li>
+                {*<li><a href="{$_url}settings/emls/">{$_L['Email Settings']}</a></li>*}
+                {*<li><a href="{$_url}settings/email-templates/">{$_L['Email Templates']}</a></li>*}
+                {*<li><a href="{$_url}settings/customfields/">{$_L['Custom Contact Fields']}</a></li>*}
+                {*<li><a href="{$_url}settings/automation/">{$_L['Automation Settings']}</a></li>*}
+                {*<li><a href="{$_url}settings/api/">{$_L['API Access']}</a></li>*}
                 {foreach $sub_menu_admin['settings'] as $sm_settings}
 
                     {$sm_settings}
 
 
                 {/foreach}
-                <li><a href="{$_url}settings/features/">{$_L['Choose Features']}</a></li>
-                <li><a href="{$_url}settings/about/">{$_L['About']}</a></li>
+                {*<li><a href="{$_url}settings/features/">{$_L['Choose Features']}</a></li>*}
+                {*<li><a href="{$_url}settings/about/">{$_L['About']}</a></li>*}
             </ul>
             </li>
     {/if}
