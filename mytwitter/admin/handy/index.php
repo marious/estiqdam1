@@ -129,12 +129,7 @@ if (isset($_GET['account']) && $_GET['account'] != '') {
 
                     <div class="form-group" id="replay-container">
                         <label for="" class="control-label">Replay</label>
-                        <select name="replay" class="form-control">
-                            <option value="">-- Select Replay --</option>
-                            <?php foreach ($replays as $replay): ?>
-                                <option value="<?= $replay['replay']; ?>"><?= $replay['replay']; ?></option>
-                            <?php endforeach; ?>
-                        </select>
+                        <textarea name="replay" class="form-control" required></textarea>
                     </div>
 
                     <div class="form-group">
