@@ -54,7 +54,7 @@
     {/if}
     {*<li {if $_application_menu eq 'contacts'}class="active"{/if}><a href="{$_url}contacts/list/customers/"><i class="icon-users"></i> <span class="nav-label">{$_L['Customers']}</span></a></li>*}
     {if has_access($user->roleid,'companies','view')}
-    <li {if $_application_menu eq 'companies'}class="active"{/if}><a href="{$_url}contacts/companies/"><i class="fa fa-building-o"></i> <span class="nav-label">{$_L['Companies']}</span></a></li>
+    {*<li {if $_application_menu eq 'companies'}class="active"{/if}><a href="{$_url}contacts/companies/"><i class="fa fa-building-o"></i> <span class="nav-label">{$_L['Companies']}</span></a></li>*}
     {/if}
 
 
@@ -110,7 +110,7 @@
 
 
     {if has_access($user->roleid,'calendar')}
-        <li {if $_application_menu eq 'calendar'}class="active"{/if}><a href="{$_url}calendar/events/"><i class="fa fa-calendar"></i> <span class="nav-label">{$_L['Calendar']}</span></a></li>
+        {*<li {if $_application_menu eq 'calendar'}class="active"{/if}><a href="{$_url}calendar/events/"><i class="fa fa-calendar"></i> <span class="nav-label">{$_L['Calendar']}</span></a></li>*}
     {/if}
 
 
@@ -225,31 +225,31 @@
 
     {if has_access($user->roleid,'appearance')}
 
-        <li class="{if $_application_menu eq 'appearance'}active{/if}" id="li_appearance">
-            <a href="#"><i class="icon-params"></i> <span class="nav-label">{$_L['Appearance']} </span><span class="fa arrow"></span></a>
-            <ul class="nav nav-second-level">
+        {*<li class="{if $_application_menu eq 'appearance'}active{/if}" id="li_appearance">*}
+            {*<a href="#"><i class="icon-params"></i> <span class="nav-label">{$_L['Appearance']} </span><span class="fa arrow"></span></a>*}
+            {*<ul class="nav nav-second-level">*}
 
-                <li><a href="{$_url}appearance/ui/">{$_L['User Interface']}</a></li>
-                <li><a href="{$_url}appearance/customize/">{$_L['Customize']}</a></li>
+                {*<li><a href="{$_url}appearance/ui/">{$_L['User Interface']}</a></li>*}
+                {*<li><a href="{$_url}appearance/customize/">{$_L['Customize']}</a></li>*}
 
-                {foreach $sub_menu_admin['appearance'] as $sm_appearance}
+                {*{foreach $sub_menu_admin['appearance'] as $sm_appearance}*}
 
-                    {$sm_appearance}
+                    {*{$sm_appearance}*}
 
 
-                {/foreach}
+                {*{/foreach}*}
 
-                <li><a href="{$_url}appearance/editor/">{$_L['Editor']}</a></li>
+                {*<li><a href="{$_url}appearance/editor/">{$_L['Editor']}</a></li>*}
 
-                <li><a href="{$_url}appearance/themes/">{$_L['Themes']}</a></li>
+                {*<li><a href="{$_url}appearance/themes/">{$_L['Themes']}</a></li>*}
 
-            </ul>
-        </li>
+            {*</ul>*}
+        {*</li>*}
 
 {/if}
 
     {if has_access($user->roleid,'plugins')}
-        <li {if $_application_menu eq 'plugins'}class="active"{/if}><a href="{$_url}settings/plugins/"><i class="fa fa-plug"></i> <span class="nav-label">{$_L['Plugins']}</span></a></li>
+        {*<li {if $_application_menu eq 'plugins'}class="active"{/if}><a href="{$_url}settings/plugins/"><i class="fa fa-plug"></i> <span class="nav-label">{$_L['Plugins']}</span></a></li>*}
         {/if}
     {if has_access($user->roleid,'settings')}
     <li class="{if $_application_menu eq 'settings'}active{/if}" id="li_settings">
@@ -262,7 +262,7 @@
                 <li><a href="{$_url}settings/localisation/">{$_L['Localisation']}</a></li>
                 <li><a href="{$_url}settings/currencies/">{$_L['Currencies']}</a></li>
 
-                <li><a href="{$_url}settings/pg/">{$_L['Payment Gateways']}</a></li>
+                {*<li><a href="{$_url}settings/pg/">{$_L['Payment Gateways']}</a></li>*}
 
                 {if $_c['accounting'] eq '1'}
                     <li><a href="{$_url}settings/expense-categories/">{$_L['Expense Categories']}</a></li>
@@ -273,11 +273,11 @@
                 {/if}
 
 
-                <li><a href="{$_url}settings/emls/">{$_L['Email Settings']}</a></li>
-                <li><a href="{$_url}settings/email-templates/">{$_L['Email Templates']}</a></li>
-                <li><a href="{$_url}settings/customfields/">{$_L['Custom Contact Fields']}</a></li>
-                <li><a href="{$_url}settings/automation/">{$_L['Automation Settings']}</a></li>
-                <li><a href="{$_url}settings/api/">{$_L['API Access']}</a></li>
+                {*<li><a href="{$_url}settings/emls/">{$_L['Email Settings']}</a></li>*}
+                {*<li><a href="{$_url}settings/email-templates/">{$_L['Email Templates']}</a></li>*}
+                {*<li><a href="{$_url}settings/customfields/">{$_L['Custom Contact Fields']}</a></li>*}
+                {*<li><a href="{$_url}settings/automation/">{$_L['Automation Settings']}</a></li>*}
+                {*<li><a href="{$_url}settings/api/">{$_L['API Access']}</a></li>*}
                 {foreach $sub_menu_admin['settings'] as $sm_settings}
 
                     {$sm_settings}
