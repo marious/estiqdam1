@@ -1004,10 +1004,11 @@ $_L['Outstanding'] = 'Outstanding';
 
 $_L['Payments'] = 'Payments';
 $_L['Transaction ID'] = 'Transaction ID';
-$_L['Customers'] = 'Customers';
-$_L['Companies'] = 'Companies';
-$_L['Currencies'] = 'Currencies';
-$_L['Permission'] = 'Permission';
+$_L['Customers'] = 'لعملاء';
+$_L['Companies'] = 'الشركات';
+
+$_L['Currencies'] = 'العملات';
+$_L['Permission'] = 'الصلاحيات';
 $_L['Staff'] = 'Staff';
 $_L['Roles'] = 'Roles';
 $_L['New Role'] = 'New Role';
