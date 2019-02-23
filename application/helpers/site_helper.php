@@ -83,7 +83,7 @@ function get_agent_allowed_url()
 {
     return [
         'dashboard',
-        'site_security',
+        'Admin',
         'agent_worker',
     ];
 }
