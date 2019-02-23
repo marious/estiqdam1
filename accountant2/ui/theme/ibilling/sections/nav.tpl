@@ -195,17 +195,17 @@
 
     {if has_access($user->roleid,'utilities')}
 
-        <li class="{if $_application_menu eq 'util'}active{/if}">
-            <a href="#"><i class="icon-article"></i> <span class="nav-label">{$_L['Utilities']} </span><span class="fa arrow"></span></a>
-            <ul class="nav nav-second-level">
-                <li><a href="{$_url}util/activity/">{$_L['Activity Log']}</a></li>
-                <li><a href="{$_url}util/sent-emails/">{$_L['Email Message Log']}</a></li>
-                <li><a href="{$_url}util/dbstatus/">{$_L['Database Status']}</a></li>
-                <li><a href="{$_url}util/cronlogs/">{$_L['CRON Log']}</a></li>
-                <li><a href="{$_url}util/integrationcode/">{$_L['Integration Code']}</a></li>
-                <li><a href="{$_url}util/sys_status/">{$_L['System Status']}</a></li>
-            </ul>
-        </li>
+        {*<li class="{if $_application_menu eq 'util'}active{/if}">*}
+            {*<a href="#"><i class="icon-article"></i> <span class="nav-label">{$_L['Utilities']} </span><span class="fa arrow"></span></a>*}
+            {*<ul class="nav nav-second-level">*}
+                {*<li><a href="{$_url}util/activity/">{$_L['Activity Log']}</a></li>*}
+                {*<li><a href="{$_url}util/sent-emails/">{$_L['Email Message Log']}</a></li>*}
+                {*<li><a href="{$_url}util/dbstatus/">{$_L['Database Status']}</a></li>*}
+                {*<li><a href="{$_url}util/cronlogs/">{$_L['CRON Log']}</a></li>*}
+                {*<li><a href="{$_url}util/integrationcode/">{$_L['Integration Code']}</a></li>*}
+                {*<li><a href="{$_url}util/sys_status/">{$_L['System Status']}</a></li>*}
+            {*</ul>*}
+        {*</li>*}
 
     {/if}
 
