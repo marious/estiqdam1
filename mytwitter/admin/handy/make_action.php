@@ -5,15 +5,27 @@ include __DIR__ . '/../../includes/setup.php';
 
 $tweet_id = isset($_POST['tweet-id']) ? $_POST['tweet-id'] : false;
 
-$user_id = $_POST['account'];
+$accounts = $_POST['accounts'];
+
+// $user_id = $_POST['account'];
 $action = $_POST['action'];
 
-$db = DB::connect();
-$query = "SELECT oauth_token, oauth_token_secret,proxy, screen_name FROM users WHERE id = :id";
-$stmt = $db->prepare($query);
-$stmt->bindValue(":id", $user_id);
-$stmt->execute();
-$user_cred = $stmt->fetch(PDO::FETCH_ASSOC);
+if (isset($_POST['replay']))
+{
+    $replay = trim($_POST['replay']);
+    $replay = explode("\n", $replay);
+    $replay = array_filter($replay, 'trim');
+}
+
+
+foreach ($accounts as $i => $account) {
+
+    $db = DB::connect();
+    $query = "SELECT oauth_token, oauth_token_secret,proxy, screen_name FROM users WHERE id = :id";
+    $stmt = $db->prepare($query);
+    $stmt->bindValue(":id", $account);
+    $stmt->execute();
+    $user_cred = $stmt->fetch(PDO::FETCH_ASSOC);
 
 
 
@@ -37,12 +49,12 @@ $user_cred = $stmt->fetch(PDO::FETCH_ASSOC);
             'id' => $tweet_id,
         ));
     } else if ($action == 'replay') {
-//        var_dump($_POST);exit;
-        $replay = $_POST['replay'];
+        //        var_dump($_POST);exit;
+
         $screen_name = $_POST['screen_name'];
         $make_replay = $twitter->post('statuses/update', array(
             'in_reply_to_status_id' => $tweet_id,
-            'status' => "@{$screen_name} {$replay}"
+            'status' => "@{$screen_name} {$replay[$i]}"
         ));
         var_dump($make_replay);
     } else if ($action == 'tweet') {
@@ -78,11 +90,11 @@ $user_cred = $stmt->fetch(PDO::FETCH_ASSOC);
             }
 
             $content = $twitter->post('statuses/update', $parameters);
-//            var_dump($content);exit;
+            //            var_dump($content);exit;
             if ($twitter->getLastHttpCode() == 200) {
 
-//                \MyApp\Libs\Session::flash('success', 'تم ارسال التغريدة بنجاح');
-//            header('Location: ' . URL_ROOT . 'tweets.php');
+                //                \MyApp\Libs\Session::flash('success', 'تم ارسال التغريدة بنجاح');
+                //            header('Location: ' . URL_ROOT . 'tweets.php');
             } else {
                 echo 'error';
             }
@@ -90,3 +102,4 @@ $user_cred = $stmt->fetch(PDO::FETCH_ASSOC);
 
         }
     }
+}
