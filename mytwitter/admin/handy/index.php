@@ -136,7 +136,9 @@ if (isset($_GET['account']) && $_GET['account'] != '') {
                         <label for="" class="control-label">Account</label><br>
                         <?php if ($users && count($users)): ?>
                             <?php foreach ($users as $user): ?>
-                                <input type="checkbox" name="accounts[]" value="<?= $user['id'] ?>"> <?= $user['name']; ?><br>
+                                <label>
+                                    <input type="checkbox" name="accounts[]" value="<?= $user['id'] ?>"> <?= $user['name']; ?>
+                                </label><br>
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </div>
