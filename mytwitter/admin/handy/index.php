@@ -133,15 +133,12 @@ if (isset($_GET['account']) && $_GET['account'] != '') {
                     </div>
 
                     <div class="form-group">
-                        <label for="" class="control-label">Account</label>
-                        <select name="accounts[]" class="form-control" id="" multiple style="height: 300px;">
-                            <option value="">-- Select Account --</option>
-                            <?php if ($users && count($users)): ?>
-                                <?php foreach ($users as $user): ?>
-                                    <option value="<?= $user['id']; ?>"><?= $user['name']; ?></option>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        </select>
+                        <label for="" class="control-label">Account</label><br>
+                        <?php if ($users && count($users)): ?>
+                            <?php foreach ($users as $user): ?>
+                                <input type="checkbox" name="accounts[]" value="<?= $user['id'] ?>"> <?= $user['name']; ?><br>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </div>
 
 
