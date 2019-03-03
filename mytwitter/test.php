@@ -1,4 +1,3 @@
 <?php
-
-$con = new mysqli('mysql.hostinger.co.uk','u125539847_expre','mghkl1234', 'u125539847_expre');
-var_dump($con);
+$mysqli = new mysqli("mysql.hostinger.co.uk", "u391740958_root", "magneticpizza", "u391740958_cw2db");
+var_dump($mysqli);
