@@ -204,7 +204,7 @@ if (isset($_GET['account']) && $_GET['account'] != '') {
                     <div class="clearfix"></div>
                 </div>
                 <div class="modal-footer">
-                    <input type="hidden" name="account" id="account-2">
+                    <input type="hidden" name="accounts[]" id="account-2">
                     <input type="hidden" value="tweet" name="action">
                     <!--                    <input type="hidden" name="screen_name" id="screen-name">-->
                     <input type="submit" class="btn btn-success" value="Submit" />
@@ -257,7 +257,7 @@ include __DIR__ . '/../tpl/footer.php';
             success: function(data) {
                 $('#tweet-form')[0].reset();
                 $('#tweetModal').modal('hide');
-                location.reload(true);
+                // location.reload(true);
             }
         });
 
@@ -288,7 +288,7 @@ include __DIR__ . '/../tpl/footer.php';
             success: function(data) {
                 $('#make-tweet-form')[0].reset();
                 $('#makeTweetModal').modal('hide');
-                location.reload(true);
+                // location.reload(true);
             }
         });
 
