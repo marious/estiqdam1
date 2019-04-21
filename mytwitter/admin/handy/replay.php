@@ -311,8 +311,5 @@ include __DIR__ . '/../tpl/footer.php';
 
 </script>
 
-
-
-
 </body>
 </html>
