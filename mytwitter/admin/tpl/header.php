@@ -335,11 +335,11 @@ if (!isset($_SESSION['logged_user']) || $_SESSION['logged_user'] == false)
                 <ul class="nav navbar-nav">
                     <li><a href="<?= URL_ROOT . 'admin/index.php'?>">Accounts</a></li>
                     <li><a href="<?= URL_ROOT . 'admin/tasks/all_tasks.php?task=retweet' ?>">Retweet &amp; Favorite <span class="sr-only">(current)</span></a></li>
-                    <li><a href="<?= URL_ROOT . 'admin/tasks/all_tasks.php?task=replay' ?>">Replay</a></li>
-<!--                    <li><a href="--><?//= URL_ROOT . 'admin/schedule_tweets.php'?><!--">Schedule Tweets</a></li>-->
+                    <li><a href="<?= URL_ROOT . 'admin/handy/replay.php' ?>">Replay</a></li>
+                    <!--                    <li><a href="--><?//= URL_ROOT . 'admin/schedule_tweets.php'?><!--">Schedule Tweets</a></li>-->
                     <li><a href="<?= URL_ROOT . 'admin/periodic_tweets.php'?>">Replies Tweets</a></li>
                     <li><a href="<?= URL_ROOT . 'admin/reports' ?>">Reports</a></li>
-                    <li><a href="<?= URL_ROOT . 'admin/handy/index.php'; ?>">Handy Help</a></li>
+<!--                    <li><a href="--><?//= URL_ROOT . 'admin/handy/index.php'; ?><!--">Handy Help</a></li>-->
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
