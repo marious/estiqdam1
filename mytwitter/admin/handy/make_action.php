@@ -10,11 +10,20 @@ $accounts = $_POST['accounts'];
 // $user_id = $_POST['account'];
 $action = $_POST['action'];
 
-if (isset($_POST['replay']))
+
+
+if (isset($_POST['replies']))
 {
-    $replay = trim($_POST['replay']);
-    $replay = explode("\n", $replay);
-    $replay = array_filter($replay, 'trim');
+    $replies = [];
+    foreach ($_POST['replies'] as $replay) {
+        if ($replay != '') {
+            $replies[] = trim($replay);
+        }
+    }
+
+    // $replay = trim($_POST['replay']);
+    // $replay = explode("\n", $replay);
+    // $replay = array_filter($replay, 'trim');
 }
 
 
@@ -54,7 +63,7 @@ foreach ($accounts as $i => $account) {
         $screen_name = $_POST['screen_name'];
         $make_replay = $twitter->post('statuses/update', array(
             'in_reply_to_status_id' => $tweet_id,
-            'status' => "@{$screen_name} {$replay[$i]}"
+            'status' => "@{$screen_name} {$replies[$i]}"
         ));
         var_dump($make_replay);
     } else if ($action == 'tweet') {
