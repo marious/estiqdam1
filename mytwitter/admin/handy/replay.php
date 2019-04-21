@@ -138,7 +138,7 @@ if (isset($_GET['account']) && $_GET['account'] != '') {
                                 <label>
                                     <input type="checkbox" name="accounts[]" value="<?= $user['id'] ?>" class="account"> <?= $user['name']; ?>
                                     <br>
-                                    <textarea style="border: 1px solid #000; padding: 4px; min-width: 100%; display: none;" name="replies[]"></textarea>
+                                    <textarea style="border: 1px solid #000; padding: 4px; min-width: 100%;" name="replies[]" class="account-replay hide"></textarea>
 
                                 </label><br>
                             <?php endforeach; ?>
@@ -236,14 +236,15 @@ include __DIR__ . '/../tpl/footer.php';
     // });
 
 
+
     $('.account').on('click', function() {
         var textArea = $(this).siblings();
         if ($(this).is(':checked')) {
-            textArea.css({'display': 'inline'});
+            textArea.removeClass('hide');
         } else {
             var textArea = $(this).siblings();
             textArea.val('');
-            textArea.css({'display': 'none'});
+            textArea.addClass('hide');
         }
     });
 
@@ -309,7 +310,20 @@ include __DIR__ . '/../tpl/footer.php';
 
     });
 
+
+
+    $('#tweetModal').on('hide.bs.modal', function() {
+        $('.account-replay').addClass('hide') ;
+        $('input[type="checkbox"]').prop('checked', false);
+        $('.account-replay').val('');
+    });
+
+
+
 </script>
+
+
+
 
 </body>
 </html>
