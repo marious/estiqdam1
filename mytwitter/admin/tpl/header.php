@@ -338,6 +338,7 @@ if (!isset($_SESSION['logged_user']) || $_SESSION['logged_user'] == false)
                     <li><a href="<?= URL_ROOT . 'admin/handy/replay.php' ?>">Replay</a></li>
                     <!--                    <li><a href="--><?//= URL_ROOT . 'admin/schedule_tweets.php'?><!--">Schedule Tweets</a></li>-->
                     <li><a href="<?= URL_ROOT . 'admin/periodic_tweets.php'?>">Replies Tweets</a></li>
+                    <li><a href="<?= URL_ROOT . 'admin/groups'?>">Groups</a></li>
                     <li><a href="<?= URL_ROOT . 'admin/reports' ?>">Reports</a></li>
 <!--                    <li><a href="--><?//= URL_ROOT . 'admin/handy/index.php'; ?><!--">Handy Help</a></li>-->
                 </ul>
