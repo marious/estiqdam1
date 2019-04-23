@@ -135,12 +135,14 @@ if (isset($_GET['account']) && $_GET['account'] != '') {
                         <label for="" class="control-label">Account</label><br>
                         <?php if ($users && count($users)): ?>
                             <?php foreach ($users as $user): ?>
-                                <label>
-                                    <input type="checkbox" name="accounts[]" value="<?= $user['id'] ?>" class="account"> <?= $user['name']; ?>
-                                    <br>
-                                    <textarea style="border: 1px solid #000; padding: 4px; min-width: 100%;" name="replies[]" class="account-replay hide"></textarea>
+                                <div class="checkbox-background">
+                                    <label>
+                                        <input type="checkbox" name="accounts[]" value="<?= $user['id'] ?>" class="account"> <?= $user['name']; ?>
+                                        <br>
+                                        <textarea style="border: 1px solid #000; padding: 4px; min-width: 100%;" name="replies[]" class="account-replay hide"></textarea>
 
-                                </label><br>
+                                    </label><br>
+                                </div>
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </div>
