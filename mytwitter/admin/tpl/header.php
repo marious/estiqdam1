@@ -309,6 +309,16 @@ if (!isset($_SESSION['logged_user']) || $_SESSION['logged_user'] == false)
         .alert-me-2 {
             color: blue;
         }
+        .checkbox-background {
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .checkbox-background  label {
+            display: block;
+        }
+        .checkbox-background:nth-child(even) {
+            background: #e6e6e6;
+        }
     </style>
     <script>
         var url_root = "<?php  echo URL_ROOT; ?>";
@@ -340,7 +350,7 @@ if (!isset($_SESSION['logged_user']) || $_SESSION['logged_user'] == false)
                     <li><a href="<?= URL_ROOT . 'admin/periodic_tweets.php'?>">Replies Tweets</a></li>
                     <li><a href="<?= URL_ROOT . 'admin/groups'?>">Groups</a></li>
                     <li><a href="<?= URL_ROOT . 'admin/reports' ?>">Reports</a></li>
-<!--                    <li><a href="--><?//= URL_ROOT . 'admin/handy/index.php'; ?><!--">Handy Help</a></li>-->
+                    <!--                    <li><a href="--><?//= URL_ROOT . 'admin/handy/index.php'; ?><!--">Handy Help</a></li>-->
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
