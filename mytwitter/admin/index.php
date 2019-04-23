@@ -30,11 +30,12 @@ $users = $userModel->getAll();
         <thead>
         <tr>
             <th width="4%">#</th>
-            <th width="12%">Screen Name</th>
+            <th width="12%">Username</th>
+            <th width="12%">Name</th>
+            <th>Password</th>
             <th width="2%">Following</th>
             <th width="2%">Followers</th>
             <th>Email</th>
-            <th>Password</th>
             <th>Phone</th>
             <th>Proxy</th>
             <th>Action</th>
@@ -45,7 +46,9 @@ $users = $userModel->getAll();
             <?php $i = 1; foreach ($users as $user): ?>
                 <tr>
                     <td><?= $i; ?></td>
+                    <td style="font-weight: bold;"><?= $user['name']; ?></td>
                     <td><?= $user['screen_name'] ?></td>
+                    <td><?= $user['password'] ?></td>
                     <td>
                         <?= $user['friends_count'] ?>
                     </td>
@@ -53,7 +56,6 @@ $users = $userModel->getAll();
                         <?= $user['followers_count'] ?>
                     </td>
                     <td><?= $user['email'] ?></td>
-                    <td><?= $user['password'] ?></td>
                     <td><?= $user['phone'] ?></td>
                     <td>
                         <?= $user['proxy'] ?>
