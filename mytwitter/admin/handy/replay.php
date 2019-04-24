@@ -146,7 +146,7 @@ if (isset($_GET['account']) && $_GET['account'] != '') {
                                 <tr>
                                     <td><?=$i?></td>
                                     <td><?= $user['name'] ?></td>
-                                    <td><textarea name="replies[]"></textarea></td>
+                                    <td><textarea name="replies[]" required></textarea></td>
                                     <td><input type="submit"  class="btn btn-success" value="Send" /></td>
                                 </tr>
                                 <input type="text" name="accounts[]" value="<?= $user['id'] ?>" class="account" style="display: none;">
