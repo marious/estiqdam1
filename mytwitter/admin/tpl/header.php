@@ -319,6 +319,56 @@ if (!isset($_SESSION['logged_user']) || $_SESSION['logged_user'] == false)
         .checkbox-background:nth-child(even) {
             background: #e6e6e6;
         }
+        .replay-table {
+            width: 100%;
+            border: 1px solid #000;
+            border-collapse: collapse;
+        }
+        .replay-table tr, td, th {
+            border: 1px solid #000;
+        }
+        .replay-table th {
+            text-align: center;
+            padding: 5px;
+        }
+        .replay-table td {
+            padding: 6px;
+        }
+        .replay-table td:nth-child(2) {
+            font-weight: bold;
+        }
+        .replay-table td:nth-child(1) {
+            text-align: center;
+        }
+        .replay-table td:nth-child(4) {
+            text-align: center;
+        }
+        .replay-table tr:nth-child(even) {
+            background: #e6e6e6;
+        }
+        .replay-table td textarea {
+            display:block;
+            width: 100%;
+            max-height: 48px;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        #loader-spinner {
+            position: absolute;
+            width: 100%;
+            min-height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1001;
+        }
+        #loader-spinner img {
+            float: left;
+            margin-top: 50px;
+            z-index: 100;
+        }
+        .hide {
+            display: none;
+        }
     </style>
     <script>
         var url_root = "<?php  echo URL_ROOT; ?>";
