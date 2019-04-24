@@ -108,55 +108,66 @@ if (isset($_GET['account']) && $_GET['account'] != '') {
 
 
 <div id="tweetModal" class="modal fade">
-    <div class="modal-dialog">
-        <form method="post" id="tweet-form">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Update User</h4>
-                </div>
-                <div class="modal-body">
 
-                    <div class="form-group" style="display: none;">
-                        <label class="control-label">Action</label>
-                        <select name="action" id="action" class="form-control">
-                            <option value="">-- Action --</option>
-                            <option value="retweet">Retweet</option>
-                            <option value="favourite">Favourite</option>
-                            <option value="replay" selected>Replay</option>
-                        </select>
-                    </div>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div id="loader-spinner" class="hide"><img src="<?= URL_ROOT . 'assets/images/spinner.gif' ?>" alt=""></div>
 
-                    <div class="form-group" id="replay-container">
-                        <label for="" class="control-label">Replay</label>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="" class="control-label">Account</label><br>
-                        <?php if ($users && count($users)): ?>
-                            <?php foreach ($users as $user): ?>
-                                <div class="checkbox-background">
-                                    <label>
-                                        <input type="checkbox" name="accounts[]" value="<?= $user['id'] ?>" class="account"> <?= $user['name']; ?>
-                                        <br>
-                                        <textarea style="border: 1px solid #000; padding: 4px; min-width: 100%;" name="replies[]" class="account-replay hide"></textarea>
-
-                                    </label><br>
-                                </div>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </div>
-
-
-                </div>
-                <div class="modal-footer">
-                    <input type="hidden" name="tweet-id" id="tweet-id">
-                    <input type="hidden" name="screen_name" id="screen-name">
-                    <input type="submit" name="action" id="action" class="btn btn-success" value="Submit" />
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Update User</h4>
             </div>
-        </form>
+            <div class="modal-body">
+
+                <div class="form-group" style="display: none;">
+                    <label class="control-label">Action</label>
+                    <select name="action" id="action" class="form-control">
+                        <option value="">-- Action --</option>
+                        <option value="retweet">Retweet</option>
+                        <option value="favourite">Favourite</option>
+                        <option value="replay" selected>Replay</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="replay-container">
+                    <label for="" class="control-label">Replay</label>
+                </div>
+
+                <table class="replay-table">
+                    <tr>
+                        <th>#</th>
+                        <th>Account</th>
+                        <th>Tweet</th>
+                        <th>Action</th>
+                    </tr>
+                    <?php if ($users && count($users)): ?>
+                        <?php $i = 1; foreach ($users as $user): ?>
+                            <form class="tweet-form">
+                                <tr>
+                                    <td><?=$i?></td>
+                                    <td><?= $user['name'] ?></td>
+                                    <td><textarea name="replies[]"></textarea></td>
+                                    <td><input type="submit"  class="btn btn-success" value="Send" /></td>
+                                </tr>
+                                <input type="text" name="accounts[]" value="<?= $user['id'] ?>" class="account" style="display: none;">
+                                <input type="hidden" name="tweet-id" id="tweet-id">
+                                <input type="hidden" name="action" value="replay">
+                                <input type="hidden" name="screen_name" id="screen-name">
+                            </form>
+                            <?php $i++; endforeach; ?>
+                    <?php endif; ?>
+                </table>
+
+
+
+
+            </div>
+            <div class="modal-footer">
+
+                <!-- <input type="submit" name="action" id="action" class="btn btn-success" value="Submit" /> -->
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -264,8 +275,10 @@ include __DIR__ . '/../tpl/footer.php';
         $('#tweetModal').modal('show');
     });
 
-    $(document).on('submit', '#tweet-form', function(e) {
+    $(document).on('submit', '.tweet-form', function(e) {
         e.preventDefault();
+        $('#loader-spinner').removeClass('hide');
+        $('.replay-tweet').attr('disabled', true);
         $.ajax({
             url: "<?php echo URL_ROOT . 'admin/handy/make_action.php'; ?>",
             method: "POST",
@@ -273,8 +286,10 @@ include __DIR__ . '/../tpl/footer.php';
             contentType: false,
             processData: false,
             success: function(data) {
-                $('#tweet-form')[0].reset();
-                $('#tweetModal').modal('hide');
+                $('.tweet-form')[0].reset();
+                $('#loader-spinner').addClass('hide');
+                $('.replay-tweet').attr('disabled', false);
+                // $('#tweetModal').modal('hide');
                 // location.reload(true);
             }
         });
