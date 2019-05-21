@@ -99,7 +99,7 @@
                         {*<li><a href="{$_url}quotes/list/">{$_L['Quotes']}</a></li>*}
                         {*<li><a href="{$_url}quotes/new/">{$_L['Create New Quote']}</a></li>*}
                     {/if}
-                    {*<li><a href="{$_url}invoices/payments/">{$_L['Payments']}</a></li>*}
+                    <li><a href="{$_url}invoices/payments/">{$_L['Payments']}</a></li>
                 </ul>
             </li>
 
