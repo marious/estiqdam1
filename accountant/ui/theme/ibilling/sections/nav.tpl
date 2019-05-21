@@ -161,22 +161,22 @@
 
             {if $_c['accounting'] eq '1'}
 
-            {*<li class="{if $_application_menu eq 'reports'}active{/if}">*}
-            {*<a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">{$_L['Reports']} </span><span class="fa arrow"></span></a>*}
-            {*<ul class="nav nav-second-level">*}
+            <li class="{if $_application_menu eq 'reports'}active{/if}">
+            <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">{$_L['Reports']} </span><span class="fa arrow"></span></a>
+            <ul class="nav nav-second-level">
 
 
-                {*<li><a href="{$_url}reports/statement/">{$_L['Account Statement']}</a></li>*}
-                {*<li><a href="{$_url}reports/income/">{$_L['Income Reports']}</a></li>*}
-                {*<li><a href="{$_url}reports/expense/">{$_L['Expense Reports']}</a></li>*}
+                <li><a href="{$_url}reports/statement/">{$_L['Account Statement']}</a></li>
+                <li><a href="{$_url}reports/income/">{$_L['Income Reports']}</a></li>
+                <li><a href="{$_url}reports/expense/">{$_L['Expense Reports']}</a></li>
                 {*<li><a href="{$_url}reports/income-vs-expense/">{$_L['Income Vs Expense']}</a></li>*}
 
                 {*<li><a href="{$_url}reports/by-date/">{$_L['Reports by Date']}</a></li>*}
                 {*<li><a href="{$_url}reports/cats/">{$_L['Reports by Category']}</a></li>*}
-                {*<li><a href="{$_url}transactions/list-income/">{$_L['All Income']}</a></li>*}
-                {*<li><a href="{$_url}transactions/list-expense/">{$_L['All Expense']}</a></li>*}
-                {*<li><a href="{$_url}transactions/list/">{$_L['All Transactions']}</a></li>*}
-
+                <li><a href="{$_url}transactions/list-income/">{$_L['All Income']}</a></li>
+                <li><a href="{$_url}transactions/list-expense/">{$_L['All Expense']}</a></li>
+                <li><a href="{$_url}transactions/list/">{$_L['All Transactions']}</a></li>
+1
 
                 {*{foreach $sub_menu_admin['reports'] as $sm_report}*}
 
@@ -186,8 +186,8 @@
                 {*{/foreach}*}
 
 
-            {*</ul>*}
-            {*</li>*}
+            </ul>
+            </li>
 
         {/if}
 
