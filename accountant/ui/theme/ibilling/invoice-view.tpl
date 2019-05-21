@@ -97,7 +97,7 @@
                                     {$_c['caddress']}
                                 </address>
                                 <div class="ib">
-                                    <img src="{$app_url}application/storage/system/logo.png" alt="Logo">
+                                    <img src="{$app_url}application/storage/system/logo.png" alt="Logo" width="60" height="60">
                                 </div>
                             </div>
                         </div>
