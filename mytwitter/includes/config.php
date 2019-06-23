@@ -1,7 +1,15 @@
 <?php
-define('ENV', 'prod');
+define('ENV', 'dev2');
 
 switch (ENV) {
+    case 'dev2':
+        define('DB_NAME','mtwitterapp');
+        define('DB_USER','root');
+        define('DB_PASSWORD','2634231');
+        define('DB_HOST', 'localhost');
+        define('URL_ROOT', 'http://localhost/estiqdam1/mytwitter/');
+        define('IS_PROD',false);
+        break;
     case 'dev':
         define('DB_NAME','mytwitterapp');
         define('DB_USER','root');
@@ -15,7 +23,7 @@ switch (ENV) {
         define('DB_USER','u501603252_twitt');
         define('DB_PASSWORD','2634231561472');
         define('DB_HOST', 'mysql.hostinger.co.uk');
-        define('URL_ROOT', 'http://estgdam1.com//mytwitter/');
+        define('URL_ROOT', 'http://estgdam1.com/mytwitter/');
         define('IS_PROD',false);
         break;
 
