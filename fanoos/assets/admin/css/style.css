@@ -1,0 +1,147 @@
+body {
+    font-size: 15px;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.m-l-10 {
+    margin-left: 10px;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.skin-blue .wrapper, .skin-blue .main-sidebar, .skin-blue .left-side {
+    background-color: #2c3e50;
+}
+
+.active {
+}
+
+.content-wrapper {
+    background-color: #f1f1f1;
+}
+.box-header {
+    background-color: #2F3F4D;
+    color: #fff;
+    margin-bottom: 10px;
+}
+.seo-info {
+    color: red;
+    font-weight: 700;
+    font-size: 16px;
+    background-color: #e4e4e4;
+    padding: 15px;
+}
+
+.error {
+    color: #d14;
+}
+
+.block-label {
+    display: block;
+    margin-bottom: 6px;
+}
+
+.note-text {
+    font-size: 16px;
+    text-align: center;
+    margin: 0 100px 20px 0;
+}
+
+.permission-list {
+    margin-left: 120px;
+}
+
+.permission-list  ul {
+    list-style-type: none;
+}
+
+.permission-list li {
+    line-height: 2;
+}
+
+.group-permissions {
+    width: 60%;
+}
+
+.progress-info {
+    display: none;
+}
+
+.progress-info {
+    display: none;
+    width: 90% !important;
+    margin: 0 auto;
+    margin-bottom: 20px;;
+}
+
+#progress-status {
+    padding-left:30px;
+    margin-top: -10px;
+}
+
+/* Primary Table */
+.primary-table tr th {
+    font-size: 15px;
+    color: #f9f9f9;
+    background-color: #3c8dbc;
+}
+
+.primary-table td {
+    font-size: 16px;
+}
+
+.m-b-50 {
+    margin-bottom: 50px;
+}
+
+.customer-form legend {
+    background-color:#2c3e50;
+    padding: 10px;
+    color: #fff;
+    font-weight: 600;
+}
+
+.form-control {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/*#customers-table th:first-child,*/
+/*#products-table th:first-child,*/
+/*#services-table th:first-child,*/
+/*.hovered-table th:first-child {*/
+    /*width: 4%;*/
+/*}*/
+
+/*#customers-table td,*/
+/*#products-table td,*/
+/*#services-table-table td,*/
+/*.hovered-table td {*/
+    /*font-weight: 600;*/
+/*}*/
+
+/*#customers-table tbody tr:hover,*/
+/*#products-table tbody tr:hover,*/
+/*#services-table tbody tr:hover,*/
+/*.hovered-table tbody tr:hover {*/
+    /*background-color: #428bca;*/
+    /*color: #fff;*/
+/*}*/
+
+ div.manage-buttons {
+    display: flex;
+    justify-content: flex-end;
+}
+
+#customers-table td:last-child a {
+}
+
+table td {
+    font-size: 17px;
+    font-weight: 500;
+}

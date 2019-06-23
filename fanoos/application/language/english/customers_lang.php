@@ -1,0 +1,25 @@
+<?php
+$lang['add_new_customer'] = 'Add New Customer';
+$lang['customer_info'] = 'Customer Info';
+$lang['customer_name'] = 'Customer Name';
+$lang['branch'] = 'Branch';
+$lang['status'] = 'Status';
+$lang['active'] = 'Active';
+$lang['not_active'] = 'Not Active';
+$lang['telephone'] = 'Telephone';
+$lang['mobile'] = 'Mobile';
+$lang['fax'] = 'Fax';
+$lang['work_address'] = 'Work Address';
+$lang['home_address'] = 'Home Address';
+$lang['tax_record_no'] = 'Tax Record No.';
+$lang['customer_level'] = 'Customer Level';
+$lang['price_type'] = 'Price Type';
+$lang['customer_type'] = 'Customer Type';
+$lang['notes'] = 'Notes';
+$lang['opening_balance'] = 'Opening Balance';
+$lang['balance_type'] = 'Balance Type';
+$lang['balance_date'] = 'Balance Date';
+$lang['start_balance'] = 'Start Balance';
+$lang['new_customer_added'] = 'New Customer Added Successfully';
+$lang['customers_info'] = 'Customers Info';
+$lang['edit_customer'] = 'Edit Customer';
