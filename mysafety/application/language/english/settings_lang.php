@@ -1,0 +1,32 @@
+<?php 
+
+$lang['website_settings'] = 'Website Settings';
+$lang['global_settings'] = 'Global Settings';
+$lang['en_website_title'] = 'Website Title [EN]';
+$lang['ar_website_title'] = 'Website Title [AR]';
+$lang['en_meta_description'] = 'Meta Description [EN]';
+$lang['ar_meta_description'] = 'Meta Description [AR]';
+$lang['en_meta_keywords'] = 'Meta Keywords [EN]';
+$lang['ar_meta_keywords'] = 'Meta Keywords [AR]';
+$lang['logo'] = 'Logo';
+$lang['existing_logo'] = 'Existing Logo';
+$lang['new_logo'] = 'New Logo';
+$lang['update_logo'] = 'Update Logo';
+$lang['logo_uploaded_successfully'] = 'Logo Uploaded Successfully';
+$lang['general_content'] = 'General Content';
+$lang['en_footer_copyright'] = 'Footer - Copyright [EN]';
+$lang['ar_footer_copyright'] = 'Footer - Copyright [AR]';
+$lang['en_contact_address'] = 'Contact Address [EN]';
+$lang['ar_contact_address'] = 'Contact Address [AR]';
+$lang['contact_email'] = 'Contact Email';
+$lang['contact_phone'] = 'Contact Phone Number';
+$lang['contact_fax'] = 'Contact Fax Number';
+$lang['contact_map_iframe'] = 'Contact Map Iframe';
+$lang['social_media'] = 'Social Media';
+$lang['social_note'] = 'If you do not want to show a social media in your front end page, just leave the input field blank.';
+$lang['facebook'] = 'Facebook';
+$lang['youtube'] = 'YouTube';
+$lang['linkedin'] = 'LinkedIn';
+$lang['instagram'] = 'Instagram';
+$lang['whatsapp'] = 'WhatsApp';
+$lang['twitter'] = 'Twitter';

@@ -1,0 +1,22 @@
+<?php 
+$lang['view_sliders'] = 'مشاهدة السلايدرز';
+$lang['all_sliders'] = 'كل السلايدرز';
+$lang['edit_slider'] = 'تعديل السلايدر';
+$lang['add_new_slider'] = 'إضافة سلايدر جديد';
+$lang['en_heading'] = 'العنوان [إنجليزى]';
+$lang['ar_heading'] = 'العنوان [عربى]';
+$lang['en_content'] = 'المحتوى [إنجليزى]';
+$lang['ar_content'] = 'المحتوى [عربى]';
+$lang['en_button_text'] = 'نص الزر [إنجليزى]';
+$lang['ar_button_text'] = 'نص الزر [عربى]';
+$lang['status'] = 'الحالة';
+$lang['button_url'] = 'رابط الزر';
+$lang['position'] = 'الموقع';
+$lang['unkown_position'] = 'الموضع الذى اخترته غير معروف';
+$lang['choose_image'] = 'اختر صورة';
+$lang['unkown_status'] = 'الاختيار الذى قمت باختياره غير معروف';
+$lang['active'] = 'مفعل';
+$lang['inactive'] = 'غير مفعل';
+$lang['Right'] = 'يمين';
+$lang['Left'] = 'يسار';
+$lang['Center'] = 'المنتصف';

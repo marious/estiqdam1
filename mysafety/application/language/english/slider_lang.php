@@ -1,0 +1,22 @@
+<?php 
+$lang['view_sliders'] = 'View Sliders';
+$lang['all_sliders'] = 'All Sliders';
+$lang['edit_slider'] = 'Edit Slider';
+$lang['add_new_slider'] = 'Add New Slider';
+$lang['en_heading'] = 'Heading [EN]';
+$lang['ar_heading'] = 'Heading [AR]';
+$lang['en_content'] = 'Content [EN]';
+$lang['ar_content'] = 'Content [AR]';
+$lang['en_button_text'] = 'Button Text [EN]';
+$lang['ar_button_text'] = 'Button Text [AR]';
+$lang['status'] = 'Status';
+$lang['button_url'] = 'Button URL';
+$lang['position'] = 'Position';
+$lang['unkown_position'] = 'The position you selected is unkown';
+$lang['choose_image'] = 'Choose Image To Upload';
+$lang['unkown_status'] = 'The status you checked is unkown';
+$lang['active'] = 'Active';
+$lang['inactive'] = 'Inactive';
+$lang['Right'] = 'Right';
+$lang['Left'] = 'Left';
+$lang['Center'] = 'Center';

@@ -1,0 +1,32 @@
+<?php 
+
+$lang['website_settings'] = 'إعدادات الموقع';
+$lang['global_settings'] = 'الإعدادات العامة';
+$lang['en_website_title'] = 'عنوان الموقع [إنجليزى]';
+$lang['ar_website_title'] = 'عنوان الموقع [عربى]';
+$lang['en_meta_description'] = 'الوصف الدلالى [إنجليزى]';
+$lang['ar_meta_description'] = 'الوصف الدلالى [عربى]';
+$lang['en_meta_keywords'] = 'الكلمات الدلالية [إنجليزى]';
+$lang['ar_meta_keywords'] = 'الكلمات الدلالية [عربى]';
+$lang['logo'] = 'الشعار';
+$lang['existing_logo'] = 'الشعار الموجود';
+$lang['new_logo'] = 'شعار جديد';
+$lang['update_logo'] = 'رفع الشعار';
+$lang['logo_uploaded_successfully'] = 'تم رفع الشعار بنجاح';
+$lang['general_content'] = 'المحتوى العام';
+$lang['en_footer_copyright'] = 'Footer - Copyright [EN]';
+$lang['ar_footer_copyright'] = 'Footer - Copyright [AR]';
+$lang['en_contact_address'] = 'العنوان [إنجليزى]';
+$lang['ar_contact_address'] = 'العنوان [عربى]';
+$lang['contact_email'] = 'الايميل';
+$lang['contact_phone'] = 'رقم الهاتف';
+$lang['contact_fax'] = 'رقم الفاكس';
+$lang['contact_map_iframe'] = 'رابط موقع الشركة';
+$lang['social_media'] = 'وسائل التواصل الاجتماعى';
+$lang['social_note'] = '';
+$lang['facebook'] = 'فيسبوك';
+$lang['youtube'] = 'يوتيوب';
+$lang['linkedin'] = 'لينكدان';
+$lang['instagram'] = 'انستجرام';
+$lang['whatsapp'] = 'واتساب';
+$lang['twitter'] = 'تويتر';
