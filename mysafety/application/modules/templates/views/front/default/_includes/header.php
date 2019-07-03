@@ -49,6 +49,7 @@
 
     <?php
     $menus = Modules::run('menu/get_menu');
+    $menu_segment = $this->uri->segment(2);
     ?>
 
   <section class="navigation-row">
@@ -64,7 +65,7 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right" id="nav">
-            <li class="active">
+            <li class="<?= !$menu_segment ? 'active' : ''; ?>">
               <a href="<?=site_url()?>"><?= lang('home') ?></a>
             </li>
             <?php if (is_array($menus) && count($menus)): ?>
@@ -77,14 +78,10 @@
                 $menu_lang = isset($menu['menu_lang']) && $menu['menu_lang'] != '' ? $menu['menu_lang']['title']['id'] : '';
               }
 
-              $drowdown_class = '';
 
-              if (is_array($menu['childs']) && count($menu['childs'])) {
-                $drowdown_class="dropwdown";
-              }
 
             ?>
-            <li class="<?= $drowdown_class ?>">
+            <li class="<?= Modules::run('pages/get_page_slug', $menu['page']) == $menu_segment ? 'active' : ''; ?>">
               <a href="<?= site_url('page/' . Modules::run('pages/get_page_slug', $menu['page'])) ?>"><?= $menu_lang ?>
               <?php if (is_array($menu['childs']) && count($menu['childs'])): ?>
               <i class="fa fa-caret-down" aria-hidden="true"></i>

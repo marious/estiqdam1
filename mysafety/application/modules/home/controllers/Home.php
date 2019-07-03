@@ -16,6 +16,7 @@ class Home extends MY_Controller
     public function index()
     {
 
+        $this->data['page_header'] = lang('main_page_title');
         $this->data['view_module'] = 'home';
         $this->load->module('slider');
         $this->data['css_file'] = ['https://cdn.jsdelivr.net/jquery.owlcarousel/1.31/owl.carousel.css',

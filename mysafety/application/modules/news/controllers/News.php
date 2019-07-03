@@ -59,7 +59,7 @@ class News extends MY_Controller
 
     public function add($id = false)
     {
-        $this->data['page_header'] = $id && is_numeric($id) ? '<i class="fa fa-arrow-circle-o-right"></i> '.lang('edit_news')  : '<i class="fa fa-arrow-circle-o-right"></i> '.lang('add_news');
+        $this->data['page_header'] = $id && is_numeric($id) ? lang('edit_news')  : lang('add_news');
         $this->data['css_file'] = [base_url() . '/assets/admin/css/summernote.css'];
         $this->data['js_file'] = [base_url() . '/assets/admin/js/summernote.js', base_url() . 'assets/admin/js/handle_editor.js'];
 

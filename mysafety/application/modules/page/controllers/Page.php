@@ -30,7 +30,7 @@ class Page extends MY_Controller
 
     private function main($page)
     {
-        
+        $this->data['page_header'] = transText($page->name, get_current_front_lang());
         $this->data['page'] = $page;
         $this->public_template('main', $this->data);
     }
@@ -38,9 +38,9 @@ class Page extends MY_Controller
 
     private function news()
     {
-    
-        $this->load->module('news');
 
+        $this->data['page_header'] = lang('news');
+        $this->load->module('news');
         // Count All News 
         $count = $this->db->count_all_results('news');
 
@@ -74,9 +74,17 @@ class Page extends MY_Controller
 
 
 
+    public function our_categoreis()
+    {
+        $this->load->module('categories');
+        $this->data['categories'] = $this->categories->Category_model->get();
+        $this->public_template('categories', $this->data);
+    }
+
 
     private function clients()
     {
+        $this->data['page_header'] = lang('clients');
         $this->load->module('clients');
         $this->data['css_file'] = [site_url('assets/css/prettyphoto.css')];
         $this->data['js_file'] = [site_url('assets/js/prettyphoto.js')];
@@ -88,6 +96,7 @@ class Page extends MY_Controller
 
     public function contact_us()
     {
+        $this->data['page_header'] = lang('contact_us');
         $this->public_template('contact_us', $this->data);
     }
 

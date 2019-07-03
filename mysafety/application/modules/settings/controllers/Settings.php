@@ -9,6 +9,8 @@ class Settings extends MY_Controller
     {
         parent::__construct();
         $this->middleware->execute_middlewares(['not_authinticated']);
+        $this->middleware->only(['check_permission:show_settings'], ['index']);
+        //$this->middleware->only(['check_permission:add_settings'], ['add']);
         $this->lang->load('settings');
         $this->load->model('Setting_model');
     }
@@ -20,48 +22,62 @@ class Settings extends MY_Controller
         $this->admin_template('index', $this->data);
     }
 
-
-
-
-    public function add()
+    public function test()
     {
-        // Process the form 
-        $this->load->library('form_validation');
-        $this->form_validation->set_rules($this->Setting_model->rules);
-        if ($this->form_validation->run($this) == TRUE)
+        echo 'hi';
+    }
+
+
+
+    public function add_setting()
+    {
+        if (in_array('add_setting',  $this->data['logged_in_user_permissions'] ))
         {
+            // Process the form
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules($this->Setting_model->rules);
+            if ($this->form_validation->run($this) == TRUE)
+            {
 
-            // check if the setting post exist
-            foreach ($_POST as $setting_name => $value) {
+                // check if the setting post exist
+                foreach ($_POST as $setting_name => $value) {
 
-                // check if the setting  is logo
-                if (isset($_FILES['logo']))
-                {
-                    $_SESSION['active_tab'] = 'logo';
+                    // check if the setting  is logo
+                    if (isset($_FILES['logo']))
+                    {
+                        $_SESSION['active_tab'] = 'logo';
 
-                    if ($file = $this->Setting_model->do_upload($this->Setting_model->upload_path, 'logo',
-                    ['width' => 700, 'height' => 500, 'destination' => 'assets/uploads'])) {
-                        $file_path = substr($file['full_path'], strpos($file['full_path'], 'assets'));
-                        $this->make_setting('logo', $file_path);
-                        $_SESSION['success'] = lang('logo_uploaded_successfully');
-                        $this->session->mark_as_flash('success');
-                    } else {
-                        $this->session->mark_as_flash('error');
+                        if ($file = $this->Setting_model->do_upload($this->Setting_model->upload_path, 'logo',
+                            ['width' => 700, 'height' => 500, 'destination' => 'assets/uploads'])) {
+                            $file_path = substr($file['full_path'], strpos($file['full_path'], 'assets'));
+                            $this->make_setting('logo', $file_path);
+                            $_SESSION['success'] = lang('logo_uploaded_successfully');
+                            $this->session->mark_as_flash('success');
+                        } else {
+                            $this->session->mark_as_flash('error');
+                        }
+                        redirect('settings');
+
                     }
-                    redirect('settings');
+                    else
+                    {
+                        $this->set_session_active_tab($setting_name);
+                        $this->make_setting($setting_name, $value);
+                    }
 
                 }
-                else
-                {
-                    $this->set_session_active_tab($setting_name);
-                    $this->make_setting($setting_name, $value);
-                }
-
             }
-        } 
-        $_SESSION['success'] = lang('success_sended_data');
-        $this->session->mark_as_flash('success');
-        redirect('settings');
+            $_SESSION['success'] = lang('success_sended_data');
+            $this->session->mark_as_flash('success');
+            redirect('settings');
+        }
+        else
+        {
+            $_SESSION['error'] = lang('you_dont_have_permission');
+            $this->session->mark_as_flash('error');
+            redirect('settings');
+        }
+
     }
 
 

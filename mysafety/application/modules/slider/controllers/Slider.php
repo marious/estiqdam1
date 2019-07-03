@@ -38,8 +38,8 @@ class Slider extends MY_Controller
 
     public function add($id = false)
     {
-        $this->data['page_header'] = $id && is_numeric($id) ? '<i class="fa fa-arrow-circle-o-right"></i> '.lang('edit_slider')  : 
-            '<i class="fa fa-arrow-circle-o-right"></i> '.lang('add_new_slider');
+        $this->data['page_header'] = $id && is_numeric($id) ? lang('edit_slider')  :
+            lang('add_new_slider');
 
         if ($id && is_numeric($id))
         {

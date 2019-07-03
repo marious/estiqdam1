@@ -58,7 +58,7 @@ class Services extends MY_Controller
 
   public function add($id = null)
   {
-    $this->data['page_header'] = $id && is_numeric($id) ? '<i class="fa fa-arrow-circle-o-right"></i> '.lang('edit_service')  : '<i class="fa fa-arrow-circle-o-right"></i> '.lang('add_new_service');
+    $this->data['page_header'] = $id && is_numeric($id) ? lang('edit_service')  : lang('add_new_service');
     $this->data['css_file'] = [base_url() . '/assets/admin/css/summernote.css'];
     $this->data['js_file'] = [base_url() . '/assets/admin/js/summernote.js', base_url() . 'assets/admin/js/handle_editor.js'];
 

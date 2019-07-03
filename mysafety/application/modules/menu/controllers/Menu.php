@@ -27,7 +27,7 @@ class Menu extends MY_Controller
         $this->data['id'] = false;
 
 
-        $this->data['menus'] = $this->Menu_model->get_menu();
+        $this->data['menus'] = $this->Menu_model->get_menu('top', 0);
         $this->admin_template('index', $this->data);
     }
 
@@ -83,7 +83,7 @@ class Menu extends MY_Controller
         $this->data['icheck'] = true;
         $this->load->module('pages');
         $this->data['pages'] = $this->pages->Page_model->get();
-        $this->data['menus'] = $this->Menu_model->get_menu();
+        $this->data['menus'] = $this->Menu_model->get_menu('top', 0);
 
         $rules = [
             [
@@ -123,7 +123,7 @@ class Menu extends MY_Controller
         if ($this->form_validation->run($this) == true)
         {
             $data['menu_name'] = $this->input->post('menu_name');
-            $this->data['active'] = $this->input->post('active');
+            $data['active'] = $this->input->post('active');
             $data['page'] = $this->input->post('page');
             $menu_lang = isset($_POST['language_title']) ? $this->input->post('language_title') : '';
             $language = [];

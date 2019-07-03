@@ -1,4 +1,4 @@
-<form class="form-horizontal" action="<?= site_url('settings/add'); ?>" method="post">
+<form class="form-horizontal" action="<?= site_url('settings/add_setting'); ?>" method="post">
 							<div class="box box-info">
 								<div class="box-body">
 

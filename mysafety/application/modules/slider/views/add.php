@@ -76,9 +76,9 @@
 							<label for="" class="col-sm-2 control-label"><?= lang('position') ?> </label>
 							<div class="col-sm-6">
 								<select name="position" class="form-control">
-									<option value="Left" <?php $slider->position == 'Left' ? 'selected' : ''; ?>>Left</option>
-									<option value="Center" <?php $slider->position == 'Center' ? 'selected' : ''; ?>>Center</option>
-									<option value="Right" <?php $slider->position == 'Right' ? 'selected' : ''; ?>>Right</option>
+									<option value="Left" <?php echo $slider->position == 'Left' ? 'selected' : ''; ?>>Left</option>
+									<option value="Center" <?php echo $slider->position == 'Center' ? 'selected' : ''; ?>>Center</option>
+									<option value="Right" <?php echo $slider->position == 'Right' ? 'selected' : ''; ?>>Right</option>
 								</select>
 								<?= form_error('position', '<div class="error">', '</div>') ?>
 							</div>

@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="description" content="<?php echo isset($meta_description) ? $meta_description : setting(make_trans('meta_description')); ?>">
   <meta name="keywords" content="<?php echo isset($meta_keywords) ? $meta_keywords : setting(make_trans('meta_keywords')); ?>">
-  <title>Document</title>
+  <title><?php echo lang('safety_point')  ?> | <?php if (isset($page_header)) echo $page_header; ?></title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" href="<?= site_url('assets/css/animate.css') ?>">
   <link rel="stylesheet" href="<?= site_url('assets/css/colors.css'); ?>">

@@ -1,4 +1,4 @@
-<form class="form-horizontal" action="<?= site_url('settings/add'); ?>" method="post" enctype="multipart/form-data">
+<form class="form-horizontal" action="<?= site_url('settings/add_setting'); ?>" method="post" enctype="multipart/form-data">
     <div class="box box-info">
         <div class="box-body">
             <?php if (setting('logo')): ?>

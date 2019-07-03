@@ -183,6 +183,7 @@
 
 
 
+          <?php if (in_array('show_roles', $logged_in_user_permissions)): ?>
           <li class="treeview <?= is_sidebar_menu_active('roles'); ?>">
               <a href="#"><i class="fa fa-key"></i> <span><?= lang('roles_and_permissions') ?></span>
                   <span class="pull-right-container">
@@ -191,15 +192,21 @@
               </a>
               <ul class="treeview-menu">
                   <li class="<?= is_tree_sidebar_menu_active('roles', 'all'); ?>"><a href="<?= site_url('roles/all'); ?>"><i class="fa fa-circle-o"></i> <?= lang('all_roles'); ?></a></li>
+                  <?php if (in_array('add_roles', $logged_in_user_permissions)): ?>
                   <li class="<?= is_tree_sidebar_menu_active('roles', 'add'); ?>"><a href="<?= site_url('roles/add'); ?>"><i class="fa fa-circle-o"></i> <?= lang('add_new'); ?></a></li>
+                  <?php endif; ?>
               </ul>
           </li>
+          <?php endif; ?>
 
 
 
 
+          <?php if (in_array('show_settings', $logged_in_user_permissions)): ?>
+          <li class="<?= is_sidebar_menu_active('settings'); ?>">
+              <a href="<?= site_url('settings') ?>"><i class="fa fa-gear"></i> <span><?= lang('settings') ?></span></a>
+          </li>
+        <?php endif; ?>
 
-          <li class="<?= is_sidebar_menu_active('settings'); ?>"><a href="<?= site_url('settings') ?>"><i class="fa fa-gear"></i> <span><?= lang('settings') ?></span></a></li>
-        
       </ul>
     </section>

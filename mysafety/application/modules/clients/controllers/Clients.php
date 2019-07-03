@@ -32,7 +32,7 @@ class Clients extends MY_Controller
 
     public function add($id = false)
     {
-        $this->data['page_header'] = $id && is_numeric($id) ? '<i class="fa fa-arrow-circle-o-right"></i> '.lang('edit_client')  : '<i class="fa fa-arrow-circle-o-right"></i> '.lang('add_new_client');
+        $this->data['page_header'] = $id && is_numeric($id) ? lang('edit_client')  : lang('add_new_client');
 
         if ($id && is_numeric($id))
         {

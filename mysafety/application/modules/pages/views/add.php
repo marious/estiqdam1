@@ -30,7 +30,7 @@
                             <select class="form-control select2" name="page_layout" style="width:300px;" onchange="showContentInputArea(this)" >
                                 <?php if (is_array($pages_layout) && count($pages_layout)): ?>
                                 <?php foreach ($pages_layout as $page_layout): ?>
-                                <option value="<?= $page_layout->id; ?>"><?= $page_layout->layout; ?></option>
+                                <option value="<?= $page_layout->id; ?>" <?php if ($page->page_layout == $page_layout->id) echo 'selected'; ?>><?= $page_layout->layout; ?></option>
 <?php endforeach; ?>
 <?php endif; ?>
                             </select>
