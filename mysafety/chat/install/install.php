@@ -142,7 +142,7 @@ if (isset($_POST['install']) && !$isInstalled) {
     }
 
     if (!function_exists('mysql_connect')) {
-        $error .= 'Function "mysql_connect" should be active<br />';
+        //$error .= 'Function "mysql_connect" should be active<br />';
     } else {
         if (!version_compare("4.0", phpinfo_array('mysql', 'client_api_version'), "<=")) {
             $error .= 'MySQL 4 >= 4.0 is required<br />';
@@ -314,8 +314,8 @@ if (isset($_POST['install']) && !$isInstalled) {
         $fas_error = true;
     }
     if (!function_exists('mysql_connect')) {
-        $errorArr[] = '<div class="box_error"><strong>Required: </strong>Function "mysql_connect" should be active</div><br/>';
-        $fas_error = true;
+       // $errorArr[] = '<div class="box_error"><strong>Required: </strong>Function "mysql_connect" should be active</div><br/>';
+       // $fas_error = true;
     } elseif (!version_compare("4.0", phpinfo_array('mysql', 'client_api_version'), "<=")) {
         //$errorArr[] = '<div class="box_error"><strong>Required: </strong>MySQL 4 >= 4.0 is required</div><br/>';
         //$fas_error = true;
