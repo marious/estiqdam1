@@ -21,7 +21,7 @@ class Categories extends MY_Controller
     {
         if ($slug)
         {
-//            $slug = urldecode($slug);
+            $slug = urldecode($slug);
             $category = $this->Category_model->get_by_slug($slug);
             if ($category)
             {
