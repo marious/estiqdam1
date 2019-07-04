@@ -6,3 +6,5 @@ $lang['ar_content'] = 'المحتوى [عربى]';
 $lang['page_layout'] = 'شكل الصفحة';
 $lang['status'] = 'الحالة';
 $lang['image'] = 'الصورة';
+$lang['edit_page'] = 'تعديل الصفحة';
+$lang['add_new_page'] = 'إضافة صفحة جديدة';
