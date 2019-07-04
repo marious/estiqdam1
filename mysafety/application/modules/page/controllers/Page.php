@@ -76,6 +76,7 @@ class Page extends MY_Controller
 
     public function our_categoreis()
     {
+        $this->data['page_header'] = lang('our_categories');
         $this->load->module('categories');
         $this->data['categories'] = $this->categories->Category_model->get();
         $this->public_template('categories', $this->data);
