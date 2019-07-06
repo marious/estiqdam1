@@ -14,9 +14,9 @@
                 <div class="box-body">
                     <!-- EN category name -->
                     <div class="form-group">
-                        <label for="en_name" class="col-sm-2 control-label"><?= lang('en_category_name') ?> <span>*</span></label>
+                        <label for="en_name" class="col-sm-2 control-label"><?= lang('en_category_name') ?> <span class="error">*</span></label>
                         <div class="col-sm-6">
-                            <input type="text" id="en_name" autocomplete="off" class="form-control" name="en_name"
+                            <input type="text" id="en_name" autocomplete="off" class="form-control ltr-dir" name="en_name"
                                    value="<?php echo set_value('en_name', transText($category->name, 'en')) ?>">
                             <?php echo form_error('en_name', '<div class="error">', '</div>'); ?>
                         </div>
@@ -35,26 +35,13 @@
 
 
                        <!-- Service -->
-                    <div class="form-group">
-                      <label for="service_id" class="col-sm-2 control-label"><?= lang('service') ?> <span class="error">*</span></label>
-                      <div class="col-sm-4">
-                        <select name="service_id" id="service_id" class="form-control">
-                          <option value="0">-- <?= lang('select_service'); ?> --</option>
-                          <?php if ( is_array($services) && count($services) ): ?>
-                          <?php foreach ($services as $service): ?>
-                          <option value="<?= $service->id; ?>"  <?php if ($category->service_id == $service->id) echo 'selected';;?> > <?= transText($service->name, get_current_lang()); ?> </option>
-<?php endforeach; ?>
-<?php endif; ?>
-                        </select>
-                        <?= form_error('service_id', '<div class="error">', '</div>'); ?>
-                      </div>
-                    </div>
+
 
 
                     <!-- en description -->
                     <div class="form-group">
                         <label for="en_description" class="col-sm-2 control-label"><?= lang('en_description') ?> <span class="error">*</span></label>
-                        <div class="col-sm-9">
+                        <div class="col-sm-9 ltr-dir">
                             <textarea class="form-control" name="en_description" id="editor1"><?php echo set_value('en_description', transText($category->description, 'en')); ?></textarea>
                             <?php echo form_error('en_description', '<div class="error">', '</div>'); ?>
                         </div>
@@ -76,6 +63,9 @@
                         <label for="" class="col-sm-2 control-label"><?= lang('image'); ?> <span>*</span></label>
                         <div class="col-sm-9" style="padding-top:5px">
                             <input type="file" name="image">(Only jpg, jpeg, gif and png are allowed)
+                            <?php if ($category->image): ?>
+                                <div> <img src="<?= site_url($category->image) ?>" class="thumb-img"></div>
+                            <?php endif; ?>
                         </div>
                     </div>
 
@@ -93,7 +83,7 @@
                     <div class="form-group">
                         <label for="" class="col-sm-2 control-label"></label>
                         <div class="col-sm-6">
-                            <button type="submit" class="btn btn-success pull-left" name="form1"><?= lang('save'); ?></button>
+                            <button type="submit" class="btn btn-success" name="form1"><?= lang('save'); ?></button>
                             <a href="<?= site_url('categories/all') ?>" class="btn btn-default m-l-10"><?= lang('cancel') ?></a>
                         </div>
                     </div>

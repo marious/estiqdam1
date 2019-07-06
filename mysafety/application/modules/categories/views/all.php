@@ -11,7 +11,6 @@
                                 <th>#</th>
                                 <th><?= lang('en_name') ?></th>
                                 <th><?= lang('ar_name') ?></th>
-                                <th><?= lang('services'); ?></th>
                                 <th><?= lang('en_description') ?></th>
                                 <th><?= lang('ar_description') ?></th>
                                 <th><?= lang('image') ?></th>

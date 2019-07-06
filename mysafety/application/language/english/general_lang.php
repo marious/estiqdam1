@@ -99,3 +99,4 @@ $lang['title'] = 'Title';
 $lang['safety_point'] = 'Safety Point';
 $lang['main_page_title'] = 'Main Page';
 $lang['site_messages'] = 'Site Messages';
+$lang['success_contact_message'] = 'Your message has been sent successfully';

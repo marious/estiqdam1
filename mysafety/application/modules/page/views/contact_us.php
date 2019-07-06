@@ -7,27 +7,43 @@
 <section class="contact-section">
     <div class="container">
         <h2></h2>
-        <form action="#">
+        <form action="<?= site_url('contacts/add') ?>" method="post">
+
+            <?php if ($this->session->flashdata('success')): ?>
+            <div class="alert alert-success"><?= lang('success_contact_message') ?></div>
+            <?php endif; ?>
+            <?php
+            if ( $this->session->flashdata('errors')) {
+                $errors = $this->session->flashdata('errors');
+
+            }
+            ?>
+
             <div class="row">
                 <div class="col-md-6 col-sm-6">
                     <label for="name"><?= lang('name'); ?></label>
-                    <input type="text" placeholder="<?= lang('enter_name') ?>" required id="name">
+                    <input type="text" placeholder="<?= lang('enter_name') ?>" required id="name" name="name">
+                    <?php if (isset($errors) && $errors['name']) echo '<div class="error">' . $errors['name'] . '</div>'; ?>
                 </div>
                 <div class="col-md-6 col-sm-6">
                     <label for="email"><?=lang('email')?></label>
-                    <input type="text" placeholder="<?=lang('enter_email')?>" required id="email">
+                    <input type="email" placeholder="<?=lang('enter_email')?>" required id="email" name="email">
+                    <?php if (isset($errors) && $errors['email']) echo '<div class="error">' . $errors['email'] . '</div>'; ?>
                 </div>
                 <div class="col-md-6 col-sm-6">
                     <label for="contact-phone"><?=lang('contact_phone')?></label>
-                    <input type="text" placeholder="<?=lang('enter_contact_phone')?>" required id="contact-phone">
+                    <input type="text" placeholder="<?=lang('enter_contact_phone')?>" required id="contact-phone" name="phone" autocomplete="off">
+                    <?php if (isset($errors) && $errors['phone']) echo '<div class="error">' . $errors['phone'] . '</div>'; ?>
                 </div>
                 <div class="col-md-6 col-sm-6">
                     <label for="subject"><?=lang('subject')?></label>
-                    <input type="text" placeholder="<?= lang('enter_subject') ?>" required id="subject">
+                    <input type="text" placeholder="<?= lang('enter_subject') ?>" required id="subject" autocomplete="off" name="subject">
+                    <?php if (isset($errors) && $errors['subject']) echo '<div class="error">' . $errors['subject'] . '</div>'; ?>
                 </div>
                 <div class="col-md-12 col-sm-12">
                     <label for="message"><?= lang('message') ?></label>
-                    <textarea required placeholder="<?= lang('enter_message') ?>" cols="10" rows="10" id="message"></textarea>
+                    <textarea required placeholder="<?= lang('enter_message') ?>" cols="10" rows="10" id="message" name="message"></textarea>
+                    <?php if (isset($errors) && $errors['message']) echo '<div class="error">' . $errors['message'] . '</div>'; ?>
                 </div>
                 <div class="col-md-12">
                     <input type="submit" value="<?= lang('get_contact') ?>">

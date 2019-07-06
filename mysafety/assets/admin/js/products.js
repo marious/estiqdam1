@@ -16,7 +16,7 @@ $(function () {
             {"width": "10%", "targets": 2},
             {"width": "10%", "targets": 3},
             {"width": "3%", "targets": 0},
-            {"width": "12%", "targets": 7},
+            {"width": "12%", "className": "date-cell", "targets": 7},
             {
                 "targets":[0,1,2,3,4,5,6,8],
                 "orderable":false,

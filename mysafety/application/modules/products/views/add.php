@@ -8,7 +8,7 @@
                     <div class="form-group">
                         <label for="en_name" class="col-sm-2 control-label"><?= lang('en_product_name') ?> <span>*</span></label>
                         <div class="col-sm-6">
-                            <input type="text" id="en_name" autocomplete="off" class="form-control" name="en_name"
+                            <input type="text" id="en_name" autocomplete="off" class="form-control ltr-dir" name="en_name"
                                    value="<?php echo set_value('en_name', transText($product->name, 'en')) ?>">
                             <?php echo form_error('en_name', '<div class="error">', '</div>'); ?>
                         </div>
@@ -46,7 +46,7 @@
                     <!-- en description -->
                     <div class="form-group">
                         <label for="en_description" class="col-sm-2 control-label"><?= lang('en_description') ?> <span class="error">*</span></label>
-                        <div class="col-sm-9">
+                        <div class="col-sm-9 ltr-dir">
                             <textarea class="form-control" name="en_description" id="editor1"><?php echo set_value('en_description', transText($product->description, 'en')); ?></textarea>
                             <?php echo form_error('en_description', '<div class="error">', '</div>'); ?>
                         </div>
@@ -68,6 +68,9 @@
                         <label for="" class="col-sm-2 control-label"><?= lang('image'); ?> <span>*</span></label>
                         <div class="col-sm-9" style="padding-top:5px">
                             <input type="file" name="image">(Only jpg, jpeg, gif and png are allowed)
+                            <?php if ($product->image): ?>
+                                <div> <img src="<?= site_url($product->image) ?>" class="thumb-img"></div>
+                            <?php endif; ?>
                         </div>
                     </div>
 
@@ -85,7 +88,7 @@
                     <div class="form-group">
                         <label for="" class="col-sm-2 control-label"></label>
                         <div class="col-sm-6">
-                            <button type="submit" class="btn btn-success pull-left" name="form1"><?= lang('save'); ?></button>
+                            <button type="submit" class="btn btn-success" name="form1"><?= lang('save'); ?></button>
                             <a href="<?= site_url('products/all') ?>" class="btn btn-default m-l-10"><?= lang('cancel') ?></a>
                         </div>
                     </div>

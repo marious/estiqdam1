@@ -11,7 +11,7 @@ $(function () {
         },
         "columnDefs":[
             {"width": "100px", "height": "60px", "targets":3},
-            {"width": "18%", "targets":4},
+            {"width": "18%","className": "date-cell", "targets":4},
 
             {
                 "targets":[0,1,2,3,5],

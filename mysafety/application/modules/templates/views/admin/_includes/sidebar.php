@@ -164,6 +164,12 @@
               </li>
           <?php endif; ?>
 
+          <?php if (in_array('show_contacts', $logged_in_user_permissions)): ?>
+              <li class="<?= is_sidebar_menu_active('contacts'); ?>">
+                  <a href="<?= site_url('contacts/all') ?>"><i class="fa fa-envelope-o"></i> <span><?= lang('site_messages') ?></span></a>
+              </li>
+          <?php endif; ?>
+
 
           <?php if (in_array('show_users', $logged_in_user_permissions)): ?>
           <li class="treeview <?= is_sidebar_menu_active('users'); ?>">

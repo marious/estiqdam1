@@ -21,6 +21,11 @@
         <link rel="stylesheet" href="<?= site_url('assets/admin/css/_all-skins.min.css') ?>">
         <link rel="stylesheet" href="<?= site_url('assets/admin/css/bootstrap-rtl.min.css') ?>">
         <link rel="stylesheet" href="<?= site_url('assets/admin/css/rtl.css') ?>">
+        <style>
+            ul.sidebar-menu {
+                font-size: 16px !important;
+            }
+        </style>
     <?php else: ?>
         <link rel="stylesheet" href="<?php echo  base_url() . '/assets/admin/'; ?>dist/css/AdminLTE.min.css">
 

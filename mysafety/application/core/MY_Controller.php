@@ -22,6 +22,7 @@ class MY_Controller extends MX_Controller
     if (isset($_SESSION['user_id']))
     {
         $this->data['logged_in_user_permissions'] = Modules::run('roles/get_active_user_permissions');
+
     }
 
 

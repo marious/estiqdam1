@@ -15,7 +15,7 @@
                     <!-- EN service name -->
                     <div class="form-group">
                         <label for="en_name" class="col-sm-2 control-label"><?= lang('en_service_name') ?> <span>*</span></label>
-                        <div class="col-sm-6">
+                        <div class="col-sm-6 ltr-dir">
                             <input type="text" id="en_name" autocomplete="off" class="form-control" name="en_name"
                                    value="<?php echo set_value('en_name', transText($service->name, 'en')) ?>">
                             <?php echo form_error('en_name', '<div class="error">', '</div>'); ?>
@@ -35,7 +35,7 @@
                     <!-- en description -->
                     <div class="form-group">
                         <label for="en_description" class="col-sm-2 control-label"><?= lang('en_description') ?> <span>*</span></label>
-                        <div class="col-sm-9">
+                        <div class="col-sm-9 ltr-dir">
                             <textarea class="form-control" name="en_description" id="editor1"><?php echo set_value('en_description', transText($service->description, 'en')); ?></textarea>
                             <?php echo form_error('en_description', '<div class="error">', '</div>'); ?>
                         </div>
@@ -56,16 +56,19 @@
                         <label for="" class="col-sm-2 control-label"><?= lang('featured_image'); ?> <span>*</span></label>
                         <div class="col-sm-9" style="padding-top:5px">
                             <input type="file" name="image">(Only jpg, jpeg, gif and png are allowed)
+                            <?php if ($service->image): ?>
+                                <div> <img src="<?= site_url($service->image) ?>" class="thumb-img"></div>
+                            <?php endif; ?>
                         </div>
                     </div>
 
 
-                    <div class="form-group">
-                        <label for="" class="col-sm-2 control-label"><?= lang('banner_image') ?> <span>*</span></label>
-                        <div class="col-sm-9" style="padding-top:5px">
-                            <input type="file" name="banner">(Only jpg, jpeg, gif and png are allowed)
-                        </div>
-                    </div>
+<!--                    <div class="form-group">-->
+<!--                        <label for="" class="col-sm-2 control-label">--><?//= lang('banner_image') ?><!-- <span>*</span></label>-->
+<!--                        <div class="col-sm-9" style="padding-top:5px">-->
+<!--                            <input type="file" name="banner">(Only jpg, jpeg, gif and png are allowed)-->
+<!--                        </div>-->
+<!--                    </div>-->
                     <h3 class="seo-info"><?= lang('seo_info'); ?></h3>
 
                     <!-- meta-title -->

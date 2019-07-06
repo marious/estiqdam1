@@ -14,6 +14,19 @@
     color: #d14;
 }
 
+.date-cell {
+    direction: ltr;
+    text-align: right;
+}
+.ltr-dir {
+    direction: ltr;
+}
+.thumb-img {
+    display: inline-block;
+    max-height: 350px;
+}
+
+
 .block-label {
     display: block;
     margin-bottom: 6px;

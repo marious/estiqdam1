@@ -26,6 +26,6 @@ class Dashboard extends MY_Controller
             }
             $_SESSION['public_site_language'] = $lang;
         }
-        redirect(site_url('/dashboard'));
+        redirect($_SERVER['HTTP_REFERER']);
     }
 }

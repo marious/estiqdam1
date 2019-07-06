@@ -26,6 +26,18 @@ body {
 
 }
 
+.item-slider .item{
+	height: 100vh !important;
+	background-repeat: no-repeat;
+	background-size: 100% 100% !important;
+	min-width: 100% !important;
+	display: inline-block;
+}
+
+.error {
+	color: red;
+}
+
 .center-image {
 	display: block;
 	margin: 0 auto;
@@ -1154,6 +1166,7 @@ section.contact {
 
 .contact-section input[type="text"],
 .contact-section input[type="tel"],
+.contact-section input[type="email"],
 .contact-section input[type="contact"] {
 	float: left;
 	width: 100%;

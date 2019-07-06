@@ -6,7 +6,7 @@
 
 <section class="campaigns-section">
     <div class="container">
-        <h2>Gloves</h2>
+        <h2><?= transText($product->name, get_current_front_lang()) ?></h2>
         <div class="row">
             <div class="col-md-12 col-sm-12">
                 <div class="detail-page">

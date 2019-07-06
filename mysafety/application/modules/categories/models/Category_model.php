@@ -25,12 +25,14 @@ class Category_model extends MY_Model
             'label' => 'lang:ar_description',
             'rules' => 'trim|required',
         ],
-        [
-            'field' => 'service_id',
-            'label' => 'lang:service',
-            'rules' => 'trim|required|callback__valid_service_id'
-        ]
+//        [
+//            'field' => 'service_id',
+//            'label' => 'lang:service',
+//            'rules' => 'trim|required|callback__valid_service_id'
+//        ]
     ];
+
+    protected $timestamps = true;
 
 
     public function get_all_categories()
@@ -41,16 +43,14 @@ class Category_model extends MY_Model
        $columns[6] = 'categories.created_at';
 
 
-        $query = "SELECT categories.*, services.name AS service_name 
-                  FROM categories INNER JOIN services 
-                  ON services.id = categories.service_id";
+        $query = "SELECT categories.*
+                  FROM categories ";
 
           $binds = [];
           if (isset($_POST['search']['value']))
           {
               $query .= ' WHERE categories.name LIKE ? ';
               $query .= ' OR categories.slug LIKE ? ';
-              $query .= ' OR services.name LIKE ? ';
               $query .= ' OR categories.description LIKE ? ';
           }                  
 
@@ -76,7 +76,6 @@ class Category_model extends MY_Model
               $binds[] =  '%' . $search_value . '%';
               $binds[] =  '%' . $search_value . '%';
               $binds[] =  '%' . $search_value . '%';
-              $binds[] =  '%' . $search_value . '%';
           }
 
           if (isset($_POST['length']) && $_POST['length'] != -1)
@@ -99,7 +98,6 @@ class Category_model extends MY_Model
             $sub_array[] = $i;
             $sub_array[] = transText($row->name, 'en');
             $sub_array[] = transText($row->name, 'ar');
-            $sub_array[] = transText($row->service_name, 'en');
             $sub_array[] = shortDescrip(transText($row->description, 'en'), 25);
             $sub_array[] = shortDescrip(transText($row->description, 'ar'), 25);
             $sub_array[] = ($row->image) ? '<img src="'.site_url($row->image).'" width="80px" height="60px">' : '';
