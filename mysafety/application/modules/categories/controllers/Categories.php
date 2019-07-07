@@ -50,6 +50,7 @@ class Categories extends MY_Controller
             if ($product)
             {
                 $this->data['product'] = $product;
+                $this->data['page_header'] = transText($this->data['product']->slug, get_current_front_lang());
                 $this->public_template('product', $this->data);
             }
             else
