@@ -1532,6 +1532,10 @@ footer p {
 		float: left;
 	}
 
+	span.logo {
+		display: none;
+	}
+
 	.header-section-1 {
 
 	}
