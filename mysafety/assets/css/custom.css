@@ -26,7 +26,6 @@ body {
 
 }
 
-
 .error {
 	color: red;
 }
@@ -1488,6 +1487,7 @@ footer p {
 		background-repeat: no-repeat !important;
 		background-size: cover !important;
 		max-width: 100% !important;
+		display: none;
 	}
 
 	.detail-page img {
