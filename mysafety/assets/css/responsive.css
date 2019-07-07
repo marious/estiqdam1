@@ -1,0 +1,951 @@
+@media (max-width: 1366px) {
+    #banner .caption {
+        top: 60px;
+    }
+    .call-action .right-col {
+        padding: 50px 0 20px 0;
+    }
+}
+
+@media (max-width: 1280px) {
+    #nav li ul li>ul {
+        left: inherit;
+        right: 100%;
+    }
+    #banner .caption {
+        top: 50px;
+    }
+    .public-campaigns .owl-prev {
+        left: 0;
+    }
+    .public-campaigns .owl-next {
+        right: 0;
+    }
+    .call-action .right-col {
+        padding: 50px 0 20px 0;
+    }
+}
+
+@media (max-width: 767px) {
+    /*.header-section-1 .left-box {*/
+    /*margin-bottom: 10px;*/
+    /*}*/
+    .header-social {
+        /*float: left;*/
+    }
+    .top-search {
+        float: left;
+        margin-left: 0;
+        width: 277px;
+    }
+    strong.logo {
+        margin: 0 0 10px 0;
+    }
+    #nav li {
+        display: block;
+    }
+    #nav li ul,
+    #nav li ul li>ul {
+        position: static;
+        width: 100%;
+    }
+    #banner .caption {
+        top: 15px;
+    }
+    #banner .caption h1 {
+        font-size: 30px!important;
+    }
+    #banner .caption .holder,
+    #banner .caption .style-2 .holder,
+    .welcome-message .holder {
+        width: 100%;
+    }
+    #banner .caption em {
+        font-size: 22px;
+        line-height: 27px;
+        padding: 0 0 10px 0;
+    }
+    #banner .owl-dots {
+        right: 5px;
+    }
+    .welcome-message {
+        padding: 40px 0;
+    }
+    .welcome-message .holder:before,
+    .welcome-message .holder:after,
+    .welcome-message strong:before,
+    .welcome-message strong:after,
+    .testimonials-style-1 .holder:before,
+    .testimonials-style-1 blockquote:before {
+        display: none;
+    }
+    .public-campaigns .holder {
+        width: 100%;
+    }
+    .public-campaigns .owl-theme .owl-controls .owl-nav [class*="owl-"] {
+        display: none!important;
+    }
+    .public-campaigns {
+        margin-bottom: 40px;
+    }
+    .services-style-1 {
+        padding: 0;
+    }
+    .news-event-row {
+        padding: 0 0 40px 0;
+    }
+    .call-action .right-col .holder {
+        padding: 0;
+        text-align: center;
+    }
+    .fact-box {
+        float: none;
+        display: inline-block;
+        margin: 10px 6px;
+    }
+    .call-action .right-col {
+        padding: 50px 15px;
+    }
+    .emergency-number span {
+        font-size: 26px;
+        line-height: 60px;
+        text-align: center;
+        display: block;
+        width: 100%;
+    }
+    .emergency-number strong.number {
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        text-align: center;
+    }
+    .emergency-number {
+        margin: 0 0 40px 0;
+    }
+    .testimonials-style-1 .left-box {
+        width: 100%;
+        margin: 0;
+    }
+    .testimonials-style-1 blockquote {
+        width: 100%;
+        padding: 30px 15px 0 15px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+    }
+    .testimonials-style-1 .owl-next {
+        height: auto;
+        left: inherit;
+        right: 22px;
+    }
+    .testimonials-style-1 .owl-prev {
+        height: auto;
+    }
+    .testimonials-style-1 .owl-carousel .owl-item,
+    .testimonials-style-1,
+    #filter {
+        padding: 0;
+    }
+    #filter li {
+        margin: 5px;
+    }
+    .isotope .isotope-item {
+        width: 400px;
+    }
+    .img-responsive,
+    .thumbnail>img,
+    .thumbnail a>img,
+    .carousel-inner>.item>img,
+    .carousel-inner>.item>a>img,
+    .video-box img {
+        width: 100%;
+    }
+    .video-box .modal-dialog {
+        width: 100%;
+        margin: 0;
+    }
+    .video-section {
+        padding: 40px 0 0 0;
+    }
+    .contact-about .hold {
+        padding: 0 20px;
+    }
+    .footer-box {
+        margin-bottom: 35px;
+    }
+    .footer-section-1 {
+        padding: 50px 0 0 0;
+    }
+    .footer-section-2 strong.copyrights {
+        float: left;
+    }
+    .header-section-1,
+    .email-box {
+        /*display: none;*/
+    }
+    .email-box {
+        display: none;
+    }
+    .top-search {
+        width: 100%;
+    }
+    .campaigns-box {
+        margin-bottom: 30px;
+    }
+    .call-action-style-2 .holder {
+        width: 100%;
+    }
+    .campaigns-box h3 {
+        font-size: 18px!important;
+    }
+    .services-detail .left-box {
+        margin-bottom: 20px;
+    }
+    .services-detail .right-box .frame img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+    .services-detail {
+        padding-bottom: 0;
+    }
+    .campaigns-section .box {
+        margin-bottom: 40px;
+    }
+    .campaigns-section {
+        padding-bottom: 0;
+    }
+    .detail-page .frame img {
+        width: 100%;
+    }
+    .contact-section form {
+        padding: 0;
+    }
+    .comment-form {
+        margin-bottom: 30px;
+    }
+    .event-detail {
+        padding-bottom: 0;
+    }
+    .gallery-section {
+        padding-bottom: 40px;
+    }
+    .news-list .news-box .text-box {
+        float: left;
+        width: 100%;
+    }
+    .news-list .pagination-box {
+        margin-bottom: 30px;
+    }
+    .news-list {
+        padding-bottom: 0;
+    }
+    .news-section .pagination-box {
+        margin-bottom: 50px;
+    }
+    .news-space {
+        padding-bottom: 0;
+    }
+    .opration-space.video-section {
+        padding-bottom: 0;
+    }
+    .services-style-1.services-space {
+        padding: 110px 0 0 0;
+    }
+    .spacer {
+        width: 100%;
+    }
+    .team-detail-section .frame {
+        margin-bottom: 20px;
+    }
+    .awards-section {
+        padding: 0;
+    }
+    .team-detail-section {
+        padding-bottom: 0;
+    }
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+    .header-social {
+        /*float: left;*/
+    }
+    .navbar-inverse .navbar-toggle {
+        width: 100%;
+        margin: 10px auto 10px auto;
+    }
+    .navbar-inverse .navbar-toggle .icon-bar {
+        margin: 4px auto 0;
+    }
+    .navbar-header {
+        padding: 0 15px;
+    }
+    .testimonials-style-2 {
+        padding-bottom: 40px;
+    }
+    .team-detail-section {
+        padding: 140px 0 0 0;
+    }
+    .team-detail-section .frame {
+        margin-bottom: 20px;
+    }
+    .team-detail-section .text-box h2 {
+        font-size: 25px!important;
+    }
+    .awards-section {
+        padding: 0;
+    }
+    .team-section.team-space {
+        padding: 120px 0 50px 0;
+    }
+    .services-style-1.services-space {
+        padding: 110px 0 0 0;
+    }
+    .spacer {
+        width: 100%;
+    }
+    .opration-space.video-section {
+        padding-bottom: 0;
+    }
+    .news-section .pagination-box {
+        margin-bottom: 50px;
+    }
+    .news-space {
+        padding-bottom: 0;
+    }
+    .news-list .pagination-box {
+        margin-bottom: 30px;
+    }
+    .gallery-section {
+        padding-bottom: 40px;
+    }
+    .events-section .pagination-box {
+        margin: 50px 0 30px 0;
+    }
+    .events-section .thumb img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+    .events-section .thumb {
+        width: 100%;
+    }
+    .news-widget ul li .thumb {
+        width: auto;
+    }
+    .event-detail .event-box .text-box {
+        float: left;
+        width: 100%;
+    }
+    .event-detail .date-box {
+        margin: 0 0 15px 0;
+    }
+    .comment-form h2 {
+        font-size: 25px!important;
+    }
+    .comment-form {
+        margin-bottom: 30px;
+    }
+    .event-detail {
+        padding-bottom: 0;
+    }
+    .contact-section form {
+        padding: 0;
+    }
+    .detail-page .frame img {
+        width: 100%;
+    }
+    .campaigns-section .box h3 {
+        font-size: 22px!important;
+        clear: both;
+        overflow: hidden;
+    }
+    .campaigns-section .box {
+        margin-bottom: 30px;
+    }
+    .campaigns-section {
+        padding-bottom: 0;
+    }
+    .heading-row h2 {
+        font-size: 30px!important;
+    }
+    .services-menu ul li a {
+        font-size: 19px;
+    }
+    .services-menu {
+        margin-bottom: 20px;
+    }
+    .services-detail {
+        padding-bottom: 0;
+    }
+    .services-style-2 .outer-box .text-box {
+        margin: 0;
+        padding: 20px 0 0 0;
+        text-align: center;
+    }
+    .services-style-2 {
+        padding: 0;
+    }
+    .call-action-style-2 .holder {
+        width: 100%;
+    }
+    .call-action-style-2 .holder h2 {
+        font-size: 26px;
+    }
+    .video-bg {
+        margin-bottom: 30px;
+    }
+    .services-style-2 .outer-box .text-outer {
+        padding: 20px;
+    }
+    .services-style-2 .outer-box .round-frame {
+        margin: 0;
+        float: none;
+        display: inline-block;
+    }
+    #inner-banner em {
+        margin: 0 0 54px 0;
+    }
+    .campaigns-box {
+        margin-bottom: 30px;
+    }
+    .header-section-1,
+    .email-box {
+        /*display: none;*/
+    }
+    .email-box {
+        display: none;
+    }
+    strong.logo {
+        margin: 0 0 20px 0;
+    }
+    .dial-box,
+    #banner .caption .style-2 .holder,
+    #banner .caption .holder,
+    .welcome-message .holder,
+    .public-campaigns .holder {
+        width: 100%;
+    }
+    .top-search {
+        width: 100%;
+        margin-right: 0;
+    }
+    #nav li {
+        display: block;
+    }
+    #nav li ul,
+    #nav li ul li>ul {
+        position: static;
+        width: 100%;
+    }
+    #banner .caption {
+        top: 10px;
+    }
+    #banner .caption h1 {
+        font-size: 16px!important;
+        margin-bottom: 5px;
+    }
+    #banner .caption em {
+        font-size: 12px;
+        line-height: 16px;
+    }
+    #banner .caption a.btn-style-1,
+    .welcome-message .holder:after,
+    .welcome-message .holder:before,
+    .welcome-message strong:after,
+    .welcome-message strong:before,
+    .testimonials-style-1 blockquote:before,
+    .testimonials-style-1 .holder:before,
+    .public-campaigns .owl-theme .owl-controls .owl-nav [class*="owl-"] {
+        display: none;
+    }
+    .public-campaigns .owl-theme .owl-controls .owl-nav [class*="owl-"] {
+        display: none!important;
+    }
+    #banner .owl-dots {
+        right: 2px;
+    }
+    .welcome-message,
+    .public-campaigns .holder,
+    .filterable-gallery,
+    .video-section {
+        padding: 40px 0;
+    }
+    .welcome-message strong {
+        font-size: 22px;
+    }
+    .campaigns-box h3 {
+        font-size: 22px!important;
+    }
+    .public-campaigns .holder h2,
+    .services-style-1 h2,
+    .team-section h2,
+    .testimonials-style-1 h2,
+    .filterable-gallery h2,
+    .video-section h2,
+    .services-style-2 h2 {
+        font-size: 27px!important;
+    }
+    .public-campaigns,
+    .emergency-number {
+        margin-bottom: 40px;
+    }
+    .services-style-1,
+    .team-section {
+        padding: 0;
+    }
+    .heading-col {
+        padding: 15px;
+    }
+    .heading-col h2 {
+        font-size: 19px!important;
+        line-height: 30px;
+    }
+    .news-box .thumb {
+        width: 100%;
+        margin: 0 0 10px 0;
+    }
+    .news-box .text-box {
+        float: left;
+        width: 100%;
+        margin: 0;
+    }
+    .news-box .text-box h3 {
+        font-size: 20px!important;
+    }
+    .detail-row ul li em {
+        font-size: 12px;
+    }
+    .detail-row ul li {
+        padding: 0 10px 8px 0;
+    }
+    .event-box .text-box h3 {
+        font-size: 19px!important;
+    }
+    .news-event-row {
+        padding: 0 0 40px 0;
+    }
+    .call-action .left-col {
+        padding: 35px 15px;
+    }
+    .call-action .left-col .holder {
+        width: 100%;
+    }
+    .call-action .left-col .holder strong {
+        font-size: 23px;
+    }
+    .call-action .right-col {
+        padding: 30px 15px;
+    }
+    .call-action .right-col .holder {
+        padding: 0;
+        text-align: center;
+        display: block;
+    }
+    .fact-box {
+        float: none;
+        display: inline-block;
+        margin: 3px 1px;
+        width: 135px;
+    }
+    .fact-box strong.number {
+        font-size: 34px;
+    }
+    .emergency-number strong.number {
+        margin: 0 0 10px 0;
+        padding: 0;
+        width: 100%;
+        text-align: center;
+    }
+    .emergency-number span {
+        font-size: 25px;
+        line-height: 35px;
+        padding-bottom: 10px;
+    }
+    .testimonials-style-1 .left-box {
+        margin: 0;
+        width: 100%;
+    }
+    .testimonials-style-1 blockquote {
+        width: 100%;
+        padding: 20px 15px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+    }
+    .testimonials-style-1 .owl-carousel .owl-item,
+    .testimonials-style-1,
+    #filter,
+    .contact-about .hold {
+        padding: 0;
+    }
+    .testimonials-style-1 .owl-next,
+    .testimonials-style-1 .owl-prev {
+        height: auto;
+    }
+    #filter li {
+        margin: 4px;
+    }
+    .img-responsive,
+    .thumbnail>img,
+    .thumbnail a>img,
+    .carousel-inner>.item>img,
+    .carousel-inner>.item>a>img,
+    .video-box img,
+    .isotope .isotope-item {
+        width: 100%;
+    }
+    .video-box .modal-dialog {
+        width: 100%;
+        margin: 0;
+    }
+    .video-box iframe {
+        height: 220px;
+    }
+    .footer-box {
+        margin-bottom: 30px;
+    }
+    .footer-section-1 {
+        padding: 50px 0 0 0;
+    }
+    .footer-section-2 strong.copyrights {
+        line-height: 18px;
+        padding-bottom: 10px;
+    }
+    .footer-social {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .testimonials-style-1 .owl-next {
+        left: inherit;
+        right: 22px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 992px) {
+    /*.header-section-1 .left-box {*/
+    /*width: 458px;*/
+    /*}*/
+    .team-section.team-space .team-outer {
+        margin-bottom: 50px;
+    }
+    .spacer {
+        width: 100%;
+    }
+    .instagram-widget ul li {
+        width: 105px;
+    }
+    .campaigns-section {
+        padding-bottom: 0;
+    }
+    .event-modren .event-box .outer {
+        float: left;
+        width: 100%;
+    }
+    .contact-section form {
+        padding: 0;
+    }
+    .heading-row h2 {
+        font-size: 30px!important;
+    }
+    .services-menu ul li a {
+        font-size: 19px;
+    }
+    .services-detail .right-box .frame img {
+        width: 100%;
+        height: auto;
+    }
+    .services-detail {
+        padding-bottom: 0;
+    }
+    .services-style-2 .outer-box .text-box {
+        margin: 0;
+        text-align: center;
+        padding: 20px;
+    }
+    .services-style-2 .outer-box .text-outer {
+        padding: 10px 0 0 0;
+    }
+    .services-style-2 .outer-box .round-frame {
+        margin: 0;
+        float: none;
+        display: inline-block;
+    }
+    /*.header-section-1 .left-box strong.title {*/
+    /*padding: 0 0 10px 0;*/
+    /*}*/
+    .header-social {
+        /*margin: 26px 0 0 0;*/
+    }
+    .top-search {
+        float: left;
+        width: 277px;
+        margin: 24px 0 0 0;
+    }
+    .email-box {
+        margin: 28px 0 0 0;
+        position: relative;
+        right: -222px;
+    }
+    #nav li a {
+        font-size: 13px;
+        padding: 15px;
+    }
+    #nav li ul {
+        left: inherit;
+        right: 0;
+    }
+    #nav li ul li>ul {
+        left: inherit;
+        right: 100%;
+    }
+    #banner .caption {
+        top: 15px;
+    }
+    #banner .caption h1 {
+        font-size: 43px!important;
+        margin: 0 0 5px 0;
+    }
+    #banner .caption .style-2 .holder,
+    #banner .caption .holder {
+        width: 100%;
+    }
+    #banner .caption em {
+        padding: 0 0 15px 0;
+    }
+    .welcome-message .holder:before,
+    .welcome-message .holder:after,
+    .welcome-message .holder strong:before,
+    .welcome-message .holder strong:after,
+    .testimonials-style-1 blockquote:before,
+    .testimonials-style-1 .holder:before {
+        display: none;
+    }
+    .welcome-message .holder,
+    .public-campaigns .holder {
+        width: 100%;
+    }
+    .welcome-message {
+        padding: 50px 0;
+    }
+    .public-campaigns .owl-theme .owl-controls .owl-nav [class*="owl-"] {
+        display: none!important;
+    }
+    .public-campaigns {
+        margin-bottom: 40px;
+    }
+    .services-box {
+        padding: 30px 13px;
+    }
+    .heading-col h2 {
+        font-size: 23px;
+        line-height: 30px;
+    }
+    .news-box .thumb {
+        width: 100%;
+        margin: 0 0 15px 0;
+    }
+    .news-box .text-box {
+        margin: 0;
+        float: left;
+        width: 100%;
+    }
+    .event-box .text-box a.address {
+        font-size: 12px;
+    }
+    .detail-row ul li em {
+        font-size: 11px;
+    }
+    .detail-row ul li {
+        padding: 0 10px 8px 0;
+    }
+    .event-box .text-box h3 {
+        font-size: 20px!important;
+    }
+    .call-action .right-col .holder {
+        padding: 0;
+        text-align: center;
+    }
+    .call-action .right-col {
+        padding: 50px;
+    }
+    .fact-box {
+        float: none;
+        display: inline-block;
+        margin: 10px;
+    }
+    .emergency-number span {
+        font-size: 18px;
+        line-height: 100px;
+    }
+    .emergency-number strong.number {
+        font-size: 60px;
+        line-height: 100px;
+    }
+    .emergency-number {
+        margin-bottom: 40px;
+    }
+    .team-outer {
+        margin: 0;
+    }
+    .testimonials-style-1 blockquote {
+        width: 385px;
+        padding: 30px 0 0 0;
+    }
+    .testimonials-style-1 blockquote em {
+        font-size: 19px;
+        line-height: 26px;
+    }
+    .testimonials-style-1 .left-box {
+        margin: 40px 30px 0 0;
+    }
+    .testimonials-style-1 {
+        padding: 0;
+    }
+    #filter li {
+        margin: 5px;
+    }
+    .video-box .modal-dialog {
+        width: 100%;
+        margin: 0;
+    }
+    .video-section .box h3 {
+        font-size: 18px!important;
+    }
+    .video-box img {
+        width: 100%;
+    }
+    .video-section {
+        padding: 40px 0 0 0;
+    }
+    .footer-box {
+        margin-bottom: 40px;
+    }
+    .footer-section-1 {
+        padding: 50px 0 0 0;
+    }
+    .footer-section-2 strong.copyrights {
+        font-size: 12px;
+    }
+}
+
+@media (min-width: 993px) and (max-width: 1199px) {
+    /*.header-section-1 .left-box em {*/
+    /*font-size: 12px;*/
+    /*}*/
+    .email-box {
+        display: none;
+    }
+    .heading-row h2 {
+        font-size: 30px;
+    }
+    .services-menu ul li a {
+        font-size: 19px;
+    }
+    #nav li ul li>ul {
+        left: inherit;
+        right: 100%;
+    }
+    #banner .caption {
+        top: 30px;
+    }
+    #banner .caption h1 {
+        font-size: 50px!important;
+    }
+    #banner .owl-dots {
+        right: 20px;
+    }
+    .welcome-message {
+        padding: 50px 0;
+    }
+    .welcome-message .holder:before,
+    .welcome-message .holder:after,
+    .welcome-message strong:before,
+    .welcome-message strong:after {
+        display: none;
+    }
+    .welcome-message .holder,
+    .public-campaigns .holder {
+        width: 100%;
+    }
+    .public-campaigns .owl-prev {
+        left: 0;
+    }
+    .public-campaigns .owl-next {
+        right: 0;
+    }
+    .services-box {
+        padding: 30px 13px;
+    }
+    .services-box .text-box h3 {
+        font-size: 20px!important;
+    }
+    .detail-row ul li {
+        padding: 0 10px 8px 0;
+    }
+    .detail-row ul li em {
+        font-size: 10px;
+    }
+    .news-event-row {
+        padding: 0 0 10px 0;
+    }
+    .call-action .left-col {
+        padding: 130px 0 129px 0;
+    }
+    .call-action .left-col .holder {
+        width: 100%;
+        padding: 0 15px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+    }
+    .call-action .right-col .holder {
+        padding: 0;
+        text-align: center;
+    }
+    .fact-box {
+        display: inline-block;
+        float: none;
+        margin: 5px;
+    }
+    .call-action .right-col {
+        padding: 50px 15px;
+    }
+    .emergency-number span {
+        font-size: 26px;
+    }
+    .testimonials-style-1 blockquote {
+        width: 545px;
+    }
+    .testimonials-style-1 blockquote:before {
+        display: none;
+    }
+    .video-section .box h3 {
+        font-size: 19px!important;
+    }
+    .video-section {
+        padding: 50px 0 20px 0;
+    }
+    .footer-box h3 {
+        font-size: 20px;
+    }
+    .news-widget ul li .text-col a {
+        line-height: 16px;
+    }
+    .news-widget ul li .text-col span {
+        padding-bottom: 5px;
+    }
+    .campaigns-section .box h3 {
+        font-size: 22px!important;
+        clear: both;
+        overflow: hidden;
+    }
+    .instagram-widget ul li {
+        width: 101px;
+    }
+    .instagram-widget ul li img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+}

@@ -1,7 +1,7 @@
 @font-face {
     font-family: 'avenir';
-      src: url('../fonts/avenir.otf');
-  }
+    src: url('../fonts/avenir.otf');
+}
 html {
     position: relative;
     min-height: 100%;
@@ -17,6 +17,7 @@ body {
 .title {
     color: #0f4680;
 }
+
 #wrapper {
     width: 100%;
 }
@@ -25,15 +26,8 @@ body {
     margin-bottom: -50px;
     min-height: 100%;
 }
-.item-slider {
-}
-.item-slider .item{
-    height: 100vh !important;
-    background-repeat: no-repeat;
-    background-size: 100% 100% !important;
-    min-width: 100% !important;
-    display: inline-block;
-}
+
+
 
 .error {
     color: red;
@@ -1456,7 +1450,6 @@ section.contact {
     color: #fff;
 }
 
-
 /* footer */
 footer {
     margin-top: 40px;
@@ -1477,6 +1470,74 @@ footer p {
     position: relative;
 
 }
+
+.arDir{
+    float: right !important;
+}
+
+.arDir2{
+    float: right !important;
+}
+
+@media only screen and (min-width: 769px) {
+    .item-slider .item{
+        height: 100vh !important;
+        background-repeat: no-repeat;
+        background-size: 100% 100% !important;
+        min-width: 100% !important;
+        display: inline-block;
+    }
+}
+
+
+@media only screen and (max-width: 768px) {
+    .blog .image-holder {
+        float: none;
+        clear: both;
+        min-width: 100%;
+        margin: 0 auto 10px auto;
+    }
+
+    .blog .text {
+        float: none;
+        width: 100%;
+        clear: both;
+    }
+
+    .inner-banner {
+        background-position: center center;
+        background-repeat: no-repeat !important;
+        background-size: cover !important;
+        max-width: 100% !important;
+    }
+
+    .detail-page img {
+        max-width: 100%;
+    }
+    .detail-page {
+        max-width: 100%;
+    }
+    .campaigns-section .box {
+        max-width: 100%;
+    }
+
+    .campaigns-section .box .frame {
+        max-width: 100%;
+    }
+
+    .campaigns-section .box .frame img {
+        height: 200px;
+        max-width: 80%;
+    }
+    .row {
+        margin-left: 0;
+    }
+    .campaigns-section {
+    }
+
+}
+
+
 
 @media only screen and (max-width: 500px) {
 
@@ -1532,4 +1593,7 @@ footer p {
         padding: 15px 20px 20px;
     }
 
+
 }
+
+
