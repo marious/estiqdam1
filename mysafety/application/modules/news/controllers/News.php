@@ -17,16 +17,18 @@ class News extends MY_Controller
 
     public function item($slug = false)
     {
-        if ($slug) 
+        if ($slug)
         {
             $slug = urldecode($slug);
             $news = $this->News_model->get_news_by_slug($slug);
-            if ($news) 
+            if ($news)
             {
                 $this->data['news'] = $news;
+                $this->data['page_header'] = transText($this->data['news']->slug, get_current_front_lang());
+
                 $this->public_template('news_item', $this->data);
             }
-            else 
+            else
             {
                 redirect('page/news');
 
