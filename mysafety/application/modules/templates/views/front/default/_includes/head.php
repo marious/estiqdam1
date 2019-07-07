@@ -30,7 +30,8 @@
   <link rel="stylesheet" href="https://cdn.rawgit.com/morteza/bootstrap-rtl/v3.3.4/dist/css/bootstrap-rtl.min.css">
   <link rel="stylesheet" href="<?= site_url('assets/css/custom_ar.css?v=') . filemtime(FCPATH . '/assets/css/custom_ar.css') ?>">
   <?php endif; ?>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="<?= site_url('assets/css/responsive.css'); ?>">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
   
