@@ -25,82 +25,82 @@ if (isset($_GET['account']) && $_GET['account'] != '') {
     <h1 class="page-header">Select Account To get it's Tweets</h1>
     <div>
         <form class="form-horizontal" method="get">
-            <div class="form-group">
-                <label  for="" class="control-label col-md-2 col-md-pull-1">Accounts</label>
+           <div class="form-group">
+               <label  for="" class="control-label col-md-2 col-md-pull-1">Accounts</label>
                 <div class="col-md-4">
                     <select name="account" class="form-control" id="accounts-list">
                         <option value="">-- Select Account --</option>
                         <?php if ($users && count($users)): ?>
-                            <?php foreach ($users as $user): ?>
+                        <?php foreach ($users as $user): ?>
                                 <?php
-                                $selected = '';
-                                if (isset($_GET['account']) && $_GET['account'] == $user['id']) {
-                                    echo 'hi';
-                                    $selected = 'selected';
-                                }
+                                    $selected = '';
+                                    if (isset($_GET['account']) && $_GET['account'] == $user['id']) {
+                                        echo 'hi';
+                                        $selected = 'selected';
+                                    }
                                 ?>
                                 <option value="<?= $user['id']; ?>" <?= $selected; ?> > <?= $user['name']; ?></option>
-                            <?php endforeach; ?>
+                        <?php endforeach; ?>
                             <option value="789861407319810048">مكتب السلام للاستقدام</option>
                             <option value="826455004886212608">رجل السلام</option>
                         <?php endif; ?>
                     </select>
                 </div>
-                <div class="col-md-4">
-                    <button type="submit" class="btn btn-primary">Get Tweets</button>
-                    <button type="button" class="btn btn-primary" id="make-tweet">Make Tweet</button>
-                </div>
-            </div>
+               <div class="col-md-4">
+                   <button type="submit" class="btn btn-primary">Get Tweets</button>
+                   <button type="button" class="btn btn-primary" id="make-tweet">Make Tweet</button>
+               </div>
+           </div>
         </form>
 
 
-        <?php if (isset($_GET['account']) && $_GET['account'] != ''): ?>
-            <div class="col-md-12">
-                <table class="table table-bordered table-striped">
-                    <tr>
-                        <th width="50%">Tweet</th>
-                        <th>Tweet Time</th>
-                        <th>Tweet Retweets</th>
-                        <th>Tweet Favourites</th>
-                        <th width="20%">Action</th>
-                    </tr>
-                    <?php if ($tweets && count($tweets)): ?>
-                        <?php foreach ($tweets as $tweet): ?>
-                            <tr>
-                                <td><?php echo $tweet->text; ?></td>
-                                <td><?php echo date('d M, Y g:i A', strtotime($tweet->created_at)); ?></td>
-                                <td>
-                                    <?php
-                                    if (isset($tweet->retweeted_status)) {
-                                        echo $tweet->retweeted_status->retweet_count;
-                                    } else {
-                                        echo $tweet->retweet_count;
-                                    }
-                                    ?>
-                                </td>
-                                <td>
-                                    <?php
-                                    if (isset($tweet->retweeted_status)) {
-                                        echo $tweet->retweeted_status->favorite_count;
-                                    } else {
-                                        echo $tweet->favorite_count;
-                                    }
-                                    ?>
-                                </td>
-                                <td>
-                                    <button data-tweet-id="<?= $tweet->id_str; ?>"
-                                            data-screen-name="<?= $tweet->user->screen_name; ?>"
-                                            type="button"
-                                            class="btn btn-success make-action">Perform Action</button>
+       <?php if (isset($_GET['account']) && $_GET['account'] != ''): ?>
+           <div class="col-md-12">
+               <table class="table table-bordered table-striped">
+                   <tr>
+                       <th width="50%">Tweet</th>
+                       <th>Tweet Time</th>
+                       <th>Tweet Retweets</th>
+                       <th>Tweet Favourites</th>
+                       <th width="20%">Action</th>
+                   </tr>
+                   <?php if ($tweets && count($tweets)): ?>
+                   <?php foreach ($tweets as $tweet): ?>
+                       <tr>
+                           <td><?php echo $tweet->text; ?></td>
+                           <td><?php echo date('d M, Y g:i A', strtotime($tweet->created_at)); ?></td>
+                           <td>
+                               <?php
+                               if (isset($tweet->retweeted_status)) {
+                                   echo $tweet->retweeted_status->retweet_count;
+                               } else {
+                                   echo $tweet->retweet_count;
+                               }
+                               ?>
+                           </td>
+                           <td>
+                               <?php
+                                if (isset($tweet->retweeted_status)) {
+                                    echo $tweet->retweeted_status->favorite_count;
+                               } else {
+                                    echo $tweet->favorite_count;
+                                }
+                                ?>
+                           </td>
+                           <td>
+                              <button data-tweet-id="<?= $tweet->id_str; ?>"
+                                      data-screen-name="<?= $tweet->user->screen_name; ?>"
+                                      type="button"
+                                      class="btn btn-success make-action">Perform Action</button>
 
-                                    <a href="<?= URL_ROOT . '/admin/handy/delete_tweet.php?tweet_id=' . $tweet->id_str . '&user_id=' . $tweet->user->id_str;  ?>"
-                                       class="btn btn-danger delete-btn">Delete</a>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </table>
-            </div>
+                               <a href="<?= URL_ROOT . '/admin/handy/delete_tweet.php?tweet_id=' . $tweet->id_str . '&user_id=' . $tweet->user->id_str;  ?>"
+                                  class="btn btn-danger delete-btn">Delete</a>
+                           </td>
+                       </tr>
+                   <?php endforeach; ?>
+                   <?php endif; ?>
+               </table>
+           </div>
         <?php endif; ?>
 
     </div>
@@ -135,10 +135,10 @@ if (isset($_GET['account']) && $_GET['account'] != '') {
                     <div class="form-group">
                         <label for="" class="control-label">Account</label><br>
                         <?php if ($users && count($users)): ?>
-                            <?php foreach ($users as $user): ?>
-                                <label>
-                                    <input type="checkbox" name="accounts[]" value="<?= $user['id'] ?>"> <?= $user['name']; ?>
-                                </label><br>
+                        <?php foreach ($users as $user): ?>
+                            <label>
+                                <input type="checkbox" name="accounts[]" value="<?= $user['id'] ?>"> <?= $user['name']; ?>
+                            </label><br>
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </div>
@@ -201,12 +201,12 @@ if (isset($_GET['account']) && $_GET['account'] != '') {
                         </div>
                     </div>
 
-                    <div class="clearfix"></div>
+<div class="clearfix"></div>
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" name="accounts[]" id="account-2">
                     <input type="hidden" value="tweet" name="action">
-                    <!--                    <input type="hidden" name="screen_name" id="screen-name">-->
+<!--                    <input type="hidden" name="screen_name" id="screen-name">-->
                     <input type="submit" class="btn btn-success" value="Submit" />
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
@@ -230,11 +230,11 @@ include __DIR__ . '/../tpl/footer.php';
     $('#replay-container').hide();
 
     $('#action').on('change', function() {
-        if ($(this).val() == 'replay') {
-            $('#replay-container').show();
-        }  else {
-            $('#replay-container').hide();
-        }
+       if ($(this).val() == 'replay') {
+           $('#replay-container').show();
+       }  else {
+           $('#replay-container').hide();
+       }
     });
 
     $(document).on('click', '.make-action', function(e) {
@@ -247,7 +247,7 @@ include __DIR__ . '/../tpl/footer.php';
     });
 
     $(document).on('submit', '#tweet-form', function(e) {
-        e.preventDefault();
+       e.preventDefault();
         $.ajax({
             url: "<?php echo URL_ROOT . 'admin/handy/make_action.php'; ?>",
             method: "POST",

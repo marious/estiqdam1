@@ -2,9 +2,16 @@
 use MyApp\Libs\Helper;
 
 require __DIR__ . '/../includes/setup.php';
+require __DIR__ . '/functions.php';
+
+$db = DB::connect();
+$query = "SELECT * FROM scheduled_tweets";
+$stmt = $db->prepare($query);
+$stmt->execute();
+$tweets = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
-$assets = Helper::getDataTablesAssets();
+//$assets = Helper::getDataTablesAssets();
 $assets['css'][] = 'bootstrap-datetimepicker.min.css';
 $assets['js'][] = 'moment-with-locales.min.js';
 $assets['js'][] = 'bootstrap-datetimepicker.min.js';
@@ -37,24 +44,47 @@ if (Helper::isAjax()) {
         <div class="panel-heading fs-18"><span class="fa fa-twitter fa-fw"></span> Schedule Tweets </div>
         <div class="panel-body">
 
-            <?php if (\MyApp\Libs\Session::exists('success')): ?>
+            <?php if (isset($_SESSION['success'])): ?>
                 <div class="alert alert-success">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <?php echo \MyApp\Libs\Session::flash('success'); ?>
+                    <?php echo $_SESSION['success']; unset($_SESSION['success']);?>
                 </div>
             <?php endif; ?>
 
-            <div><a href="#" class="btn btn-primary" data-toggle="modal" data-target="#createTwittModal" id="create_tweet">New Tweet</a></div>
+            <div><a href="<?= URL_ROOT . '/admin/new_schedule_tweet.php'; ?>" class="btn btn-primary">New Schedule Tweet Tweet</a></div>
             <br>
             <table class="table table-bordered table-striped" id="scheduled_tweets">
                 <thead>
                 <tr>
-                    <th>Tweet Time</th>
+                    <th width="4%">No.</th>
                     <th>Tweet Content</th>
-                    <th>Attachment</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
+                    <th>Tweet Time</th>
+                    <th>Twitter Account</th>
+<!--                    <th>Attachment</th>-->
+                    <th>Actions</th>
                 </tr>
+                <?php if (is_array($tweets) && count($tweets)): ?>
+                <?php $i = 1; foreach ($tweets as $tweet): ?>
+                    <tr>
+                        <td><?= $i; ?></td>
+                        <td><?= $tweet['tweet_content']; ?></td>
+                        <td><?= date('d-m-Y H:i g', $tweet['time_to_post']); ?></td>
+                        <td>
+                            <?php
+                            $account = get_account_by_id($db, $tweet['owner_id']);
+                            if ($account) {
+                                echo $account['name'];
+                            }
+                            ?>
+                        </td>
+<!--                        <td></td>-->
+                        <td>
+                            <a href="<?= URL_ROOT . '/admin/update_schedule_tweet.php?schedule_id=' . $tweet['id'] ?>" class="btn btn-primary btn-sm">Update</a>
+                            <a href="<?= URL_ROOT . '/admin/delete_schedule_tweet.php?schedule_id=' . $tweet['id']; ?>" class="btn btn-sm btn-danger delete-btn">Delete</a>
+                        </td>
+                    </tr>
+                <?php $i++; endforeach; ?>
+                <?php endif; ?>
                 </thead>
             </table>
 

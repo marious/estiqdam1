@@ -1,4 +1,4 @@
-<?php
+<?php 
 include __DIR__ . '/../../includes/setup.php';
 
 $group_id = trim($_POST['group_id']);

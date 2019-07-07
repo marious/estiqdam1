@@ -1,4 +1,4 @@
-<?php
+<?php 
 include __DIR__ . '/../../includes/setup.php';
 $db = DB::connect();
 $stmt = $db->prepare('DELETE FROM groups WHERE id = :id');

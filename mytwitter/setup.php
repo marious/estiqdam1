@@ -1,7 +1,7 @@
 <?php
 session_start();
-ini_set('display_errors', 'Off');
-//date_default_timezone_set('Africa/Cairo');
+
+date_default_timezone_set('Africa/Cairo');
 
 require dirname(__FILE__) . '/config.php';
 require dirname(__FILE__) . '/autoload.php';

@@ -11,6 +11,9 @@
         <script src="<?php echo URL_ROOT . 'assets/js/' . $js; ?>"></script>
     <?php endforeach; ?>
 <?php endif; ?>
+<?php if (isset($xeditable)): ?>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+<?php endif; ?>
 <script>
     $(document).on('click', '.delete-img, .delete-btn', function(e) {
         e.preventDefault();

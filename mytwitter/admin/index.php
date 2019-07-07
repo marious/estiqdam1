@@ -28,21 +28,21 @@ $users = $userModel->getAll();
 
     <table class="table table-bordered table-striped">
         <thead>
-        <tr>
-            <th width="4%">#</th>
-            <th width="12%">Username</th>
-            <th width="12%">Name</th>
-            <th>Password</th>
-            <th width="2%">Following</th>
-            <th width="2%">Followers</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Proxy</th>
-            <th>Action</th>
-        </tr>
+            <tr>
+                <th width="4%">#</th>
+                <th width="12%">Username</th>
+                <th width="12%">Name</th>
+                <th>Password</th>
+                <th width="2%">Following</th>
+                <th width="2%">Followers</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Proxy</th>
+                <th>Action</th>
+            </tr>
         </thead>
         <?php if ($users && count($users)): ?>
-            <tbody>
+        <tbody>
             <?php $i = 1; foreach ($users as $user): ?>
                 <tr>
                     <td><?= $i; ?></td>
@@ -65,49 +65,49 @@ $users = $userModel->getAll();
 
                     </td>
                 </tr>
-                <?php $i++; endforeach; ?>
-            </tbody>
+            <?php $i++; endforeach; ?>
+        </tbody>
         <?php endif; ?>
     </table>
 </div>
 
 
-<div id="userModal" class="modal fade">
-    <div class="modal-dialog">
-        <form method="post" id="user_form" enctype="multipart/form-data">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Update User</h4>
+    <div id="userModal" class="modal fade">
+        <div class="modal-dialog">
+            <form method="post" id="user_form" enctype="multipart/form-data">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Update User</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Proxy Server</label>
+                            <input type="text" name="proxy" id="proxy_user" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Email</label>
+                            <input type="email" name="email" class="form-control" id="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Password</label>
+                            <input type="text" name="password" class="form-control" id="password">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="text" name="phone" class="form-control" id="phone">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" name="user_id" id="user_id" />
+                        <input type="hidden" name="operation" id="operation" />
+                        <input type="submit" name="action" id="action" class="btn btn-success" value="Add" />
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label>Proxy Server</label>
-                        <input type="text" name="proxy" id="proxy_user" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="">Email</label>
-                        <input type="email" name="email" class="form-control" id="email">
-                    </div>
-                    <div class="form-group">
-                        <label for="">Password</label>
-                        <input type="text" name="password" class="form-control" id="password">
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Phone</label>
-                        <input type="text" name="phone" class="form-control" id="phone">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <input type="hidden" name="user_id" id="user_id" />
-                    <input type="hidden" name="operation" id="operation" />
-                    <input type="submit" name="action" id="action" class="btn btn-success" value="Add" />
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
-</div>
 
 <?php
 $edit_script = true;
@@ -120,18 +120,18 @@ $edit_script = true;
         var proxy = $('#proxy_user').val();
         var user_id = $('#user_id').val();
         // if (proxy != '') {
-        $.ajax({
-            url: "<?php echo URL_ROOT . 'admin/ajax/update_proxy.php' ?>",
-            method: "POST",
-            data: new FormData(this),
-            contentType: false,
-            processData: false,
-            success: function(data) {
-                $('#user_form')[0].reset();
-                $('#userModal').hide();
-                location.reload(true);
-            }
-        });
+            $.ajax({
+                url: "<?php echo URL_ROOT . 'admin/ajax/update_proxy.php' ?>",
+                method: "POST",
+                data: new FormData(this),
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    $('#user_form')[0].reset();
+                    $('#userModal').hide();
+                    location.reload(true);
+                }
+            });
         // }
     });
 
