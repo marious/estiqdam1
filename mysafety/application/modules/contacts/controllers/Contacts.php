@@ -35,10 +35,10 @@ class Contacts extends MY_Controller
         {
             $data = [];
             $data['name'] = $this->input->post('name');
-            $data['email'] = $this->input->post('name');
+            $data['email'] = $this->input->post('email');
             $data['phone'] = $this->input->post('phone');
-            $data['subject'] = $this->input->post('name');
-            $data['message'] = $this->input->post('name');
+            $data['subject'] = $this->input->post('subject');
+            $data['message'] = $this->input->post('message');
             $data['created_at'] = date('Y-m-d H:i:s');
             $this->Contacts_model->save($data);
             $_SESSION['success'] = lang('success_contact_message');
