@@ -69,6 +69,7 @@ class Categories extends MY_Controller
 
     public function get_all()
     {
+        $this->db->order_by('created_at', 'DESC');
         return $this->Category_model->get();
     }
 

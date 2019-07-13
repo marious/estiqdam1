@@ -29,10 +29,10 @@
                         <div class="col-sm-2">
                             <select class="form-control select2" name="page_layout" style="width:300px;" onchange="showContentInputArea(this)" >
                                 <?php if (is_array($pages_layout) && count($pages_layout)): ?>
-                                <?php foreach ($pages_layout as $page_layout): ?>
-                                <option value="<?= $page_layout->id; ?>" <?php if ($page->page_layout == $page_layout->id) echo 'selected'; ?>><?= $page_layout->layout; ?></option>
-<?php endforeach; ?>
-<?php endif; ?>
+                                    <?php foreach ($pages_layout as $page_layout): ?>
+                                        <option value="<?= $page_layout->id; ?>" <?php if ($page->page_layout == $page_layout->id) echo 'selected'; ?>><?= $page_layout->layout; ?></option>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
                             </select>
                         </div>
                     </div>
@@ -56,17 +56,6 @@
                     </div>
 
 
-                    <div class="form-group">
-                        <label for="" class="col-sm-2 control-label">Active? </label>
-                        <div class="col-sm-6">
-                            <label class="radio-inline">
-                                <input type="radio" name="status" value="1" <?= set_radio('status', '1', true) ?> <?php if ($page->status == '1') echo 'checked'; ?>>Yes
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" name="status" value="0" <?= set_radio('status', '0') ?> <?php if($page->status == '0') echo 'checked'; ?>>No
-                            </label>
-                        </div>
-                    </div>
 
 
                     <div class="form-group">

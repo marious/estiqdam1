@@ -3,12 +3,20 @@ if ($('.wow').length) {
 }
 
 if ($('.categories-carousel').length) {
-  $('.categories-carousel, .news-carousel').owlCarousel({
-    autoplay: 4000,
-    items: 3,
-    itemsDesktop : [1199,3],
-    itemsDesktopSmall : [979,3],
-  });
+    $('.categories-carousel, .news-carousel').owlCarousel({
+        autoplay: 4000,
+        items: 3,
+        itemsDesktop : [1199,3],
+        itemsDesktopSmall : [979,3],
+    });
+
+    $('.clients-carousel').owlCarousel({
+        autoplay: 4000,
+        items: 6,
+        itemsDesktop : [1199,6],
+        itemsTablet: [768, 6],
+        itemsMobile: [479,4]
+    });
 }
 
 $('a[data-rel]').each(function() {

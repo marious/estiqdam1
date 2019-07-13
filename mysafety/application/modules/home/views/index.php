@@ -184,6 +184,51 @@ $sliders = Modules::run('slider/get_all');
 <!-- END News Section -->
 
 
+
+<!-- our clients -->
+<section class="news-v1 clients">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="heading wow fadeInUp">
+                    <h2><?= lang('our_clients') ?></h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+
+                <!-- News Carousel Start -->
+                <div class="clients-carousel">
+
+                    <?php
+                    $this->load->module('clients');
+                    $clients = $this->clients->Client_model->get();;
+
+                    if (is_array($clients) && count($clients))
+                        foreach ($clients as $client) {
+
+                            ?>
+                            <div class="item wow fadeInUp">
+                                <div class="thumb">
+                                    <div class="photo" style="background-image:url(<?php echo site_url($client->image) ?>); " ></div>
+                                </div>
+                            </div>
+                            <?php
+                        }
+
+                    ?>
+
+                </div>
+                <!-- News Carousel End -->
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- END News Section -->
+
 <!-- Contact Section -->
 <section class="contact">
     <div class="container">
