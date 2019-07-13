@@ -1,5 +1,5 @@
-<?php 
-class Slider extends MY_Controller 
+<?php
+class Slider extends MY_Controller
 {
 
     public function __construct()
@@ -55,7 +55,7 @@ class Slider extends MY_Controller
         $this->data['id'] = $id;
 
 
-            
+
 
         // Process the form 
         $this->load->library('form_validation');
@@ -65,16 +65,15 @@ class Slider extends MY_Controller
 
 
         // Upload the slider image
-        // only required on first adding not updating so we put $id == false
-        if (isset($_FILES['image']) && $_FILES['image'] != '' && $id == false)
+        if (isset($_FILES['image']) && $_FILES['image'] != '')
         {
-           
-            if ($file = $this->Slider_model->do_upload($this->Slider_model->upload_path, 'image')) {
+
+            if ($file = $this->Slider_model->do_upload($this->Slider_model->upload_path, 'image', [], false)) {
                 $data['image'] = substr($file['full_path'], strpos($file['full_path'], 'assets'));
             }
         }
 
-    
+
         if ($this->form_validation->run($this) == true)
         {
 
@@ -98,7 +97,7 @@ class Slider extends MY_Controller
         }
 
 
-        
+
 
 
         $this->admin_template('add', $this->data);
@@ -149,5 +148,5 @@ class Slider extends MY_Controller
 
 
 
-    
+
 }
