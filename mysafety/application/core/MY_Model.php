@@ -277,7 +277,7 @@ class MY_Model extends CI_Model
     //=========================================================================================
 
 
-    public function do_upload($upload_path = '', $file_name = 'image', $resize = [])
+    public function do_upload($upload_path = '', $file_name = 'image', $resize = [], $required = true)
     {
         if (empty($resize)) {
             $resize['width'] = 700;
@@ -295,9 +295,12 @@ class MY_Model extends CI_Model
 
         if (! $this->upload->do_upload($file_name))
         {
-            $error = ['error' => $this->upload->display_errors()];
-            $_SESSION['error'] = $error['error'];
-            return false;
+            if ($required) {
+                $error = ['error' => $this->upload->display_errors()];
+                $_SESSION['error'] = $error['error'];
+                return false;
+            }
+           return;
         }
 
         // upload was success
