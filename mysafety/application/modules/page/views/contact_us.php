@@ -77,7 +77,7 @@
                         <i class="fa fa-phone" aria-hidden="true"></i>
                         <div class="text-col">
                             <span><?= lang('head_branch') ?>:</span>
-                            <strong><?= setting('contact_phone') ?></strong>
+                            <strong class="ltr"><?= setting('contact_phone') ?></strong>
                         </div>
                     </li>
                     <li>
