@@ -2,3 +2,5 @@
 /.idea
 /application/config/config.php
 /mysafety/application/config/database.php
+/fanoos/application/config/database.php
+/fanoos/application/config/config.php
