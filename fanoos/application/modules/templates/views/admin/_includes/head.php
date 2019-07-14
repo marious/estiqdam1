@@ -21,7 +21,6 @@
   <link rel="stylesheet" href="<?= base_url() . '/assets/admin/'; ?>dist/css/skins/_all-skins.min.css">
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-    <link rel="stylesheet" href="<?= base_url().'/assets/admin/css/style.css'; ?>">
 
   <?php if (isset($css_file)): ?>
   <?php if (is_array($css_file)): ?>
@@ -32,5 +31,13 @@
   <link rel="stylesheet" href="<?= $css_file; ?>?v=<?= filemtime(FCPATH . '/' . substr($css_file, strpos($css_file, 'assets'))) ?>">
   <?php endif; ?>
   <?php endif; ?>
-  
+
+    <?php if (isset($css_cdn)): ?>
+    <?php foreach ($css_cdn as $file): ?>
+            <link rel="stylesheet" href="<?= $file; ?>">
+    <?php endforeach; ?>
+    <?php endif; ?>
+
+    <link rel="stylesheet" href="<?= base_url().'/assets/admin/css/style.css?v' . filemtime(FCPATH . '/'.'assets/admin/css/style.css'); ?>">
+
 </head>

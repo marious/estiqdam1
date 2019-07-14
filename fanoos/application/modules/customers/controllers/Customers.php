@@ -9,6 +9,21 @@ class Customers extends MY_Controller
         $this->load->module('general');
     }
 
+
+    public function get()
+    {
+
+        if (!isset($_POST['searchTerm']))
+        {
+            $this->db->limit(5);
+            $fetched_data = $this->Customer_model->get();
+        } else {
+            $search_term = trim($_POST['searchTerm']);
+            $fetched_data = $this->Customer_model->search('title', $search_term, 5);
+        }
+        echo json_encode($fetched_data);
+    }
+
     public function all()
     {
         $this->data['page_header'] = '<i class="fa fa-arrow-circle-o-right"></i> ' . lang('customers_info');
@@ -101,7 +116,7 @@ class Customers extends MY_Controller
         $id && is_numeric($id) || redirect('customers/all');
         $this->Customer_model->delete($id);
         $_SESSION['success_toastr'] = lang('success_delete');
-        $this->session->mark_as_flash('success');
+        $this->session->mark_as_flash('success_toastr');
         redirect('customers/all');
     }
 }

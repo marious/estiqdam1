@@ -72,52 +72,13 @@ class Customer_model extends MY_Model
 
     public function get_all()
     {
-        // For ordering
-        $columns = [];
-
-        $query = "SELECT * FROM customers";
-        $binds = [];
-        if (isset($_POST['search']['value']))
-        {
-            $query .= " WHERE title LIKE ? ";
-        }
-
-        if (isset($_POST['order']))
-        {
-            $query .= ' ORDER BY ' . $columns[$_POST['order'][0]['column']] . ' ' .
-                $_POST['order'][0]['dir'] . ' ';
-        }
-        else {
-            $query .= ' ORDER BY id  ';
-        }
-
-        $query1 = '';
-        if (isset($_POST['length']) && $_POST['length'] != -1)
-        {
-            $query1 .= ' LIMIT ' . $_POST['start'] . ', ' . $_POST['length'];
-        }
-        if (isset($_POST['search']['value']))
-        {
-            $search_value = trim($_POST['search']['value']);
-            $binds[] =  '%' . $search_value . '%';
-        }
-
-        if (isset($_POST['length']) && $_POST['length'] != -1)
-        {
-            $q = $this->db->query($query . ' ' . $query1, $binds);
-        }
-        else
-        {
-            $q = $this->db->query($query, $binds);
-        }
-
-        $q2 = $this->db->query($query, $binds);
-
-        $number_filter_row = $q2->num_rows();
-        $data = [];
+        $this->load->library('datatable');
+        $this->datatable->setQuery('SELECT * FROM customers');
+        $this->datatable->setSearchedValues(['title']);
+        $result = $this->datatable->getResult();
         $i = 1;
-
-        foreach ($q->result() as $row) {
+        $data = [];
+        foreach ($result as $row) {
             $sub_array = [];
             $sub_array[] = $i;
             $sub_array[] = $row->title;
@@ -126,15 +87,12 @@ class Customer_model extends MY_Model
             $data[] = $sub_array;
             $i++;
         }
-
-        $output = [
-            "draw" => intval($_POST['draw']),
-            "recordsTotal"  	=>  $this->get_customers_count(),
-            "recordsFiltered" 	=> $number_filter_row,
-            "data"    			=> $data,
-        ];
-        echo json_encode($output);
+        $count = $this->get_customers_count();
+        echo $this->datatable->output($data, $count);
     }
+
+
+
 
 
     public function get_customers_count()
@@ -142,5 +100,20 @@ class Customer_model extends MY_Model
         $query = "SELECT * FROM customers";
         $q = $this->db->query($query);
         return $q->num_rows();
+    }
+
+
+
+    public function search($search_keyword, $value, $limit = false)
+    {
+        $query = 'SELECT * FROM customers WHERE ' . $search_keyword . ' LIKE ?';
+        if ($limit) {
+            $query .= ' LIMIT ' . $limit;
+        }
+        $query = $this->db->query($query, ['%'.$value.'%']);
+        if ($query->num_rows()){
+            return $query->result();
+        }
+        return [];
     }
 }

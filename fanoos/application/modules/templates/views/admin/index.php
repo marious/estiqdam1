@@ -102,10 +102,10 @@
 
 
 <script>
+    $('.select2').select2();
   $('#confirm-delete').on('show.bs.modal', function(e) {
     $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
   });
-  $('.select2').select2()
 
   function showContentInputArea(elem) {
     if (elem.value == '1') {
@@ -116,6 +116,14 @@
   }
 </script>
 
+
+
+<?php if (isset($js_cdn)): ?>
+    <?php foreach ($js_cdn as $file): ?>
+        <script src="<?= $file ?>"></script>
+    <?php endforeach; ?>
+<?php endif; ?>
+
 <?php if (isset($js_file)): ?>
 <?php if (is_array($js_file)): ?>
 <?php foreach ($js_file as $file): ?>
@@ -125,6 +133,8 @@
 <script src="<?= $js_file; ?>?v=<?= filemtime(FCPATH . '/' . (substr($js_file, strpos($js_file, 'assets')))) ?>"></script>
 <?php endif; ?>
 <?php endif; ?>
+
+
 
 <?php if(isset($icheck) && $icheck == true): ?>
 <script>
@@ -153,7 +163,6 @@
 </script>
 <?php endif; ?>
 
-<?php if (isset($footer_script)){ echo $footer_script; }  ?>
 
 
 </body>

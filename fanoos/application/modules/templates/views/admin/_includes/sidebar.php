@@ -70,6 +70,21 @@
           </li>
 
 
+          <li class="treeview <?= is_sidebar_menu_active('transactions') ?>">
+              <a href="#"><i class="fa fa-dashboard"></i> <span><?= lang('transactions') ?></span>
+                  <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+              </a>
+              <ul class="treeview-menu">
+                  <li class="<?= is_tree_sidebar_menu_active('transactions', 'all'); ?>"><a href="<?= site_url('transactions/all'); ?>"><i class="fa fa-circle-o"></i> <?= lang('all_transactions'); ?></a></li>
+                  <li class="<?= is_tree_sidebar_menu_active('transactions', 'deposit'); ?>"><a href="<?= site_url('transactions/deposit'); ?>"><i class="fa fa-circle-o"></i> <?= lang('add_income'); ?></a></li>
+                  <li class="<?= is_tree_sidebar_menu_active('transactions', 'expense'); ?>"><a href="<?= site_url('transactions/expense'); ?>"><i class="fa fa-circle-o"></i> <?= lang('add_expense'); ?></a></li>
+                  <li class="<?= is_tree_sidebar_menu_active('transactions', 'transfer'); ?>"><a href="<?= site_url('transactions/transfer'); ?>"><i class="fa fa-circle-o"></i> <?= lang('add_transfer'); ?></a></li>
+              </ul>
+          </li>
+
+
       <?php if (in_array('show_users', $logged_in_user_permissions)): ?>
           <li class="treeview <?= is_sidebar_menu_active('users'); ?>">
               <a href="#"><i class="fa fa-user text-yellow"></i> <span><?= lang('users') ?></span>
@@ -102,24 +117,18 @@
 
 
 
-         
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-          <li class="<?= is_sidebar_menu_active('settings'); ?>"><a href="<?= site_url('settings') ?>"><i class="fa fa-gear"></i> <span><?= lang('settings') ?></span></a></li>
+          <li class="treeview <?= is_sidebar_menu_active('settings'); ?>">
+              <a href="#"><i class="fa fa-gear"></i> <span><?= lang('settings') ?></span>
+                  <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+                  <li class="<?= is_tree_sidebar_menu_active('settings', 'main'); ?>"><a href="<?= site_url('settings'); ?>"><i class="fa fa-circle-o"></i> <?= lang('main_settings'); ?></a></li>
+                  <li class="<?= is_tree_sidebar_menu_active('settings', 'expense_categories'); ?>"><a href="<?= site_url('settings/expense_categories'); ?>"><i class="fa fa-circle-o"></i> <?= lang('expense_categories'); ?></a></li>
+              </ul>
+          </li>
         
       </ul>
     </section>
