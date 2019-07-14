@@ -12,6 +12,14 @@ body {
 
 }
 
+.rtl {
+	direction: rtl;
+}
+
+.ltr {
+	direction: ltr;
+}
+
 .title {
 	color: #0f4680;
 }
