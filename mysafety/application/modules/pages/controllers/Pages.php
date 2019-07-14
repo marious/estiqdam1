@@ -84,7 +84,7 @@ class Pages extends MY_Controller
             $data['meta_keywords'] = trim($this->input->post('meta_keywords'));
             $data['meta_description'] = trim($this->input->post('meta_description'));
             $data['meta_title'] = trim($this->input->post('meta_title'));
-            $data['status'] = trim($this->input->post('status'));
+//            $data['status'] = trim($this->input->post('status'));
             $data['page_layout'] = $this->input->post('page_layout');
             $this->Page_model->save($data, $id);
             $_SESSION['success'] = $id ? lang('scucess_edit') : lang('success_add');
