@@ -10,7 +10,7 @@
         <form action="<?= site_url('contacts/add') ?>" method="post">
 
             <?php if ($this->session->flashdata('success')): ?>
-            <div class="alert alert-success"><?= lang('success_contact_message') ?></div>
+                <div class="alert alert-success"><?= lang('success_contact_message') ?></div>
             <?php endif; ?>
             <?php
             if ( $this->session->flashdata('errors')) {
@@ -53,7 +53,7 @@
     </div>
 </section>
 
-
+<div class="clearfix"></div>
 <!-- Contact Section -->
 <section class="contact">
     <div class="container">
