@@ -17,10 +17,10 @@
             <div class="header-social">
                 <span class="title"><?= lang('be_social'); ?></span>
                 <ul>
-                    <li><a href="<?= setting('facebook'); ?>"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                    <li><a href="<?= setting('twitter'); ?>"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                    <li><a href="<?= setting('youtube'); ?>"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></li>
-                    <li><a href="<?= setting('linkedin'); ?>"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                    <li><a href="<?= setting('facebook'); ?>" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                    <li><a href="<?= setting('twitter'); ?>" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                    <li><a href="<?= setting('youtube'); ?>" target="_blank"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></li>
+                    <li><a href="<?= setting('linkedin'); ?>" target="_blank"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
                 </ul>
             </div>
         </div><!-- ./container -->
