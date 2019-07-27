@@ -99,7 +99,7 @@ $assets['custom_script_date'] = true;
                         <div class="form-group">
                             <label for="tweet_content" class="control-label col-sm-3">Tweet Content</label>
                             <div class="col-sm-9">
-                                <textarea class="form-control <?php if (isset($errorsMsg['tweet_needed'])): ?>textarea-error <?php endif; ?>" name="tweet_content" id="tweet_content" maxlength="140" placeholder="برجاء ادخال التغريدة هنا مع ملاحظة الا تتعدى 140 حرف..." ></textarea>
+                                <textarea class="form-control <?php if (isset($errorsMsg['tweet_needed'])): ?>textarea-error <?php endif; ?>" name="tweet_content" id="tweet_content"></textarea>
                                 <?php if (isset($errors['tweet_content'])) echo '<span class="errorMessage">'.$errors['tweet_content'].'</span>' ?>
                             </div>
                         </div>
