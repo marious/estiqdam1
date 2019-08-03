@@ -1,21 +1,21 @@
-<?php
+<?php 
 /**
  * Check if the current sidebar menu is active or not
  */
-function is_sidebar_menu_active($current)
+function is_sidebar_menu_active($current) 
 {
     $CI =& get_instance();
     if ($CI->uri->segment(1) == $current) {
-        return 'active';
+      return 'active';
     }
     return '';
 }
 
 
 function is_tree_sidebar_menu_active($first, $second) {
-    $CI =& get_instance();
+  $CI =& get_instance();
     if ($CI->uri->segment(2) == $second && $CI->uri->segment(1) == $first) {
-        return 'active';
+      return 'active';
     }
     return '';
 }
@@ -25,11 +25,18 @@ function is_tree_sidebar_menu_active($first, $second) {
  * Get the setting by it's name
  */
 function setting($setting_name = null) {
+  $CI =& get_instance();
+  if ($setting_name) {
+    $query = $CI->db->get_where('settings', ['name' => $setting_name]);
+    return $query->row() ? $query->row()->value : '';
+  }
+}
+
+function default_currency()
+{
     $CI =& get_instance();
-    if ($setting_name) {
-        $query = $CI->db->get_where('settings', ['name' => $setting_name]);
-        return $query->row() ? $query->row()->value : '';
-    }
+    $query = $CI->db->get_where('currencies', ['is_default' => 1]);
+    return $query->row() ? $query->row()->symbol : '';
 }
 
 
@@ -78,7 +85,7 @@ function shortDescrip($descrip , $numb)
     return $desc;
 }
 
-function words($value, $words = 100, $end = '...')
+ function words($value, $words = 100, $end = '...')
 {
     preg_match('/^\s*+(?:\S++\s*+){1,'.$words.'}/u', $value, $matches);
 
@@ -98,9 +105,8 @@ function get_length($value, $encoding = null)
     return mb_strlen($value);
 }
 
-function dateFormat($date){
-    $newFormat = date('j M Y h:i a',strtotime($date));
-    return $newFormat;
+function dateFormat($date = null){
+    return date(setting('date_format'), strtotime($date));
 }
 
 
@@ -111,7 +117,7 @@ function draw_actions_button($dit_link = '', $delete_link = '', $permission_grou
     $output = '';
     $logged_in_user_permissions = Modules::run('roles/get_active_user_permissions');
 
-
+    
     if ($dit_link && in_array('edit' . '_' . $permission_group, $logged_in_user_permissions)) {
         $output .= '<a href="'.$dit_link.'" class="btn btn-sm btn-primary" title="'.lang('edit').'"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;&nbsp;';
     }
@@ -128,8 +134,8 @@ function get_current_lang()
 {
     if (!isset($_SESSION['lang']) && !isset($_GET['lang']) && isset($_SERVER['HTTP_ACCEPT_LANGUAGE']))
     {
-        $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
-    }
+            $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+    } 
     else if (isset($_SESSION['lang'])) {
         $lang = $lang;
     }
@@ -142,4 +148,47 @@ function trans_date_to_timestamp($date, $format)
 {
     $dateObj = \DateTime::createFromFormat($format, $date);
     return date("Y-m-d H:i:s", $dateObj->getTimestamp());
+}
+
+
+function csrf_field() {
+    $CI =& get_instance();
+    $token_name = $CI->security->get_csrf_token_name();
+    $token_value = $CI->security->get_csrf_hash();
+    return '<input type="hidden" name="'.$token_name.'" value="'.$token_value.'">';
+}
+
+function get_orderId($id) {
+    return INVOICE_PRE + $id;
+}
+
+
+function currency($currency)
+{
+    $currency_format = setting('currency_format');
+
+    if(!empty($currency_format)){
+
+        if($currency_format == 1){
+            echo number_format($currency, 2, '.', '');
+        }
+        elseif($currency_format == 2)
+        {
+            echo number_format($currency, 2, '.', ',');
+        }
+        elseif($currency_format == 3)
+        {
+            echo number_format($currency, 2, ',', '');
+        }
+        elseif($currency_format == 4)
+        {
+            echo number_format($currency, 2, ',', '.');
+        }else{
+            echo number_format($currency);
+        }
+
+    }else{
+        echo number_format($currency, 2, '.', ',');
+    }
+
 }
