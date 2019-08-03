@@ -1,6 +1,5 @@
-/application/config/database.php
+/application/fanoos/config/database.php
 /.idea
-/application/config/config.php
-/mysafety/application/config/database.php
-/fanoos/application/config/database.php
-/fanoos/application/config/config.php
+/application/fanoos/config/config.php
+/application/mysafety/config/config.php
+/application/mysafety/config/database.php
