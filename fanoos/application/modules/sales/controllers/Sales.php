@@ -19,8 +19,8 @@ class Sales extends MY_Controller
         $this->load->model('crud/Crud_model');
 
 
-        $this->load->library('Grocery_Crud');
-        $crud = new Grocery_Crud();
+        $this->load->library('Grocery_CRUD');
+        $crud = new Grocery_CRUD();
 
         $crud->columns('date', 'id', 'customer_name', 'grand_total', 'amount_received', 'due_payment', 'actions');
         $crud->order_by('id','desc');
