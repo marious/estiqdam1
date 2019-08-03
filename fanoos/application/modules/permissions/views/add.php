@@ -2,6 +2,7 @@
     <div class="col-md-12">
 
         <form class="form-horizontal" action="<?= site_url('permissions/add'); ?>" method="post" enctype="multipart/form-data">
+            <?= csrf_field() ?>
             <div class="box box-info">
                 <div class="box-body">
 
