@@ -2,6 +2,10 @@ body {
     font-size: 15px;
 }
 
+h1, h2, h3, h4, h5,h6 {
+    font-family: "Heebo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
 .align-left {
     text-align: left;
 }
@@ -155,16 +159,16 @@ body {
 #customers-table td:last-child a {
 }
 
-table th,
-table td{
-    border: 1px solid #ebebeb !important;
-}
+/*table th,*/
+/*table td{*/
+    /*border: 1px solid #ebebeb !important;*/
+/*}*/
 
 
-table td {
-    font-size: 17px;
-    font-weight: 500;
-}
+/*table td {*/
+    /*font-size: 17px;*/
+    /*font-weight: 500;*/
+/*}*/
 
 .box-title {
     background-color: #2c3e50;
@@ -190,4 +194,59 @@ table td {
 
 .search-box > div {
     margin-bottom: 20px;
+}
+
+
+/*=======================================================================================================================*/
+.required {
+    color: #DD4B39;
+}
+
+.content-header {
+    height: 60px;
+}
+
+#overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background-color: #fff;
+    opacity: 0.6;
+    filter: alpha(opacity=80);
+}
+
+#loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -28px 0 0 -25px;
+}
+
+.box.box-primary {
+    border-top: none;
+}
+.skin-green-light .box-header.with-border {
+    background-color: #00a65a;
+    color: #fff;
+    background-image: linear-gradient(to right, #00a65a 0%, #00ab8c 100%);
+    background-repeat: repeat-x;
+    border-radius: 6px 6px 0 0;
+
+}
+
+.box-header .box-title {
+    font-size: 18px;
+    font-weight: 600;
+    text-transform: uppercase;
+    line-height: 1.2;
+    background: none;
+}
+
+.modal-header {
+    background-image: linear-gradient(to right, #00a65a 0%, #00ab8c 100%);
+    background-repeat: repeat-x;
+    color: #fff;
+    border-bottom: 1px solid #f4f4f4;
 }

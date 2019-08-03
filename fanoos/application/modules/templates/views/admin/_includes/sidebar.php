@@ -40,6 +40,19 @@
           </li>
           <?php endif; ?>
 
+          <li class="treeview <?= is_sidebar_menu_active('sales') ?>">
+              <a href="#"><i class="fa fa-cart-plus text-red"></i> <span><?= lang('sales') ?></span>
+                  <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+                  <li class="<?= is_tree_sidebar_menu_active('sales', 'invoice'); ?>"><a href="<?= site_url('sales/invoice'); ?>"><i class="fa fa-circle-o"></i> <?= lang('create_invoice'); ?></a></li>
+                  <li class="<?= is_tree_sidebar_menu_active('sales', 'all_invoices'); ?>"><a href="<?= site_url('sales/all_invoices'); ?>"><i class="fa fa-circle-o"></i> <?= lang('all_invoices'); ?></a></li>
+              </ul>
+          </li>
+
+
           <li class="treeview <?= is_sidebar_menu_active('items') ?>">
               <a href="#"><i class="fa fa-cubes text-orange"></i> <span><?= lang('products_and_services') ?></span>
                   <span class="pull-right-container">

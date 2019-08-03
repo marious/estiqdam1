@@ -1,5 +1,5 @@
 <?php require '_includes/head.php'; ?>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-green-light sidebar-mini">
 <div class="wrapper">
 
   <?php require '_includes/header.php'; ?>
@@ -76,9 +76,32 @@
 </div>
 <!-- ./wrapper -->
 
+
+<div class="modal fade modal-wide" id="myModal"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+    <div id="myModal" class="modal-dialog">
+        <div class="modal-content">
+
+        </div>
+    </div>
+
+</div>
+
+
+<div class="modal fade modal-small" id="modalSmall"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+
+    <div id="modalSmall" class="modal-dialog" >
+        <div class="modal-content">
+
+        </div>
+    </div>
+
+</div>
+
+
 <script>var root = '<?= site_url(); ?>'</script>
 <!-- jQuery 3 -->
-<script src="<?= base_url() . '/assets/admin/'; ?>bower_components/jquery/dist/jquery.min.js"></script>
+
 <!-- jQuery UI 1.11.4 -->
 <!-- <script src="bower_components/jquery-ui/jquery-ui.min.js"></script> -->
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
@@ -86,7 +109,7 @@
   <!-- $.widget.bridge('uibutton', $.ui.button); -->
 <!-- </script> -->
 <!-- Bootstrap 3.3.7 -->
-<script src="<?= base_url() . '/assets/admin/'; ?>bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
 <!-- Sparkline -->
 <script src="<?= base_url() . '/assets/admin/'; ?>bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
 <!-- Slimscroll -->
@@ -124,6 +147,18 @@
     <?php endforeach; ?>
 <?php endif; ?>
 
+<script src="<?= site_url('assets/admin/js/script.js') ?>?v=<?= filemtime(FCPATH . '/assets/admin/js/script.js') ?>"></script>
+
+<script>
+    var csrf_token= getCookie('csrf_cookie_name');
+    $.ajaxSetup({
+        data: {
+            'csrf_test_name' : csrf_token
+        }
+    })
+
+</script>
+
 <?php if (isset($js_file)): ?>
 <?php if (is_array($js_file)): ?>
 <?php foreach ($js_file as $file): ?>
@@ -146,22 +181,34 @@
 </script>
 <?php endif; ?>
 
-<?php if (isset($datepicker) && $datepicker == true):  ?>
-    <script>
-        $('#datepicker').datepicker({
-            autoclose: true,
-            orientation: 'bottom',
-            todayHighlight: true,
-            format: 'dd/mm/yyyy',
-        });
-    </script>
-<?php  endif; ?>
+<script>
+
+    if ($('.datepicker').length) {
+        $('.datepicker').datepicker();
+    }
+    $('body').on('focus', '.datepicker', function() {
+        $(this).datepicker();
+    });
+</script>
+
+
 
 <?php if (isset($_SESSION['success_toastr'])): ?>
 <script>
     toastr['success']("<?php echo $_SESSION['success_toastr'] ?>");
 </script>
 <?php endif; ?>
+
+<script>
+
+    $('body').on('hidden.bs.modal', '.modal', function() {
+        $(this).removeData('bs.modal');
+    });
+</script>
+
+
+
+
 
 
 

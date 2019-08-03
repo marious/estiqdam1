@@ -1,0 +1,451 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Sales extends MY_Controller
+{
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->library('cart');
+        $this->load->library('form_builder');
+        $this->lang->load('sales');
+        $this->load->module('crud');
+    }
+
+
+
+    public function all_invoices()
+    {
+        $this->load->model('crud/Crud_model');
+
+
+        $this->load->library('Grocery_Crud');
+        $crud = new Grocery_Crud();
+
+        $crud->columns('date', 'id', 'customer_name', 'grand_total', 'amount_received', 'due_payment', 'actions');
+        $crud->order_by('id','desc');
+        $crud->where('type','Invoice');
+        $crud->order_by('id','desc');
+
+        $crud->display_as('date', lang('date'));
+        $crud->display_as('id', lang('order_no'));
+        $crud->display_as('customer_name', lang('customer'));
+        $crud->display_as('due_date', lang('due_date'));
+        $crud->display_as('grand_total', lang('grand_total'));
+        $crud->display_as('due_payment', lang('balance'));
+        $crud->display_as('amount_received', lang('paid'));
+        $crud->display_as('actions', lang('actions'));
+
+        $crud->set_table('invoices');
+
+        $crud->callback_column('date',array($this->Crud_model,'_callback_action_date'));
+        $crud->callback_column('id',array($this->Crud_model,'_callback_action_orderNo'));
+        $crud->callback_column('due_date',array($this->Crud_model,'_callback_action_dueDate'));
+        $crud->callback_column('due_payment',array($this->Crud_model,'_callback_action_due_payment'));
+        $crud->callback_column('grand_total',array($this->Crud_model,'_callback_action_grand_total'));
+        $crud->callback_column('actions',array($this->Crud_model,'_callback_action_all_order'));
+
+        $crud->unset_add();
+        $crud->unset_edit();
+        $crud->unset_delete();
+        $crud->unset_read();
+
+        $this->data['crud'] = $crud->render();
+
+        $this->admin_template('sales_list', $this->data);
+
+    }
+
+
+    /**
+     * Create a new invoice
+     */
+    public function invoice()
+    {
+        $this->load_daterange_datepicker();
+        $this->load_js_validation();
+        array_push($this->data['js_file'], site_url('assets/admin/js/invoices.js'));
+        $this->load->module('items');
+        $this->data['products'] = $this->items->Item_model->get();
+        $this->data['form'] = $this->form_builder->create_form('sales/save_invoice', true, ['id' => 'from-invoice']);
+        $this->_discount_session();
+        $this->admin_template('create_invoice', $this->data);
+    }
+
+
+    public function add_to_cart()
+    {
+        $id = $this->input->post('product_id');
+        $this->load->module('items');
+        $product = $this->items->Item_model->get($id);
+
+        if (!empty($this->input->post('rowid')))
+        {
+            $data = [
+                'rowid' => $this->input->post('rowid'),
+                'qty'   => 0,
+            ];
+            $this->cart->update($data);
+        }
+
+        if ($product)
+        {
+            // Product tax check
+            $tax = $this->product_tax_calculate($product->tax, $qty = 1, $product->sales_price);
+            $data = [
+                'id'            => $product->id,
+                'qty'           => 1,
+                'price'         => $product->sales_price,
+                'purchase_cost' => $product->purchase_cost,
+                'name'          => $product->name,
+                'description'   => $product->description,
+                'tax'           => $tax,
+                'type'          => FALSE,
+                'bundle'        => '',
+            ];
+            $this->cart->insert($data);
+        }
+    }
+
+
+
+    public function update_cart_item()
+    {
+        $type = $this->input->post('type');
+
+        // Product Tax Check
+        $this->load->module('items');
+        $product = $this->items->Item_model->get($this->input->post('p_id'));
+        $qty = $this->input->post('qty');
+        $price = $this->input->post('price');
+        $tax = $this->product_tax_calculate($product->tax, $qty, $price);
+
+        if ($type == 'qty')
+        {
+            $data = [
+                'rowid' => $this->input->post('rowid'),
+                'qty' => (int)$this->input->post('o_val'),
+                'tax' => $tax,
+            ];
+        }
+        else if ($type == 'prc')
+        {
+            $data = [
+                'rowid' => $this->input->post('rowid'),
+                'price' => (float) $this->input->post('o_val'),
+                'tax'   => $tax,
+
+            ];
+        }
+        else if ($type == 'des')
+        {
+            $data = [
+                'rowid' => $this->input->post('rowid'),
+                'description' => $this->input->post('o_val'),
+            ];
+        }
+
+        $this->cart->update($data);
+
+    }
+
+    public function show_cart()
+    {
+        $this->load->module('items');
+        $data['products'] = $this->items->Item_model->get();
+        $this->load->view('add_product_cart', $data);
+    }
+
+
+    public function remove_item()
+    {
+        $data = [
+            'rowid' => $this->input->post('rowid'),
+            'qty'   => 0,
+        ];
+        $this->cart->update($data);
+    }
+
+
+
+    /* Product Tax Calculation */
+    protected function product_tax_calculate($tax, $qty, $sales_price)
+    {
+        $tax_arr = unserialize($tax);
+        $this->load->module('taxes');
+        $taxes = $this->taxes->Tax_model->where_in('id', $tax_arr);
+        if (is_array($taxes) && count($taxes))
+        {
+            $taxRate = 0;
+            foreach ($taxes as $tax) {
+                $taxRate += $tax->rate;
+            }
+            $subtotal = $sales_price * $qty;
+            return ($taxRate * $subtotal) / 100;
+        }
+
+        return 0;
+    }
+
+
+    public function _discount_session()
+    {
+        $_SESSION['discount'] = 0;
+    }
+
+
+
+
+    public function save_invoice()
+    {
+        if (empty($this->cart->contents()))
+        {
+            $this->message->custom_error_msg('test', 'hi');
+        }
+        $this->load->library('encryption');
+
+//        $order_id = $this->input->post('order_id') ? $this->encryption->encrypt($this->input->post('order_id')) : '';
+        $order_id = $this->input->post('order_id') ? $this->input->post('order_id') : '';
+        $sales_person = $this->ion_auth->user()->row();
+
+        $data['invoice_date'] = DateTime::createFromFormat(setting('date_format'), $this->input->post('invoice_date'))->format('Y-m-d');
+        $data['due_date'] = DateTime::createFromFormat(setting('date_format'), $this->input->post('due_date'))->format('Y-m-d');
+        $data['cart_total'] = $this->cart->total();
+        $total_tax = 0.00;
+        foreach ($this->cart->contents() as $item) {
+            $total_tax += $item['tax'];
+        }
+
+        $data['tax'] = $total_tax;
+        $gtotal = $this->cart->total();
+        $discount = $_SESSION['discount'];
+        $discount_amount = ($gtotal * $discount)/100;
+        $data['grand_total'] = $this->cart->total() + $total_tax - $discount_amount;
+        $data['cart'] = json_encode($this->cart->contents());
+//        $data['type']           = ucwords($this->session->userdata('type'));
+        if ($order_id != '')
+        {
+            $data['status'] = 'Open';
+            $data['sales_person'] = $sales_person->first_name . ' ' . $sales_person->last_name;
+            $data['due_payment'] = $data['grand_total'];
+        }
+        else
+        {
+            $data['customer_id'] = $this->input->post('customer_id');
+            $data['customer_name'] = $this->db->get_where('customers', ['id' => $data['customer_id']])->row()->title;
+            $data['sales_person'] = $sales_person->first_name . ' ' . $sales_person->last_name;
+//            $data['type']           = str_replace("_"," ",$this->input->post('type'));
+            $data['discount'] = (float) $_SESSION['discount'];
+            $data['amount_received'] = (float) $this->input->post('amount_received');
+            $data['due_payment'] = $data['grand_total'] - $data['amount_received'];
+
+            if ($data['due_payment'] <= 0) {
+                $data['status'] = 'Close';
+            } else {
+                $data['status'] = 'Open';
+            }
+        }
+
+
+        //check first time booking made or update
+        date_default_timezone_set(setting('timezone'));
+        $history[] = array(
+            'sales' => array(
+                'sales_person'      => $data['sales_person'],
+                'date'              => date("F j, Y, H:i:s")
+            ),
+            'list' => array(
+                'status'            =>  'Order Created',
+                'activities'        => $this->input->post('order_activities'),
+                'amount_received'   => $this->input->post('amount_received'),
+                'payment_method'    => $this->input->post('payment_method'),
+                'p_reference'       => $this->input->post('p_reference'),
+            )
+        );
+        $data['history'] = json_encode($history);
+
+        if (empty($order_id)) {
+            $this->db->insert('invoices', $data);
+            $order_id = $this->db->insert_id();
+        } else {
+            // update
+            $this->db->where('id', $order_id);
+            $this->db->update('invoices', $data);
+        }
+
+        $o_details['order_id'] = $order_id;
+        foreach ($this->cart->contents() as $item) {
+            $o_details['product_id']        = $item['id'];
+            $o_details['product_name']      = $item['name'];
+            $o_details['purchase_cost']     = $item['purchase_cost'];
+            $o_details['sales_cost']        = $item['price'];
+            $o_details['qty']               = $item['qty'];
+            $o_details['tax_amount']        = $item['tax'];
+            $o_details['description']       = $item['description'];
+
+            //save order details
+            $this->db->insert('order_details', $o_details);
+
+            //TODO: track this product in inventory
+        }
+
+        redirect('sales/sale_preview/'.get_orderId($order_id));
+
+    }
+
+
+
+
+    public function sale_preview($id = null)
+    {
+        $this->load_daterange_datepicker();
+        $this->load_js_validation();
+        array_push($this->data['js_file'], site_url('assets/admin/js/invoices.js'));
+
+        $id = $id - INVOICE_PRE;
+        $this->data['order'] = $this->db->get_where('invoices', ['id' => $id])->row();
+        if (!$this->data['order']) {
+            redirect('/', 'refresh');
+        }
+
+        $this->data['type'] = $this->data['order']->type;
+
+        if ($this->data['type'] == 'Quotation')
+        {
+
+        }
+        else
+        {
+            $this->data['order_details'] = $this->db->get_where('order_details', ['order_id' => $id])->result();
+        }
+
+
+        $this->data['payment'] = $this->db->get_where('payment', [
+            'order_id' => $id,
+            'type' => 'Sales',
+        ])->result();
+
+        // Customer
+        $this->data['customer'] = $this->db->get_where('customers', [
+            'id' => $this->data['order']->customer_id,
+        ])->row();
+
+        $this->admin_template('sales_preview', $this->data);
+    }
+
+
+
+    public function add_payment($id = null)
+    {
+        $id = $id - INVOICE_PRE;
+        $data['order'] = $this->db->get_where('invoices', ['id' => $id])->row();
+
+        $data['modal_subview'] = $this->load->view('modal/_add_payment', $data, false);
+//        $this->load->view();
+    }
+
+    function received_payment()
+    {
+        $id = $this->input->post('payment_id');
+        $data['order_id'] = $this->input->post('order_id');
+        $order = $this->db->get_where('invoices', ['id' => $data['order_id']])->row();
+
+        if ((int) $order->due_payment == 0)
+        {
+            $this->message->custom_error_msg('sales/sale_preview/'.get_orderId($order->id), 'error');
+        }
+        else if ((float) $this->input->post('amount') > (float) $order->due_payment)
+        {
+            $this->message->custom_error_msg('sales/sale_preview/'.get_orderId($order->id), 'error');
+        }
+
+        $data['payment_date'] = DateTime::createFromFormat(setting('date_format'), $this->input->post('payment_date'))->format('Y-m-d H:i:s');
+        $order_ref = $this->input->post('order_ref');
+        $data['order_ref'] = $order_ref == '' ? get_orderId($data['order_id']) . '/' . date('d/m/Y') : $order_ref;
+
+        $data['amount'] = (float) $this->input->post('amount');
+        $data['method'] = $this->input->post('payment_method');
+        $payment_method = $data['method'];
+
+        switch ($payment_method) {
+            case 'cash':
+                $data['payment_method'] = 'Cash';
+                break;
+            case 'cc':
+                $data['payment_method'] = 'Credit';
+                $data['cc_name'] = $this->input->post('cc_name');
+                $data['cc_number'] = $this->input->post('cc_number');
+                $data['cc_type'] = $this->input->post('cc_type');
+                $data['cc_month'] = $this->input->post('cc_month');
+                $data['cc_year'] = $this->input->post('cc_year');
+                $data['cvc'] = $this->input->post('cvc');
+                break;
+            case 'ck':
+                $data['payment_method'] = 'Cheque';
+                $data['payment_ref'] = $this->input->post('payment_ref');
+                break;
+            case 'bank':
+                $data['payment_method'] = 'Bank Transfer';
+                $data['payment_ref'] = $this->input->post('payment_ref');
+                break;
+        }
+
+        $data['type'] = 'Sales';
+        $sales_person = $this->ion_auth->user()->row();
+        $data['received_by'] = $sales_person->first_name.' '.$sales_person->last_name;
+
+        $path = UPLOAD_BILL;
+        mkdir_if_not_exist($path);
+        $file = upload_bill();
+        if ($file) {
+            $data['attachment'] = $file;
+        }
+
+        if ($id)
+        {
+            // update
+            $payment = $this->db->get_where('payment', ['id' => $id])->row();
+
+            //trancate Payment
+            $t_data['payment_method'] = '';
+            $t_data['cc_name'] = '';
+            $t_data['cc_number'] = '';
+            $t_data['cc_type'] = '';
+            $t_data['cc_month'] = '';
+            $t_data['cc_year'] = '';
+            $t_data['cvc'] = '';
+            $t_data['payment_ref'] = '';
+
+            $this->db->where('id', $id);
+            $this->db->update('payment', $t_data);
+
+            //update payment table
+            $this->db->where('id', $id);
+            $this->db->update('payment', $data);
+
+            //update purchase order
+            $p_data['amount_received'] = $order->amount_received + $data['amount'] - $payment->amount;
+            $p_data['due_payment'] = $order->grand_total - $p_data['amount_received'];
+            $this->db->where('id', $order->id);
+            $this->db->update('sales_order', $p_data);
+        }
+        else
+        {
+            // insert
+
+            $this->db->insert('payment', $data);
+
+            // Update purchase order
+            $p_data['amount_received'] = $order->amount_received + $data['amount'];
+            $p_data['due_payment'] = $order->due_payment - $data['amount'];
+
+            $this->db->where('id', $order->id);
+            $this->db->update('invoices', $p_data);
+        }
+
+        redirect('sales/sale_preview/'.get_orderId($order->id));
+
+    }
+
+
+}

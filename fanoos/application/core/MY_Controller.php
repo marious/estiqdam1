@@ -47,11 +47,29 @@ class MY_Controller extends MX_Controller
         $this->data['datepicker'] = true;
     }
 
+    public function load_daterange_datepicker()
+    {
+        array_push($this->data['css_file'], site_url('assets/admin/plugins/daterangepicker/daterangepicker-bs3.css'));
+        array_push($this->data['css_file'], site_url('assets/admin/plugins/datepicker/datepicker3.css'));
+        array_push($this->data['js_file'], site_url('assets/admin/plugins/daterangepicker/moment.min.js'));
+        array_push($this->data['js_file'], site_url('assets/admin/plugins/daterangepicker/daterangepicker.js'));
+        array_push($this->data['js_file'], site_url('assets/admin/plugins/datepicker/bootstrap-datepicker.js'));
+    }
+
+
     public function load_datatable()
     {
         array_push($this->data['css_file'], site_url( 'assets/admin/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css'));
         array_push($this->data['js_file'], site_url( 'assets/admin/bower_components/datatables.net/js/jquery.dataTables.min.js'));
         array_push($this->data['js_file'], site_url('assets/admin/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js'));
+    }
+
+
+    public function load_js_validation()
+    {
+        array_push($this->data['js_file'], site_url('assets/admin/plugins/jquery-validation/jquery.validate.min.js'));
+        array_push($this->data['js_file'], site_url('assets/admin/plugins/jquery-validation/additional-methods.min.js'));
+        array_push($this->data['js_file'], site_url('assets/admin/js/forms_validation.js'));
     }
 
 
