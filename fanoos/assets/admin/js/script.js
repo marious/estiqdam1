@@ -79,8 +79,8 @@ function get_product_id(str) {
         cache: false,
         success: function(response) {
             $.get(root + 'sales/show_cart', function(cart) {
-               $('#cart-view').html(cart);
-               $('select').select2();
+                $('#cart-view').html(cart);
+                $('.products').select2();
             });
             $('#overlay').remove();
         }
@@ -119,8 +119,8 @@ function updateItem(str) {
         cache: false,
         success: function(response) {
             $.get(root + 'sales/show_cart', function(cart) {
-               $('#cart-view').html(cart);
-               $('select').select2();
+                $('#cart-view').html(cart);
+                $('.products').select2();
             });
             $('#overlay').remove();
         }
@@ -146,8 +146,8 @@ function removeItem(str) {
         cache: false,
         success: function(response) {
             $.get(root + 'sales/show_cart', function(cart) {
-               $('#cart-view').html(cart);
-               $('select').select2();
+                $('#cart-view').html(cart);
+                $('.products').select2();
             });
             $('#overlay').remove();
         }
