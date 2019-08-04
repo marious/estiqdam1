@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class MY_Model extends CI_Model 
+class MY_Model extends CI_Model
 {
     const CREATED_FIELD = 'created_at';
     const UPDATED_AT = 'updated_at';
@@ -13,8 +13,8 @@ class MY_Model extends CI_Model
     protected $type_of_order = 'asc';
     protected $rules = array();
     protected $timestamps = false;
-    
-    public function __construct() 
+
+    public function __construct()
     {
         parent::__construct();
     }
@@ -27,10 +27,10 @@ class MY_Model extends CI_Model
 
 
     /**
-     * return all records 
-     * if $id it will return this rcord represent it 
-     * it not $id and $single is true it return one record 
-     * if $id is null and $single is false it will return all records 
+     * return all records
+     * if $id it will return this rcord represent it
+     * it not $id and $single is true it return one record
+     * if $id is null and $single is false it will return all records
      * @param int $id
      * @param boolean $single
      */
@@ -94,8 +94,8 @@ class MY_Model extends CI_Model
 
 
     /**
-     * Get by method will return the rcords that match the where array condition 
-     * if $single is true it will return one record 
+     * Get by method will return the rcords that match the where array condition
+     * if $single is true it will return one record
      * @param array $where
      * @param boolean $single
      */
@@ -104,6 +104,14 @@ class MY_Model extends CI_Model
         $this->db->where($where);
         return $this->get(null, $single);
     }
+
+
+    public function where_in($column, $arr)
+    {
+        $this->db->where_in($column, $arr);
+        return $this->get();
+    }
+
 
     public function count_where($where) {
         $result = $this->get_by($where);
@@ -136,7 +144,7 @@ class MY_Model extends CI_Model
 
     //================================================================================================
 
-   public function count_all()
+    public function count_all()
     {
         $result = $this->get(null, false);
         return count($result);
@@ -152,7 +160,7 @@ class MY_Model extends CI_Model
      */
     public function save($data = array(), $id = NULL)
     {
-          // set timestamps
+        // set timestamps
         if ($this->timestamps == true) {
             $now = date('Y-m-d H:i:s');
             $id OR $data[static::CREATED_FIELD] = $now;
@@ -207,33 +215,33 @@ class MY_Model extends CI_Model
     }
 
 
-     public function delete_where($where = array())
-     {
-         if (empty($where)) {
-             return;
-         }
+    public function delete_where($where = array())
+    {
+        if (empty($where)) {
+            return;
+        }
 
-         $_where = [];
-         foreach ($where as $field => $val) {
-             if (is_array($val)) {
-                 $_where[] = "`{$field}` IN (" . implode("', '", $val) . "')";
-             } else {
-                 if (is_numeric($val)) {
-                     $_where[] = "`{$field}` = {$val}";
-                 } else {
-                     $_where[] = "`{$field}` = '{$val}'";
-                 }
-             }
-         }
+        $_where = [];
+        foreach ($where as $field => $val) {
+            if (is_array($val)) {
+                $_where[] = "`{$field}` IN (" . implode("', '", $val) . "')";
+            } else {
+                if (is_numeric($val)) {
+                    $_where[] = "`{$field}` = {$val}";
+                } else {
+                    $_where[] = "`{$field}` = '{$val}'";
+                }
+            }
+        }
 
-         $sql = "DELETE FROM {$this->table_name} WHERE (" . implode(') AND (', $_where).")";
+        $sql = "DELETE FROM {$this->table_name} WHERE (" . implode(') AND (', $_where).")";
 
-         if (!($query = $this->db->query($sql))) {
-             return false;
-         }
+        if (!($query = $this->db->query($sql))) {
+            return false;
+        }
 
-         return true;
-     }
+        return true;
+    }
 
     //=======================================================================================
 
@@ -257,7 +265,7 @@ class MY_Model extends CI_Model
         }
         return $obj;
     }
-     
+
 
 
     //=========================================================================================
