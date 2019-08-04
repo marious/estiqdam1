@@ -28,7 +28,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="customers-list"><?= lang('customer') ?> <span class="required" aria-required="true">*</span></label>
-                                            <select name="customer_id" class="form-control select2" style="width: 100%" id="customers-list">
+                                            <select name="customer_id" class="form-control" style="width: 100%" id="customers-list">
                                                 <option value=""><?= lang('please_select') ?>...</option>
                                             </select>
                                         </div>
