@@ -52,6 +52,17 @@
               </ul>
           </li>
 
+          <li class="treeview <?= is_sidebar_menu_active('purchase') ?>">
+              <a href="#"><i class="fa fa-opencart text-blue"></i> <span><?= lang('purchase') ?></span>
+                  <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+                  <li class="<?= is_tree_sidebar_menu_active('purchase', 'new_purchase'); ?>"><a href="<?= site_url('purchase/new_purchase'); ?>"><i class="fa fa-circle-o"></i> <?= lang('new_purchase'); ?></a></li>
+              </ul>
+          </li>
+
 
           <li class="treeview <?= is_sidebar_menu_active('items') ?>">
               <a href="#"><i class="fa fa-cubes text-orange"></i> <span><?= lang('products_and_services') ?></span>
@@ -64,6 +75,7 @@
                   <li class="<?= is_tree_sidebar_menu_active('items', 'add_product'); ?>"><a href="<?= site_url('items/add_product'); ?>"><i class="fa fa-circle-o"></i> <?= lang('add_product'); ?></a></li>
                   <li class="<?= is_tree_sidebar_menu_active('items', 'services'); ?>"><a href="<?= site_url('items/services'); ?>"><i class="fa fa-circle-o"></i> <?= lang('all_services'); ?></a></li>
                   <li class="<?= is_tree_sidebar_menu_active('items', 'add_service'); ?>"><a href="<?= site_url('items/add_service'); ?>"><i class="fa fa-circle-o"></i> <?= lang('add_service'); ?></a></li>
+                  <li class="<?= is_tree_sidebar_menu_active('items', 'categories'); ?>"><a href="<?= site_url('items/categories'); ?>"><i class="fa fa-circle-o"></i> <?= lang('categories'); ?></a></li>
               </ul>
           </li>
 

@@ -5,12 +5,12 @@ if (!function_exists('message_box'))
 {
     function message_box($message_type, $close_button = TRUE)
     {
-        $CI =& get_instance();
-        $message = isset($_SESSION[$message_type]) ? $_SESSION[$message_type] : false;
-        $val = '';
+        $message = isset($_SESSION['message']) ? $_SESSION['message'] : false;
 
+        if (isset($_SESSION['message_type']) && $_SESSION['message_type'] != $message_type) return '';
         if ($message == false) return '';
 
+        $val = '';
         if ($message)
         {
             switch ($message_type) {
@@ -47,7 +47,7 @@ if (!function_exists('set_message'))
         $CI =& get_instance();
         $_SESSION['message_type'] = $type;
         $_SESSION['message'] = $message;
-        $CI->session->mark_as_flash([$type, $message]);
+        $CI->session->mark_as_flash(['message_type', 'message']);
         return true;
     }
 }

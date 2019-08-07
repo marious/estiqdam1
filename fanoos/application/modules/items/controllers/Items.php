@@ -47,6 +47,7 @@ class Items extends MY_Controller
 
         $this->data['id'] = $id;
         $this->data['taxes'] = $this->taxes->Tax_model->get();
+        $this->data['categories'] = $this->db->order_by('category', 'asc')->get('product_category')->result();
 
 
         // Process the form
@@ -59,7 +60,10 @@ class Items extends MY_Controller
             $data['item_code']      = $this->data['product']->item_code;
             $data['sales_price']    = $_POST['sales_price'];
             $data['description']    = $_POST['description'];
+            $data['category_id']    = $this->input->post('category_id');
+            $data['purchase_cost']  = $this->input->post('purchase_cost');
             $data['user_id']        = $_SESSION['user_id'];
+
 
             if ($this->Item_model->save($data, $id))
             {
@@ -119,6 +123,7 @@ class Items extends MY_Controller
 
         $this->data['id'] = $id;
         $this->data['taxes'] = $this->taxes->Tax_model->get();
+        $this->data['categories'] = $this->db->order_by('category', 'asc')->get('product_category')->result();
 
         // Process the form
         $this->load->library('form_validation');
@@ -129,6 +134,8 @@ class Items extends MY_Controller
             $data['tax']            = isset($_POST['tax']) ? serialize($_POST['tax']) : null;
             $data['item_code']      = $this->data['service']->item_code;
             $data['sales_price']    = $_POST['sales_price'];
+            $data['purchase_cost']  = $this->input->post('purchase_cost');
+            $data['category_id']    = $this->input->post('category_id');
             $data['description']    = $_POST['description'];
             $data['user_id']        = $_SESSION['user_id'];
             $data['is_service']     = 1;
@@ -169,4 +176,71 @@ class Items extends MY_Controller
         }
     }
 
+    //=============================================================
+    //  Categories
+    //=============================================================
+
+    public function categories($id = null)
+    {
+        if ($id) {
+            $this->data['category'] = $this->db->get_where('product_category', ['id' => $id])->row();
+        }
+        $this->data['categories'] = $this->db->get('product_category')->result();
+        $this->admin_template('categories', $this->data);
+    }
+
+    /**
+     * Deals with save category in product
+     * @return bool|void
+     */
+    public function save_category()
+    {
+        $data['category'] = $this->input->post('category');
+
+        if ($data['category'] == '')
+        {
+            echo json_encode(['danger', lang('category_field_required')]);
+            return false;
+        }
+
+        $this->db->insert('product_category', $data);
+        echo json_encode(['success', lang('record_saved')]);
+        return true;
+    }
+
+
+    public function save_product_category()
+    {
+        $data = [];
+        $data['category'] = $this->input->post('category');
+        $id = $this->input->post('category_id');
+        if ($id)
+        {
+            $this->db->where('id', $id);
+            $this->db->update('product_category', $data);
+            $this->message->save_success('items/categories');
+        }
+        else
+        {
+            $this->db->insert('product_category', $data);
+            $this->message->save_success('items/categories');
+        }
+    }
+
+
+    public function delete_category($id = null)
+    {
+        $item = $this->db->get_where('items', ['category_id' => $id])->row();
+
+        if ($item)
+        {
+            $this->message->custom_error_msg('items/categories', lang('cannot_delete_category'));
+        }
+        else
+        {
+            // delete
+            $this->db->delete('product_category', ['id' => $id]);
+            $this->message->delete_success('items/categories');
+        }
+    }
 }

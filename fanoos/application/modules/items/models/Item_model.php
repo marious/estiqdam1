@@ -16,6 +16,16 @@ class Item_model extends MY_Model
             'rules' => 'trim|required|numeric',
         ],
         [
+          'field' => 'category_id',
+          'label' => 'lang:category',
+          'rules' => 'trim|required',
+        ],
+        [
+            'field' => 'purchase_cost',
+            'label' => 'lang:purchase_cost',
+            'rules' => 'trim|numeric',
+        ],
+        [
             'field' => 'description',
             'label' => 'lang:description',
             'rules' => 'trim',
