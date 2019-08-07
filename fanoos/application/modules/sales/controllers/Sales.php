@@ -66,8 +66,27 @@ class Sales extends MY_Controller
         $this->load_js_validation();
         array_push($this->data['js_file'], site_url('assets/admin/js/invoices.js'));
         $this->load->module('items');
-        $this->data['products'] = $this->items->Item_model->get();
         $this->data['form'] = $this->form_builder->create_form('sales/save_invoice', true, ['id' => 'from-invoice']);
+
+        $categories = $this->db->order_by('category', 'desc')->get('product_category')->result();
+//        $this->data['products'] = $this->items->Item_model->get();
+        $products = [];
+        if (is_array($categories) && count($categories))
+        {
+            foreach ($categories as $category) {
+                $product = $this->db->order_by('name', 'asc')->get_where('items', [
+                    'category_id' => $category->id,
+                ])->result();
+                if (!count($product)) {
+                    continue;
+                }
+                $products[$category->category] = $product;
+            }
+        }
+
+        $this->data['products'] = $products;
+
+
         $this->_discount_session();
         $this->admin_template('create_invoice', $this->data);
     }
