@@ -51,3 +51,4 @@ $lang['pdf_invoice'] = 'PDF Invoice';
 $lang['email_invoice'] = 'Email Invoice';
 $lang['cancel_order'] = 'Cancel Order';
 $lang['invoice_list'] = 'Invoice List';
+$lang['cannot_delete_category'] = 'Sorry you cannot delete category used by other';
