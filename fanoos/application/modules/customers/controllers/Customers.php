@@ -24,12 +24,12 @@ class Customers extends MY_Controller
         echo json_encode($fetched_data);
     }
 
-    public function all()
+    public function all_customers()
     {
         $this->data['page_header'] = '<i class="fa fa-arrow-circle-o-right"></i> ' . lang('customers_info');
         $this->load_datatable();
         array_push($this->data['js_file'], site_url('assets/admin/js/customers.js'));
-        $this->admin_template('all', $this->data);
+        $this->admin_template('all_customers', $this->data);
     }
 
 
@@ -39,7 +39,7 @@ class Customers extends MY_Controller
     }
 
 
-    public function add($id = false)
+    public function add_customer($id = false)
     {
         $this->data['page_header'] = $id && is_numeric($id) ? '<i class="fa fa-arrow-circle-o-right"></i> ' . lang('edit_customer'):
                 '<i class="fa fa-arrow-circle-o-right"></i> ' . lang('add_new_customer');
@@ -105,18 +105,111 @@ class Customers extends MY_Controller
     }
 
 
-    public function edit($id = false)
+    public function edit_customer($id = false)
     {
-        $this->add($id);
+        $this->add_customer($id);
     }
 
 
-    public function delete($id = false)
+    public function delete_customer($id = false)
     {
         $id && is_numeric($id) || redirect('customers/all');
         $this->Customer_model->delete($id);
         $_SESSION['success_toastr'] = lang('success_delete');
         $this->session->mark_as_flash('success_toastr');
-        redirect('customers/all');
+        redirect('customers/all_customers');
     }
+
+
+
+
+    //******************************************************************************************************************
+    //                                              Vendors Section
+    //******************************************************************************************************************
+    public function all_vendors()
+    {
+        $this->data['page_header'] = '<i class="fa fa-arrow-circle-o-right"></i> ' . lang('vendors_info');
+        $this->load_datatable();
+        array_push($this->data['js_file'], site_url('assets/admin/js/customers.js'));
+        $this->admin_template('all_vendors', $this->data);
+    }
+
+
+    public function load_all_vendors()
+    {
+        $this->Customer_model->get_vendors();
+    }
+
+
+
+
+    public function add_vendor($id = false)
+    {
+        $this->data['page_header'] = $id && is_numeric($id) ? '<i class="fa fa-arrow-circle-o-right"></i> ' . lang('edit_vendor'):
+            '<i class="fa fa-arrow-circle-o-right"></i> ' . lang('add_new_vendor');
+
+
+
+        if ($id && is_numeric($id))
+        {
+            $vendor = $this->db->get_where('vendors', ['id' => $id])->row();
+            $vendor || redirect('customers/all_vendors');
+            $this->data['vendor'] = $vendor;
+        }
+        else
+        {
+            $this->data['vendor'] = (object) [
+                'vendor_code'   => '',
+                'name'          => '',
+                'company_name'  => '',
+                'phone'         => '',
+                'fax'           => '',
+                'email'         => '',
+                'website'       => '',
+                'b_address'     => '',
+                'note'          => '',
+            ];
+        }
+
+        $this->data['id'] = $id;
+
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules($this->Customer_model->vendor_rules);
+        if ($this->form_validation->run($this) == true)
+        {
+            $data = $this->Customer_model->array_from_post([
+                'name',
+                'company_name',
+                'phone',
+                'fax',
+                'email',
+                'website',
+                'b_address',
+                'note',
+            ], true);
+
+            if ($this->Customer_model->save_vendor($data, $id))
+            {
+                $_SESSION['success_toastr'] = lang('saved_vendor');
+                $this->session->mark_as_flash('success_toastr');
+                redirect('customers/all_vendors');
+            }
+        }
+
+
+        $this->admin_template('add_vendor', $this->data);
+    }
+
+
+    public function edit_vendor($id)
+    {
+        $this->add_vendor($id);
+    }
+
+
+    public function delete_vendor($id = null)
+    {
+
+    }
+
 }

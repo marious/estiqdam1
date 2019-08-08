@@ -147,24 +147,7 @@
                             </div>
 
 
-                            <!-- Customer Type -->
-                            <div class="form-group clearfix">
-                                <label for="" class="col-sm-2 control-label"><?= lang('customer_type'); ?> </label>
-                                <div class="col-sm-6">
-                                    <?php foreach ($customer_types as $customer_type): ?>
-                                    <?php
-                                    $checked = '';
-                                        if ($customer_type->id == $customer->customer_type) {
-                                            $checked = 'checked';
-                                        }
-                                        ?>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="customer_type" value="<?= $customer_type->id ?>" class="minimal" <?= $checked ?>>
-                                        <?= transText($customer_type->type, $lang) ?>
-                                    </label>
-                                    <?php endforeach; ?>
-                                </div>
-                            </div>
+
 
                             <!-- notes -->
                             <div class="form-group clearfix">
@@ -211,9 +194,9 @@
                             </div>
 
                             <div class="form-group clearfix">
-                                <label for="datepicker" class="col-sm-3 control-label"><?= lang('balance_date'); ?> </label>
+                                <label for="l_datepicker" class="col-sm-3 control-label"><?= lang('balance_date'); ?> </label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="datepicker" name="balance_date" autocomplete="off"
+                                    <input type="text" class="form-control datepicker" id="l_datepicker" name="balance_date" autocomplete="off"
                                              value="<?= set_value('balance_date', date('d/m/Y', strtotime($customer->balance_date))) ?>">
                                 </div>
                             </div>

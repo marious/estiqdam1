@@ -23,6 +23,25 @@ class Customer_model extends MY_Model
     ];
 
 
+    public $vendor_rules = [
+        [
+            'field' => 'name',
+            'label' => 'lang:name',
+            'rules' => 'trim|required',
+        ],
+        [
+            'field' => 'company_name',
+            'label' => 'lang:company_name',
+            'rules' => 'trim|required',
+        ],
+        [
+            'field' => 'email',
+            'label' => 'lang:email',
+            'rules' => 'trim|valid_email',
+        ],
+    ];
+
+
     public function add($data, $id = false)
     {
         $dateStamp = null;
@@ -70,6 +89,28 @@ class Customer_model extends MY_Model
     }
 
 
+
+    public function save_vendor($data, $id = false)
+    {
+        if ($id)
+        {
+            $data['updated_at'] = date('Y-m-d H:i:s');
+            $this->db->where('id', $id);
+            return $this->db->update('vendors', $data);
+        }
+        else
+        {
+            $data['created_at'] = date('Y-m-d H:i:s');
+            $this->db->insert('vendors', $data);
+            $id = $this->db->insert_id();
+            $vendor_code = 1000 + $id;
+            $this->db->set('vendor_code', $vendor_code, false)->where('id', $id)->update('vendors');
+            return true;
+        }
+    }
+
+
+
     public function get_all()
     {
         $this->load->library('datatable');
@@ -83,11 +124,34 @@ class Customer_model extends MY_Model
             $sub_array[] = $i;
             $sub_array[] = $row->title;
             $sub_array[] = $row->mobile;
-            $sub_array[] = '<div class="manage-buttons">' . draw_actions_button(site_url('customers/edit/' . $row->id), site_url('customers/delete/'.$row->id), 'customers') . '</div>';
+            $sub_array[] = '<div class="manage-buttons">' . draw_actions_button(site_url('customers/edit_customer/' . $row->id), site_url('customers/delete_customer/'.$row->id), 'customers') . '</div>';
             $data[] = $sub_array;
             $i++;
         }
         $count = $this->get_customers_count();
+        echo $this->datatable->output($data, $count);
+    }
+
+
+
+    public function get_vendors()
+    {
+        $this->load->library('datatable');
+        $this->datatable->setQuery('SELECT * FROM vendors');
+        $this->datatable->setSearchedValues(['name']);
+        $result = $this->datatable->getResult();
+        $i = 1;
+        $data = [];
+        foreach ($result as $row) {
+            $sub_array = [];
+            $sub_array[] = $i;
+            $sub_array[] = '<a>'.$row->name.'</a><br><span style="color: gray;">'.$row->company_name.'</span>';
+            $sub_array[] = $row->phone;
+            $sub_array[] = '<div class="manage-buttons">' . draw_actions_button(site_url('customers/edit_vendor/' . $row->id), site_url('customers/delete_vendor/'.$row->id), 'customers') . '</div>';
+            $data[] = $sub_array;
+            $i++;
+        }
+        $count = $this->get_vendors_count();
         echo $this->datatable->output($data, $count);
     }
 
@@ -102,6 +166,14 @@ class Customer_model extends MY_Model
         return $q->num_rows();
     }
 
+
+
+    public function get_vendors_count()
+    {
+        $query = "SELECT * FROM vendors";
+        $q = $this->db->query($query);
+        return $q->num_rows();
+    }
 
 
     public function search($search_keyword, $value, $limit = false)

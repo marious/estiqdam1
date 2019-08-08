@@ -31,10 +31,9 @@
                 </span>
               </a>
               <ul class="treeview-menu">
-                  <li class="<?= is_tree_sidebar_menu_active('customers', 'all'); ?>"><a href="<?= site_url('customers/all'); ?>"><i class="fa fa-circle-o"></i> <?= lang('all_customers'); ?></a></li>
-                  <?php if (in_array('add_customers', $logged_in_user_permissions)): ?>
-                      <li class="<?= is_tree_sidebar_menu_active('customers', 'add'); ?>"><a href="<?= site_url('customers/add'); ?>"><i class="fa fa-circle-o"></i> <?= lang('add_new'); ?></a></li>
-                  <?php endif; ?>
+                  <li class="<?= is_tree_sidebar_menu_active('customers', 'all_customers'); ?>"><a href="<?= site_url('customers/all_customers'); ?>"><i class="fa fa-circle-o"></i> <?= lang('all_customers'); ?></a></li>
+                  <li class="<?= is_tree_sidebar_menu_active('customers', 'all_vendors'); ?>"><a href="<?= site_url('customers/all_vendors'); ?>"><i class="fa fa-circle-o"></i> <?= lang('all_vendors'); ?></a></li>
+
 
               </ul>
           </li>

@@ -69,3 +69,4 @@ $lang['save_success'] = 'Item Saved Successfully';
 $lang['categories'] = 'Categories';
 $lang['purchase'] = 'Purchase';
 $lang['new_purchase'] = 'New Purchase';
+$lang['all_vendors'] = 'All Vendors';
