@@ -5,6 +5,7 @@
             <div class="panel-heading">Operations</div>
             <div class="panel-body" id="operations">
                 <form>
+                    <?= csrf_field() ?>
                 <div class="col-md-6">
 
                     <div class="form-group clearfix">

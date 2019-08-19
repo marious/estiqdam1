@@ -57,7 +57,7 @@ class Transaction_model extends MY_Model
 
         if (isset($_POST['is_date_search']) && $_POST['is_date_search'] == 'yes')
         {
-            $start_date = isset($_POST['start_date']) && !empty($_POST['start_date']) ? DateTime::createFromFormat('d/m/Y', $_POST['start_date'])->format('Y-m-d') . ' 00:00:00' : '';
+            $start_date = isset($_POST['start_date']) && !empty($_POST['start_date']) ? DateTime::createFromFormat('d/m/Y', $_POST['start_date'])->format('Y-m-d') . ' 23:59:59' : '';
             $end_date = isset($_POST['end_date']) && !empty($_POST['end_date']) ? DateTime::createFromFormat('d/m/Y', $_POST['end_date'])->format('Y-m-d') . ' 23:59:59' : '';
             $this->datatable->setDateRange($start_date, $end_date, 'date');
         }

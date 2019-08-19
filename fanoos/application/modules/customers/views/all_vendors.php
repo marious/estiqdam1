@@ -1,6 +1,9 @@
 <div class="row">
     <div class="col-md-12">
 
+        <?php echo message_box('success'); ?>
+        <?php echo message_box('error'); ?>
+
         <div class="box box-primary">
 
             <div class="box-header with-border">
@@ -8,6 +11,7 @@
                 <!-- /.box-tools -->
             </div>
             <!-- /.box-header -->
+
 
             <div class="row">
                 <div class="col-md-12">

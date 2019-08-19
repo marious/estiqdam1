@@ -209,7 +209,17 @@ class Customers extends MY_Controller
 
     public function delete_vendor($id = null)
     {
-
+        $purchase = $this->db->get_where('purchase_order', ['vendor_id' => $id])->row();
+        if ($purchase)
+        {
+            $this->message->custom_error_msg('customers/all_vendors', lang('sorry_you_cannot_delete_used_by_other'));
+        }
+        else
+        {
+            $this->db->delete('vendors', ['id' => $id]);
+            $this->message->delete_success('customers/all_vendors');
+        }
+        return false;
     }
 
 }

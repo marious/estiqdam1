@@ -64,6 +64,11 @@ class Items extends MY_Controller
             $data['purchase_cost']  = $this->input->post('purchase_cost');
             $data['user_id']        = $_SESSION['user_id'];
 
+            // inventory
+            $data['track_inventory'] = 'Yes';
+            $data['type'] = 'Inventory';
+            $data['inventory'] = 0;
+
 
             if ($this->Item_model->save($data, $id))
             {

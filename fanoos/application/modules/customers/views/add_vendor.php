@@ -117,6 +117,7 @@
 
                             <!--                            <a href="javascript::" class="btn bg-navy btn-flat" onclick="save_product()" >--><?//= lang('save') ?><!--</a>-->
                             <button class="btn bg-navy" type="submit" value="Submit"><?= lang('save') ?></button>
+                            <a href="<?= site_url('customers/all_vendors') ?>" class="btn bg-orange-active"><?= lang('cancel') ?></a>
 
                         </div>
                     </div>

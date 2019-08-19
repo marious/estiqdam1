@@ -59,6 +59,8 @@
               </a>
               <ul class="treeview-menu">
                   <li class="<?= is_tree_sidebar_menu_active('purchase', 'new_purchase'); ?>"><a href="<?= site_url('purchase/new_purchase'); ?>"><i class="fa fa-circle-o"></i> <?= lang('new_purchase'); ?></a></li>
+                  <li class="<?= is_tree_sidebar_menu_active('purchase', 'purchase_list'); ?>"><a href="<?= site_url('purchase/purchase_list'); ?>"><i class="fa fa-circle-o"></i> <?= lang('purchase_list'); ?></a></li>
+                  <li class="<?= is_tree_sidebar_menu_active('purchase', 'received_product_list'); ?>"><a href="<?= site_url('purchase/received_product_list'); ?>"><i class="fa fa-circle-o"></i> <?= lang('received_product'); ?></a></li>
               </ul>
           </li>
 

@@ -3,7 +3,6 @@
     <div class="col-md-12">
         <form action="" class="customer-form" method="post">
             <?= csrf_field() ?>
-
             <div class="box box-info">
                 <div class="box-body">
 

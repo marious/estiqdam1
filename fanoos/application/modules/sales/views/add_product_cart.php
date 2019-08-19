@@ -42,7 +42,7 @@
 
                         <td>
                             <div class="form-group form-group-bottom">
-                                <?php if($cart['type']){ ?>
+                                <?php if(isset($cart['type']) && $cart['type']){ ?>
                                     <?php echo $cart['description']?>
                                 <?php } else { ?>
                                     <input class="form-control" type="text" name="description" onblur ="updateItem(this);" id="<?php echo 'des'.$cart['rowid'] ?>" value="<?php echo $cart['description']?>">

@@ -11,6 +11,7 @@
                         <th>No.</th>
                         <th><?=lang('name')?></th>
                         <th><?= lang('sales_price') ?></th>
+                        <th><?= lang('inventory') ?></th>
                         <th class="align-right"><?= lang('manage'); ?></th>
                     </tr>
                     </thead>

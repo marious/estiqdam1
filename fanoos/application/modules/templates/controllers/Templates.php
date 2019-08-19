@@ -16,6 +16,11 @@ class Templates extends MY_Controller
     }
 
 
+    public function small_modal($data)
+    {
+        $this->load->view('_partials/small_modal', $data);
+    }
+
    
 
 }

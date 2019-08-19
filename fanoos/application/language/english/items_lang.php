@@ -21,3 +21,4 @@ $lang['category_field_required'] = 'Category Field is required';
 $lang['record_saved'] = 'Your Records Has been Saved Successfully';
 $lang['purchase_cost'] = 'Purchase Cost';
 $lang['cost'] = 'Cost';
+$lang['inventory'] = 'Inventory';

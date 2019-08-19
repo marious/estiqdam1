@@ -9,6 +9,7 @@ class Sales extends MY_Controller
         $this->load->library('cart');
         $this->load->library('form_builder');
         $this->lang->load('sales');
+        $this->lang->load('purchase');
         $this->load->module('crud');
     }
 
@@ -16,8 +17,10 @@ class Sales extends MY_Controller
 
     public function all_invoices()
     {
-        $this->load->model('crud/Crud_model');
+        $this->load_daterange_datepicker();
+        $this->load_js_validation();
 
+        $this->load->model('crud/Crud_model');
 
         $this->load->library('Grocery_CRUD');
         $crud = new Grocery_CRUD();
@@ -170,8 +173,24 @@ class Sales extends MY_Controller
 
     public function show_cart()
     {
-        $this->load->module('items');
-        $data['products'] = $this->items->Item_model->get();
+        $products = [];
+        $categories = $this->db->order_by('category', 'desc')->get('product_category')->result();
+
+        if (is_array($categories) && count($categories))
+        {
+            foreach ($categories as $category) {
+                $product = $this->db->order_by('name', 'asc')->get_where('items', [
+                    'category_id' => $category->id,
+                ])->result();
+                if (!count($product)) {
+                    continue;
+                }
+                $products[$category->category] = $product;
+            }
+        }
+
+        $data['products'] = $products;
+
         $this->load->view('add_product_cart', $data);
     }
 
@@ -221,6 +240,23 @@ class Sales extends MY_Controller
         {
             $this->message->custom_error_msg('test', 'hi');
         }
+
+        // Check the qty of product needed is in our inventory
+        foreach ($this->cart->contents() as $item) {
+            $o_details['product_id']        = $item['id'];
+            $o_details['qty']               = $item['qty'];
+
+            $product = $this->db->get_where('items', ['id' => $o_details['product_id']])->row();
+            if ($product->type == 'Inventory')
+            {
+                if ($product->inventory < $o_details['qty'])
+                {
+                    $this->message->custom_error_msg('sales/invoice', lang('qty_is_greater_than_inventory'));
+                }
+            }
+
+        }
+
         $this->load->library('encryption');
 
 //        $order_id = $this->input->post('order_id') ? $this->encryption->encrypt($this->input->post('order_id')) : '';
@@ -306,6 +342,13 @@ class Sales extends MY_Controller
             $this->db->insert('order_details', $o_details);
 
             //TODO: track this product in inventory
+            $p_details = $this->db->get_where('items', ['id' => $item['id']])->row();
+            if ($p_details->type == 'Inventory')
+            {
+                $p_qty['inventory'] = $p_details->inventory - $item['qty'];
+                $this->db->where('id', $item['id']);
+                $this->db->update('items', $p_qty);
+            }
         }
 
         redirect('sales/sale_preview/'.get_orderId($order_id));
@@ -359,11 +402,16 @@ class Sales extends MY_Controller
         $id = $id - INVOICE_PRE;
         $data['order'] = $this->db->get_where('invoices', ['id' => $id])->row();
 
+        $this->load->module('banks');
+        $data['accounts'] = $this->banks->Bank_model->get();
+        $data['categories'] = $this->db->get_where('categories', ['type' => 'Income'])->result();
+
+
         $data['modal_subview'] = $this->load->view('modal/_add_payment', $data, false);
 //        $this->load->view();
     }
 
-    function received_payment()
+    public function received_payment()
     {
         $id = $this->input->post('payment_id');
         $data['order_id'] = $this->input->post('order_id');
@@ -390,19 +438,6 @@ class Sales extends MY_Controller
             case 'cash':
                 $data['payment_method'] = 'Cash';
                 break;
-            case 'cc':
-                $data['payment_method'] = 'Credit';
-                $data['cc_name'] = $this->input->post('cc_name');
-                $data['cc_number'] = $this->input->post('cc_number');
-                $data['cc_type'] = $this->input->post('cc_type');
-                $data['cc_month'] = $this->input->post('cc_month');
-                $data['cc_year'] = $this->input->post('cc_year');
-                $data['cvc'] = $this->input->post('cvc');
-                break;
-            case 'ck':
-                $data['payment_method'] = 'Cheque';
-                $data['payment_ref'] = $this->input->post('payment_ref');
-                break;
             case 'bank':
                 $data['payment_method'] = 'Bank Transfer';
                 $data['payment_ref'] = $this->input->post('payment_ref');
@@ -420,6 +455,16 @@ class Sales extends MY_Controller
             $data['attachment'] = $file;
         }
 
+
+        $account_data = [];
+        $account_data['account'] = $this->input->post('to_account');
+        $account_data['amount'] = $data['amount'];
+        $account_data['category'] = $this->input->post('category');
+        $account_data['date'] = $data['payment_date'];
+        $account_data['ref'] = $data['order_ref'];
+        $account_data['payer'] = $order->customer_id;
+        $account_data['description'] = $this->input->post('description');
+
         if ($id)
         {
             // update
@@ -427,12 +472,6 @@ class Sales extends MY_Controller
 
             //trancate Payment
             $t_data['payment_method'] = '';
-            $t_data['cc_name'] = '';
-            $t_data['cc_number'] = '';
-            $t_data['cc_type'] = '';
-            $t_data['cc_month'] = '';
-            $t_data['cc_year'] = '';
-            $t_data['cvc'] = '';
             $t_data['payment_ref'] = '';
 
             $this->db->where('id', $id);
@@ -460,10 +499,54 @@ class Sales extends MY_Controller
 
             $this->db->where('id', $order->id);
             $this->db->update('invoices', $p_data);
+            $this->save_income_sale_to_account($account_data);
+
         }
 
         redirect('sales/sale_preview/'.get_orderId($order->id));
 
+    }
+
+
+
+    public function save_income_sale_to_account($data)
+    {
+        $this->load->module('banks');
+        $this->load->module('transactions');
+        $current_account = $this->banks->Bank_model->get($data['account'], true);
+        if ($current_account)
+        {
+            $balance_after_deposite = $current_account->balance + $data['amount'];
+            $this->db->trans_start();
+            $this->Bank_model->save(['balance' => $balance_after_deposite], $current_account->id);
+            $this->Transaction_model->save([
+                'account_id'    => $data['account'],
+                'account'       => $current_account->account,
+                'type'          => 'Income',
+                'amount'        => $data['amount'],
+                'date'          => $data['date'],
+                'description'   => $data['description'],
+                'ref'           => $data['ref'],
+                'dr'            => '0.00',
+                'cr'            => $data['amount'],
+                'tax'           => '0.00',
+                'category'      => $data['category'],
+                'payerid'       => $data['payer'],
+                'balance'       => $balance_after_deposite,
+
+            ]);
+            $this->db->trans_complete();
+            if ($this->db->trans_status === false)
+            {
+                $_SESSION['error'] = 'Something error happen transaction try again';
+                $this->session->mark_as_flash('error');
+                redirect('sales/all_invoices');
+            }
+
+            return;
+
+
+        }
     }
 
 

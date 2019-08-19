@@ -35,7 +35,7 @@
                                             <select class="form-control select2" style="width: 100%" onchange="getVendor(this)" name="vendor_id">
                                                 <option value=""><?= lang('please_select') ?>...</option>
                                                 <?php if(!empty($vendors)){ foreach ($vendors as $item){ ?>
-                                                    <option value="<?php echo $item->id ?>" <?php echo  $v_detail->id == $item->id ? 'selected':'' ?>><?php echo 100+$item->id.'-'. $item->company_name ?></option>
+                                                    <option value="<?php echo $item->id ?>" <?php echo  $v_detail->id == $item->id ? 'selected':'' ?>><?php echo 100+$item->id.' - '. $item->company_name ?></option>
                                                 <?php };} ?>
                                             </select>
                                         </div>
@@ -108,7 +108,7 @@
 
 
 
-                                <button type="submit" class="btn bg-navy btn-flat" id="save-invoice" disabled><?= lang('save'); ?> </button>
+                                <button type="submit" class="btn bg-navy btn-flat" id="save-invoice"><?= lang('save'); ?> </button>
 
                             </div>
                         </div>

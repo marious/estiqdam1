@@ -256,12 +256,12 @@ class Transactions extends MY_Controller
             $amount = $this->input->post('amount');
             $description = $this->input->post('description');
             $ref = $this->input->post('ref_number');
-            $payee = $this->input->post('payee');
+            $payer = $this->input->post('payee');
             $cat = $this->input->post('category');
 
-            if (!is_numeric($payee))
+            if (!is_numeric($payer))
             {
-                $payee = 0;
+                $payer = 0;
             }
 
             // find the current balance of this account
@@ -281,6 +281,7 @@ class Transactions extends MY_Controller
                 'dr'            => '0.00',
                 'cr'            => $amount,
                 'tax'           => '0.00',
+                'payerid'       => $payer,
                 'category'      => $cat,
                 'balance'       => $balance_after_deposite,
 

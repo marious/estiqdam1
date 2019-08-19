@@ -27,17 +27,17 @@ class Customer_model extends MY_Model
         [
             'field' => 'name',
             'label' => 'lang:name',
-            'rules' => 'trim|required',
+            'rules' => 'trim|required|xss_clean',
         ],
         [
             'field' => 'company_name',
             'label' => 'lang:company_name',
-            'rules' => 'trim|required',
+            'rules' => 'trim|required|xss_clean',
         ],
         [
             'field' => 'email',
             'label' => 'lang:email',
-            'rules' => 'trim|valid_email',
+            'rules' => 'trim|valid_email|xss_clean',
         ],
     ];
 
