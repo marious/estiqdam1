@@ -3,7 +3,7 @@
 //==========================================================
 $("#saveInvoice").click(function ()  {
 
-    $("#from-invoice").validate({
+    $("#form-invoice").validate({
         excluded: ':disabled',
         rules: {
 
@@ -16,6 +16,12 @@ $("#saveInvoice").click(function ()  {
             due_date: {
                 required: true
             },
+            product: {
+                required: true
+            },
+            qty: {
+                required: true
+            }
         },
 
         highlight: function(element) {
@@ -30,7 +36,13 @@ $("#saveInvoice").click(function ()  {
             if (element.parent('.input-group').length) {
                 error.insertAfter(element.parent());
             } else {
-                error.insertAfter(element);
+                if (element.hasClass('select2')) {
+                    error.insertAfter(element.closest('.form-group'));
+                } else {
+                    error.insertAfter(element);
+                }
+                // console.log(element.hasClass('select2'));
+
             }
         }
     })
