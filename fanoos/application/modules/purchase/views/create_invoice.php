@@ -100,8 +100,18 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label><?= lang('note') ?></label>
-                                            <textarea class="form-control" name="order_note"><?php if(!empty($order))echo $order->order_note ?></textarea>
+                                            <textarea class="form-control" name="order_note"><?php if(!empty($order) && isset($order->order_note))echo $order->order_note ?></textarea>
                                         </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="box">
+                                    <div class="box-body">
+                                        <div id="cart-view">
+                                            <?php $this->load->view('payment_view') ?>
+                                        </div>
+                                        <div class="row"></div>
                                     </div>
                                 </div>
 

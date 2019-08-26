@@ -15,6 +15,8 @@ class Purchase extends MY_Controller
 
     public function new_purchase()
     {
+        $this->load_daterange_datepicker();
+
         $this->cart->destroy();
         $data = [
             'tax'       => '',
@@ -68,6 +70,11 @@ class Purchase extends MY_Controller
         }
 
         $this->data['products'] = $products;
+        $this->load->module('banks');
+        $this->data['accounts'] = $this->banks->Bank_model->get();
+        $this->data['categories'] = $this->db->get_where('categories', ['type' => 'Income'])->result();
+
+
 
 
         $this->admin_template('create_invoice', $this->data);
@@ -221,47 +228,136 @@ class Purchase extends MY_Controller
 
     public function save_purchase()
     {
-        $sales_person           = $this->ion_auth->user()->row();
+        if ($this->form_validation->run($this))
+        {
+            $sales_person           = $this->ion_auth->user()->row();
 
-        $data['email']          = $this->input->post('email');
-        $data['b_address']      = $this->input->post('b_address');
-        $data['order_note']     = $this->input->post('order_note');
-        $data['ref']            = $this->input->post('bill_ref');
+            $data['email']          = $this->input->post('email');
+            $data['b_address']      = $this->input->post('b_address');
+            $data['order_note']     = $this->input->post('order_note');
+            $data['ref']            = $this->input->post('bill_ref');
 
-        $data['cart_total']     = $this->cart->total();
-        $data['discount']       = (float) $_SESSION['discount'];
-        $data['tax']            = (float) $_SESSION['tax'];
-        $data['shipping']       = (float) $_SESSION['shipping'];
+            $data['cart_total']     = $this->cart->total();
+            $data['discount']       = (float) $_SESSION['discount'];
+            $data['tax']            = (float) $_SESSION['tax'];
+            $data['shipping']       = (float) $_SESSION['shipping'];
 
-        $data['grand_total']    = $this->cart->total() + $data['tax'] + $data['shipping'] - $data['discount'];
-        $data['due_payment']    = $data['grand_total'];
-        $data['cart']           = json_encode($this->cart->contents());
+            $data['grand_total']    = $this->cart->total() + $data['tax'] + $data['shipping'] - $data['discount'];
+            $data['due_payment']    = $data['grand_total'];
+            $data['cart']           = json_encode($this->cart->contents());
 
-        $data['sales_person']   = $sales_person->first_name . ' ' . $sales_person->last_name;
-        $data['vendor_id']      = $this->input->post('vendor_id');
+            $data['sales_person']   = $sales_person->first_name . ' ' . $sales_person->last_name;
+            $data['vendor_id']      = $this->input->post('vendor_id');
 
-        $data['vendor_name'] = $this->db->get_where('vendors', [
-            'id' => $data['vendor_id'],
-        ])->row()->company_name;
+            $data['vendor_name'] = $this->db->get_where('vendors', [
+                'id' => $data['vendor_id'],
+            ])->row()->company_name;
 
-        // Save Purchase order table
-        $this->db->insert('purchase_order', $data);
-        $purchase_id = $this->db->insert_id();
+            // Save Purchase order table
+            $this->db->insert('purchase_order', $data);
+            $purchase_id = $this->db->insert_id();
 
-        // Save purchase order details
-        foreach ($this->cart->contents() as $item) {
-            $o_details['purchase_id']       = $purchase_id;
-            $o_details['product_id']        = $item['id'];
-            $o_details['product_name']      = $item['name'];
-            $o_details['description']       = $item['description'] ? $item['description'] : '';
-            $o_details['qty']               = $item['qty'];
-            $o_details['unit_price']        = $item['price'];
-            $o_details['sub_total']         = $item['subtotal'];
-            //save order details
-            $this->db->insert('purchase_details', $o_details);
+            // Save purchase order details
+            foreach ($this->cart->contents() as $item) {
+                $o_details['purchase_id']       = $purchase_id;
+                $o_details['product_id']        = $item['id'];
+                $o_details['product_name']      = $item['name'];
+                $o_details['description']       = $item['description'] ? $item['description'] : '';
+                $o_details['qty']               = $item['qty'];
+                $o_details['unit_price']        = $item['price'];
+                $o_details['sub_total']         = $item['subtotal'];
+                //save order details
+                $this->db->insert('purchase_details', $o_details);
+            }
+
+            if ($purchase_id)
+            {
+                $payment_date = $this->input->post('payment_date');
+                $payment_amount = $this->input->post('amount');
+                $from_account = $this->input->post('from_account');
+                if ($payment_date && $payment_amount && $from_account)
+                {
+                    $purchase = $this->db->get_where('purchase_order', ['id' => $purchase_id])->row();
+                    $payment_data['payment_date'] = DateTime::createFromFormat(setting('date_format'), $this->input->post('payment_date'))->format('Y-m-d H:i:s');
+                    $order_ref = $this->input->post('order_ref');
+                    $payment_data['order_id'] = $purchase_id;
+                    $payment_data['order_ref'] = $order_ref == '' ? get_orderId($payment_data['order_id']) . '/' . date('d/m/Y') : $order_ref;
+                    $payment_data['amount'] = (float) $this->input->post('amount');
+                    $payment_data['method'] = $this->input->post('payment_method');
+                    $payment_method = $payment_data['method'];
+
+                    switch ($payment_method) {
+                        case 'cash':
+                            $payment_data['payment_method'] = 'Cash';
+                            break;
+                        case 'bank':
+                            $payment_data['payment_method'] = 'Bank Transfer';
+                            //$payment_data['payment_ref'] = $this->input->post('payment_ref');
+                            break;
+                    }
+                    $payment_data['type'] = 'Purchase';
+                    $sales_person = $this->ion_auth->user()->row();
+                    $payment_data['received_by'] = $sales_person->first_name.' '.$sales_person->last_name;
+
+                    // Some required validation
+
+                    if ((int) $purchase->due_payment == 0)
+                    {
+                        $this->message->custom_error_msg('purchase/purchase_invoice/'.get_orderId($purchase->id), 'error due payment = 0');
+                    }
+                    else if ((float) $this->input->post('amount') > (float) $purchase->due_payment)
+                    {
+                        $this->message->custom_error_msg('purchase/purchase_invoice/'.get_orderId($purchase->id), 'error amount bigger due');
+                    }
+
+                    $this->load->module('banks');
+
+                    // Check account has the specified amount
+                    $account_id = $this->input->post('from_account');
+                    $account = $this->banks->Bank_model->get($account_id, true);
+                    if ($payment_data['amount'] > $account->balance)
+                    {
+                        $this->message->custom_error_msg('purchase/purchase_invoice/'.get_orderId($purchase->id), lang('amount_greater_account_balance'));
+                    }
+
+
+                    $account_data = [];
+                    $account_data['account'] = $this->input->post('from_account');
+                    $account_data['amount'] = $payment_data['amount'];
+                    $account_data['payee'] = $purchase->vendor_id;
+                    $account_data['payee_type'] = 'Vendor';
+                    $account_data['category'] = $this->input->post('category') ? $this->input->post('category') : '';
+                    $account_data['date'] = $payment_data['payment_date'];
+                    $account_data['ref'] = $payment_data['order_ref'];
+                    $account_data['description'] = $this->input->post('description');
+
+
+                    //insert
+                    $this->db->insert('payment', $payment_data);
+
+                    //update purchase order
+                    $p_data['paid_amount'] = $purchase->paid_amount + $payment_data['amount'];
+                    $p_data['due_payment'] = $purchase->due_payment - $payment_data['amount'];
+                    $this->db->where('id', $purchase->id);
+                    $this->db->update('purchase_order', $p_data);
+                    $this->save_account_purchase_expense($account_data);
+
+
+                    redirect('purchase/purchase_invoice/'.get_orderId($purchase->id));
+
+
+                }
+            }
+
+
+         //   $this->message->save_success('purchase/purchase_list');
+
         }
 
-        $this->message->save_success('purchase/purchase_list');
+
+
+        $this->system_message->set_error(validation_errors());
+        redirect('purchase/new_purchase');
     }
 
 

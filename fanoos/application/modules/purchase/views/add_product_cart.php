@@ -24,7 +24,7 @@
 
                 <td>
                     <div class="form-group form-group-bottom p_div">
-                        <select class="form-control select2" style="width: 100%" onchange="pur_product_id(this)" id="<?php echo $cart['rowid']?>">
+                        <select class="form-control select2" style="width: 100%" onchange="pur_product_id(this)" id="<?php echo $cart['rowid']?>" name="product">
                             <option value=""><?= lang('please_select') ?>..</option>
                             <?php if(!empty($products)){ foreach ($products as $key => $product){ ?>
                                 <optgroup label="<?php echo $key?>">
@@ -80,7 +80,7 @@
 
             <td>
                 <div class="form-group form-group-bottom p_div">
-                    <select class="form-control select2" style="width: 100%" onchange="pur_product_id(this)" id="">
+                    <select class="form-control select2" style="width: 100%" onchange="pur_product_id(this)" id="" name="product">
                         <option value=""><?= lang('please_select') ?>..</option>
                         <?php if(!empty($products)){ foreach ($products as $key => $product){ ?>
                             <optgroup label="<?php echo $key?>">
@@ -95,19 +95,19 @@
 
             <td>
                 <div class="form-group form-group-bottom">
-                    <input class="form-control" type="text">
+                    <input class="form-control" type="text" name="description">
                 </div>
             </td>
 
             <td>
                 <div class="form-group form-group-bottom">
-                    <input class="form-control" type="text">
+                    <input class="form-control" type="text" name="qty">
                 </div>
             </td>
 
             <td>
                 <div class="form-group form-group-bottom">
-                    <input class="form-control" type="text">
+                    <input class="form-control" type="text" name="rate">
                 </div>
             </td>
 
