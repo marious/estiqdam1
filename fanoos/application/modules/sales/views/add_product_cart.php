@@ -25,7 +25,7 @@
 
                         <td>
                             <div class="form-group form-group-bottom p_div">
-                                <select name=""  style="width: 100%; z-index: 9999;" class="form-control select2 products"  id="<?= $cart['rowid'] ?>" onchange="get_product_id(this)">
+                                <select name="product"  style="width: 100%; z-index: 9999;" class="form-control select2 products"  id="<?= $cart['rowid'] ?>" onchange="get_product_id(this)">
                                     <option value=""><?= lang('please_select') ?>...</option>
                                     <?php if (!empty($products)): ?>
                                     <?php foreach ($products as $category => $product): ?>
@@ -89,7 +89,7 @@
 
                     <td>
                         <div class="form-group form-group-bottom p_div">
-                            <select class="form-control select2 products" style="width: 100%; z-index: 9999" id="" onchange="get_product_id(this)">
+                            <select class="form-control select2 products" style="width: 100%; z-index: 9999" id="" onchange="get_product_id(this)" name="product">
                                 <option value=""><?= lang('please_select') ?>...</option>
                                 <?php if (!empty($products)): ?>
                                     <?php foreach ($products as $category => $product): ?>
@@ -112,7 +112,7 @@
 
                     <td>
                         <div class="form-group form-group-bottom">
-                            <input class="form-control" type="text" style="width:120px" >
+                            <input class="form-control" type="text" style="width:120px" name="qty">
                         </div>
                     </td>
 

@@ -28,7 +28,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="customers-list"><?= lang('customer') ?> <span class="required" aria-required="true">*</span></label>
-                                            <select name="customer_id" class="form-control" style="width: 100%" id="customers-list">
+                                            <select name="customer_id" class="form-control select2" style="width: 100%" id="customers-list">
                                                 <option value=""><?= lang('please_select') ?>...</option>
                                             </select>
                                         </div>
@@ -99,10 +99,20 @@
                             </div>
 
                         </div>
-
-
                     </div>
                 </div>
+
+
+
+                <div class="box">
+                    <div class="box-body">
+                        <div id="cart-view">
+                            <?php $this->load->view('payment_view') ?>
+                        </div>
+                        <div class="row"></div>
+                    </div>
+                </div>
+
 
                 <button type="submit" class="btn bg-navy btn-flat" id="saveInvoice" ><?= lang('save'); ?> </button>
 

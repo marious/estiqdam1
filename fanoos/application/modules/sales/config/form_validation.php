@@ -3,286 +3,60 @@
 $config = array(
 
 
-    // Admin User Login
-    'login/index' => array(
+    'sales/save_invoice' => array(
         array(
-            'field'		=> 'email',
-            'label'		=> 'Email',
-            'rules'		=> 'required|xss_clean',
+            'field' => 'customer_id',
+            'label' => 'lang:customer',
+            'rules' => 'trim|required|xss_clean',
         ),
         array(
-            'field'		=> 'password',
-            'label'		=> 'Password',
-            'rules'		=> 'required|xss_clean',
-        ),
-    ),
-
-    // Forgot Password
-    'auth/forgot_password' => array(
-        array(
-            'field'		=> 'email',
-            'label'		=> 'Email',
-            'rules'		=> 'required|valid_email',
-        ),
-    ),
-
-    // Reset Password
-    'auth/reset_password' => array(
-        array(
-            'field'		=> 'password',
-            'label'		=> 'Password',
-            'rules'		=> 'required|min_length[8]',
+            'field' => 'invoice_date',
+            'label' => 'lang:invoice_date',
+            'rules' => 'trim|required|valid_date',
         ),
         array(
-            'field'		=> 'retype_password',
-            'label'		=> 'Retype Password',
-            'rules'		=> 'required|matches[password]',
-        ),
-    ),
-    // Create User
-    'user/create' => array(
-//		array(
-//			'field'		=> 'first_name',
-//			'label'		=> 'First Name',
-//			'rules'		=> 'required',
-//		),
-//		array(
-//			'field'		=> 'last_name',
-//			'label'		=> 'Last Name',
-//			'rules'		=> 'required',
-//		),
-        array(
-            'field'		=> 'username',
-
-            'label'		=> 'Username',
-            'rules'		=> 'is_unique[users.username]',				// use email as username if empty
+            'field' => 'due_date',
+            'label' => 'lang:due_date',
+            'rules' => 'trim|required|valid_date',
         ),
         array(
-            'field'		=> 'email',
-            'label'		=> 'Email',
-            'rules'		=> 'required|valid_email|is_unique[users.email]',
+            'field' => 'product',
+            'label' => 'lang:product',
+            'rules' => 'trim|xss_clean',
         ),
         array(
-            'field'		=> 'password',
-            'label'		=> 'Password',
-            'rules'		=> 'required',
+            'field' => 'qty',
+            'label' => 'lang:qty',
+            'rules' => 'trim|xss_clean|integer'
         ),
         array(
-            'field'		=> 'retype_password',
-            'label'		=> 'Retype Password',
-            'rules'		=> 'required|matches[password]',
-        ),
-    ),
-
-    // Reset User Password
-    'user/reset_password' => array(
-        array(
-            'field'		=> 'new_password',
-            'label'		=> 'New Password',
-            'rules'		=> 'required',
+            'field' => 'discount',
+            'label' => 'lang:discount',
+            'rules' => 'trim|numeric',
         ),
         array(
-            'field'		=> 'retype_password',
-            'label'		=> 'Retype Password',
-            'rules'		=> 'required|matches[new_password]',
-        ),
-    ),
-
-    // Create Admin User
-    'panel/admin_user_create' => array(
-        array(
-            'field'		=> 'username',
-            'label'		=> 'Username',
-            'rules'		=> 'required|is_unique[admin_users.username]',
+            'field' => 'payment_date',
+            'label' => 'lang:payment_date',
+            'rules' => 'trim|valid_date|xss_clean',
         ),
         array(
-            'field'		=> 'first_name',
-            'label'		=> 'First Name',
-            'rules'		=> 'required',
+            'field' => 'order_ref',
+            'label' => 'lang:order_ref',
+            'rules' => 'trim|xss_clearn',
         ),
         array(
-            'field'		=> 'email',
-            'label'		=> 'Email',
-            'rules'		=> 'required|valid_email|is_unique[admin_users.email]',
+            'field' => 'amount',
+            'label' => 'lang:amount',
+            'rules' => 'trim|numeric',
         ),
         array(
-            'field'		=> 'password',
-            'label'		=> 'Password',
-            'rules'		=> 'required',
-        ),
-        array(
-            'field'		=> 'retype_password',
-            'label'		=> 'Retype Password',
-            'rules'		=> 'required|matches[password]',
-        ),
-
-    ),
-
-    // Create Admin User
-    'panel/admin_user_create' => array(
-        array(
-            'field'		=> 'username',
-            'label'		=> 'Username',
-            'rules'		=> 'required|is_unique[admin_users.username]',
-        ),
-        array(
-            'field'		=> 'first_name',
-            'label'		=> 'First Name',
-            'rules'		=> 'required',
-        ),
-        array(
-            'field'		=> 'email',
-            'label'		=> 'Email',
-            'rules'		=> 'required|valid_email|is_unique[admin_users.email]',
-        ),
-        array(
-            'field'		=> 'password',
-            'label'		=> 'Password',
-            'rules'		=> 'required',
-        ),
-        array(
-            'field'		=> 'retype_password',
-            'label'		=> 'Retype Password',
-            'rules'		=> 'required|matches[password]',
-        ),
-
-    ),
-
-
-
-    // Reset Admin User Password
-    'panel/admin_user_reset_password' => array(
-        array(
-            'field'		=> 'new_password',
-            'label'		=> 'New Password',
-            'rules'		=> 'required',
-        ),
-        array(
-            'field'		=> 'retype_password',
-            'label'		=> 'Retype Password',
-            'rules'		=> 'required|matches[new_password]',
-        ),
-    ),
-
-    // Admin User Update Info
-    'panel/account_update_info' => array(
-        array(
-            'field'		=> 'username',
-            'label'		=> 'Username',
-            'rules'		=> 'required',
-        ),
-        array(
-            'field'		=> 'password',
-            'label'		=> 'Password',
-            'rules'		=> 'required',
-        ),
-    ),
-
-    // Admin User Change Password
-    'panel/account_change_password' => array(
-        array(
-            'field'		=> 'new_password',
-            'label'		=> 'New Password',
-            'rules'		=> 'required',
-        ),
-        array(
-            'field'		=> 'retype_password',
-            'label'		=> 'Retype Password',
-            'rules'		=> 'required|matches[new_password]',
+            'field' => 'description',
+            'label' => 'lang:description',
+            'rules' => 'trim',
         ),
     ),
 
 
-    // Company Information
-    'admin/settings' => array(
-        array(
-            'field'		=> 'company_name',
-            'label'		=> 'Company Name',
-            'rules'		=> 'required',
-        ),
 
-    ),
-
-    //=======================================
-    //       admin user validation
-    //=======================================
-
-    //update admin user profile
-    'panel/account_update_profile' => array(
-        array(
-            'field'		=> 'first_name',
-            'label'		=> lang('first_name'),
-            'rules'		=> 'required|xss_clean',
-        ),
-        array(
-            'field'		=> 'last_name',
-            'label'		=> lang('last_name'),
-            'rules'		=> 'required|xss_clean',
-        ),
-        array(
-            'field'		=> 'username',
-            'label'		=> lang('username'),
-            'rules'		=> 'required|trim|min_length[5]|max_length[12]|xss_clean|callback_chk_username',
-        ),
-        array(
-            'field'		=> 'email',
-            'label'		=> lang('email'),
-            'rules'		=> 'required|valid_email|callback_chk_email',
-        ),
-    ),
-
-
-    //=======================================
-    //       Employee validation
-    //=======================================
-
-    //Add new employee
-    'employee/addEmployee' => array(
-        array(
-            'field'		=> 'first_name',
-            'label'		=> lang('first_name'),
-            'rules'		=> 'required|xss_clean',
-        ),
-        array(
-            'field'		=> 'last_name',
-            'label'		=> lang('last_name'),
-            'rules'		=> 'required|xss_clean',
-        ),
-        array(
-            'field'		=> 'date_of_birth',
-            'label'		=> lang('date_of_birth'),
-            'rules'		=> 'required',
-        ),
-        array(
-            'field'		=> 'country',
-            'label'		=> lang('country'),
-            'rules'		=> 'required',
-        ),
-
-    ),
-
-    'employee_personal_info' => array(
-        array(
-            'field'		=> 'first_name',
-            'label'		=> lang('first_name'),
-            'rules'		=> 'required|xss_clean',
-        ),
-        array(
-            'field'		=> 'last_name',
-            'label'		=> lang('last_name'),
-            'rules'		=> 'required|xss_clean',
-        ),
-        array(
-            'field'		=> 'date_of_birth',
-            'label'		=> lang('date_of_birth'),
-            'rules'		=> 'required',
-        ),
-        array(
-            'field'		=> 'country',
-            'label'		=> lang('country'),
-            'rules'		=> 'required',
-        ),
-
-    ),
 
 );

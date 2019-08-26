@@ -29,7 +29,7 @@
                 <div class="form-group form-group-bottom">
                     <label><?= lang('received_amount') ?></label>
                     <input id="amount" name="amount" class="form-control" value="<?php if(!empty($payment)){ echo $payment->amount ;}else{ echo $order->due_payment; } ?>"
-                           type="text" onkeyup="receivedAmount(this);">
+                           type="text" onkeyup="receivedAmount(this);" autocomplete="off">
                     <span style=" color: #E13300" id="msg"></span>
                 </div>
             </div>
