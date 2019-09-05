@@ -5,7 +5,7 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                <h3 class="box-title"><?= lang('create_sales_invoice') ?></h3>
+                <h3 class="box-title"><?= isset($order) ? lang('update_sales_invoice') : lang('create_sales_invoice') ?></h3>
             </div>
             <!-- /.box-header -->
 
@@ -26,12 +26,20 @@
 
                                 <div class="row">
                                     <div class="col-md-6">
+                                        <?php if (!isset($order)): ?>
                                         <div class="form-group">
                                             <label for="customers-list"><?= lang('customer') ?> <span class="required" aria-required="true">*</span></label>
                                             <select name="customer_id" class="form-control select2" style="width: 100%" id="customers-list">
                                                 <option value=""><?= lang('please_select') ?>...</option>
                                             </select>
                                         </div>
+                                        <?php else: ?>
+                                            <div class="form-group form-group-bottom">
+                                                <label><?= lang('customer') ?></label>
+                                                <input type="text" class="form-control" value="<?php echo $customer->title ?>" readonly>
+                                            </div>
+                                        <?php endif; ?>
+
                                     </div>
 
                                     <div class="clearfix"></div>
@@ -51,8 +59,13 @@
                                     </div>
 
                                     <?php
-                                    $invoice_date = date('d/m/Y');
-                                    $due_date = date('d/m/Y');
+                                    if (isset($order)) {
+                                        $invoice_date = date('d/m/Y', strtotime($order->invoice_date));
+                                        $due_date = date('d/m/Y', strtotime($order->due_date));
+                                    } else {
+                                        $invoice_date = date('d/m/Y');
+                                        $due_date = date('d/m/Y');
+                                    }
                                     ?>
 
                                     <div class="col-md-3">
@@ -104,6 +117,7 @@
 
 
 
+                <?php if (empty($order)): ?>
                 <div class="box">
                     <div class="box-body">
                         <div id="cart-view">
@@ -112,6 +126,7 @@
                         <div class="row"></div>
                     </div>
                 </div>
+                <?php endif; ?>
 
 
                 <button type="submit" class="btn bg-navy btn-flat" id="saveInvoice" ><?= lang('save'); ?> </button>
@@ -122,9 +137,17 @@
 
 
 
-            <?= $form->close() ?>
 
         </div>
+
+
+        <input type="hidden" name="type" value="<?= !empty($type) ? $type : '' ?>">
+        <input type="hidden" name="order_id" value="<?php if (!empty($order)) echo str_replace(['+', '/', '='],['-', '_', '~'],
+            $this->encryption->encrypt($order->id)) ?>">
+
+        <?= $form->close() ?>
+
+
 
     </div>
 </div>

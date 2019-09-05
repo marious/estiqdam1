@@ -60,15 +60,98 @@ class Sales extends MY_Controller
     }
 
 
+
+    public function update_invoice($order_id = null)
+    {
+        $this->load_daterange_datepicker();
+
+//        $this->cart->destroy();
+        $order_id = $order_id - INVOICE_PRE;
+        $this->data['order'] = $this->db->get_where('invoices', ['id' => $order_id])->row();
+
+        if (!$this->data['order'])
+        {
+            redirect('dashboard', 'refresh');
+        }
+
+        $this->data['type'] = $this->data['order']->type;
+        $_SESSION['type'] = $this->data['type'];
+        if ($this->data['type'] === 'Invoice')
+        {
+            $this->data['form'] = $this->form_builder->create_form('sales/update_save_sales', true, ['id' => 'form-invoice']);
+        }
+        else
+         {
+            $this->data['form'] = $this->form_builder->create_form('sales/save_quotation', true, ['id' => 'form-invoice']);
+        }
+
+        // customer
+        $this->data['customer'] = $this->db->get_where('customers', [
+            'id' => $this->data['order']->customer_id,
+        ])->row();
+
+        // Cart operation
+        $cart_item = json_decode($this->data['order']->cart);
+
+        foreach ($cart_item as $item) {
+            $cart[] = [
+                'id'            => $item->id,
+                'qty'           => $item->qty,
+                'price'         => $item->price,
+                'purchase_cost' => $item->purchase_cost,
+                'name'          => $item->name,
+                'description'   => $item->description,
+                'type'          => $item->type,
+                'bundle'        => $item->bundle,
+                'tax'           => $item->tax,
+            ];
+        }
+
+        $this->cart->insert($cart);
+
+        $_SESSION['discount']               = $this->data['order']->discount;
+        $_SESSION['amount_received']        = $this->data['order']->amount_received;
+        $_SESSION['payment_method']         = $this->data['order']->payment_method;
+        $_SESSION['p_reference']            = $this->data['order']->p_reference;
+
+
+        $categories = $this->db->order_by('category', 'asc')->get('product_category')->result();
+
+
+
+        $products = [];
+        if (is_array($categories) && count($categories))
+        {
+            foreach ($categories as $category) {
+                $tm_product = $this->db->order_by('name', 'asc')->get_where('items', [
+                    'category_id' => $category->id,
+                ])->result();
+                if (!is_array($tm_product) && !count($tm_product))
+                {
+                    continue;
+                }
+                $products[$category->category] = $tm_product;
+            }
+        }
+
+        $this->data['products'] = $products;
+        $this->load->module('banks');
+        $this->data['accounts'] = $this->banks->Bank_model->get();
+
+        $this->admin_template('create_invoice', $this->data);
+    }
+
     /**
      * Create a new invoice
      */
     public function invoice()
     {
+                $this->cart->destroy();
+
         // temp
-        $order = new stdClass();
-        $order->due_payment = '';
-        $this->data['order'] = $order;
+        $orderinfo = new stdClass();
+        $orderinfo->due_payment = '';
+        $this->data['orderinfo'] = $orderinfo;
 
         $this->load_daterange_datepicker();
         $this->load_js_validation();
@@ -102,6 +185,8 @@ class Sales extends MY_Controller
         $this->_discount_session();
         $this->admin_template('create_invoice', $this->data);
     }
+
+
 
 
     public function add_to_cart()
@@ -197,8 +282,8 @@ class Sales extends MY_Controller
                 $products[$category->category] = $product;
             }
         }
-
         $data['products'] = $products;
+
 
         $this->load->view('add_product_cart', $data);
     }
@@ -210,6 +295,7 @@ class Sales extends MY_Controller
             'rowid' => $this->input->post('rowid'),
             'qty'   => 0,
         ];
+
         $this->cart->update($data);
     }
 
@@ -420,6 +506,184 @@ class Sales extends MY_Controller
 
 
 
+    public function update_save_sales()
+    {
+        if (empty($this->cart->contents()))
+        {
+            $this->message->custom_error_msg('sales/all_invoices', 'Sorry cart is empty');
+        }
+
+        $order_id = $this->encryption->decrypt(str_replace(['-', '_', '~'], ['+', '/', '='], $this->input->post('order_id')));
+        $order_details = $this->db->get_where('invoices', ['id' => $order_id])->row();
+        if (!$order_details) {
+            redirect('dashboard');
+        }
+
+        $sales_person = $this->ion_auth->user()->row();
+        $data['invoice_date'] = DateTime::createFromFormat(setting('date_format'), $this->input->post('invoice_date'))->format('Y-m-d');
+        $data['due_date'] = DateTime::createFromFormat(setting('date_format'), $this->input->post('due_date'))->format('Y-m-d');
+        $data['cart_total'] = $this->cart->total();
+        $total_tax = 0.00;
+        foreach ($this->cart->contents() as $item) {
+            $total_tax += $item['tax'];
+        }
+        $data['tax'] = $total_tax;
+        $gtotal = $this->cart->total();
+        $discount = $_SESSION['discount'];
+        $discount_amount = ($gtotal * $discount)/100;
+        $data['grand_total'] = $this->cart->total() + $total_tax - $discount_amount;
+        $data['amount_received']= (float)$this->input->post('amount_received') + $order_details->amount_received;
+        $data['due_payment']    = $data['grand_total'] - $data['amount_received'];
+
+        if ($data['due_payment'] <= 0)
+        {
+            $data['status'] = 'Close';
+        }
+        else
+        {
+            $data['status'] = 'Open';
+        }
+        $data['cart'] = json_encode($this->cart->contents());
+
+        $history = json_decode($order_details->history);
+        if($this->input->post('amount_received')){
+            $payment_method = $this->input->post('payment_method');
+        }else{
+            $payment_method = '';
+        }
+
+        $history[] = array(
+            'sales' => array(
+                'sales_person'      => $sales_person->first_name.' '.$sales_person->last_name,
+                'date'              => date("F j, Y, H:i:s")
+            ),
+            'list' => array(
+                'status'            =>  'Update Order',
+                'activities'        =>  $this->input->post('order_activities'),
+                'amount_received'   => $this->input->post('amount_received'),
+                'payment_method'    => $payment_method,
+                'p_reference'       => $this->input->post('p_reference'),
+            )
+        );
+        $data['history'] = json_encode($history);
+
+        //old Cart Manipulate
+        $old_cart = json_decode($order_details->cart,true);
+
+        foreach ($this->cart->contents() as $n_item){
+            foreach ($old_cart as $o_item)
+            {
+                if($n_item['id'] === $o_item['id']){
+                    unset($old_cart[$o_item['rowid']]);
+                }
+            }
+        }
+
+
+        // return back to Inventory
+        if (count($old_cart))
+        {
+            foreach ($old_cart as $item) {
+
+                if ($item['bundle'])
+                {
+                    // do bundle
+                } else {
+                    $p_details = $this->db->get_where('items', ['id' => $item['id']])->row();
+                    if ($p_details->type === 'Inventory')
+                    {
+                        $p_qty['inventory'] = $p_details->inventory + $item['qty'];
+                        // return product qty
+                        $this->db->where('id', $item['id']);
+                        $this->db->update('items', $p_qty);
+                    }
+                }
+
+                // delete from order
+                $order_details_id = $this->db->get_where('order_details', [
+                    'order_id' => $order_id,
+                    'product_id' => $item['id']
+                ])->row();
+
+                $this->db->delete('order_details', ['id' => $order_details->id]);
+
+            }
+        }
+
+
+        // Update order
+        $this->db->where('id', $order_id);
+        $this->db->update('invoices', $data);
+
+        $o_details['order_id'] = $order_id;
+        foreach ($this->cart->contents() as $item) {
+            $o_details['product_id']        = $item['id'];
+            $o_details['product_name']      = $item['name'];
+            $o_details['purchase_cost']     = $item['purchase_cost'];
+            $o_details['sales_cost']        = $item['price'];
+            $o_details['qty']               = $item['qty'];
+            $o_details['description']       = $item['description'];
+            $o_details['tax_amount']        = $item['tax'];
+
+            $p_details = $this->db->get_where('items', array(
+                'id' => $item['id']
+            ))->row();
+
+            //save order details
+
+            $has_product = $this->db->get_where('order_details', [
+                'order_id' => $order_id,
+                'product_id' => $item['id'],
+            ])->row();
+
+            $pre_qty = $has_product->qty;
+
+            if (count($has_product))
+            {
+                $this->db->where('id', $has_product->id);
+                $this->db->update('order_details', $o_details);
+
+                if ($item['bundle'])
+                {
+                    // do item bundle
+                }
+                else
+                {
+                    $p_qty['inventory'] = $p_details->inventory + $pre_qty - $item['qty'];
+                    // return product qty
+                    $this->db->where('id', $item['id']);
+                    $this->db->update('items', $p_qty);
+                }
+            }
+            else
+            {
+                $this->db->insert('order_details', $o_details);
+
+                if ($item['bundl'])
+                {
+                    // do item bundle
+                }
+                else
+                {
+                    if ($p_details->type == 'Inventory')
+                    {
+                        $p_qty['inventory'] = $p_details->inventory - $item['qty'];
+
+                        $this->db->where('id', $item['id']);
+                        $this->db->update('items', $p_qty);
+                    }
+                }
+            }
+        }
+
+
+        redirect('sales/sale_preview/'.get_orderId($order_id));
+
+
+    }
+
+
+
     public function sale_preview($id = null)
     {
         $this->load_daterange_datepicker();
@@ -609,6 +873,84 @@ class Sales extends MY_Controller
 
 
         }
+    }
+
+
+
+    public function pdf_invoice($id = null)
+    {
+        $id = $id - INVOICE_PRE;
+        $data['order'] = $this->db->get_where('invoices', ['id' => $id])->row();
+        if (!$data['order'])
+        {
+            redirect('dashboard', 'refresh');
+        }
+
+        if ($data['order']->type == 'Quotation')
+        {
+            // do quotation
+        }
+        else
+        {
+            $data['order_details'] = $this->db->get_where('order_details', [
+                'order_id' => $id,
+            ])->result();
+        }
+
+        $data['paymnet'] = $this->db->get_where('payment', [
+            'order_id'  => $id,
+            'type'      => 'Sales',
+        ])->result();
+
+        // Customer
+        $data['customer'] = $this->db->get_where('customers', [
+            'id' => $data['order']->customer_id,
+        ])->row();
+
+        $data['type'] = $data['order']->type;
+
+        $file = (int)INVOICE_PRE + $id;
+        $filename = setting('invoice_prefix') . $file . '.pdf';
+
+        $html = $this->load->view('sales/invoice_pdf', $data, true);
+
+//        echo $html;exit;
+
+        $defaultConfig = (new Mpdf\Config\ConfigVariables())->getDefaults();
+        $defaultFontConfig = (new Mpdf\Config\FontVariables())->getDefaults();
+        $fontData = $defaultFontConfig['fontdata'];
+        $fontDirs = $defaultConfig['fontDir'];
+
+        $pdf = new \Mpdf\Mpdf([
+            'autoArabic' => true,
+            'mode' => 'utf-8',
+            'fontDir' => array_merge($fontDirs, [
+                __DIR__ . '/fonts/',
+            ]),
+
+            'fontdata' => $fontData + [
+                    'yakout' => [
+                        'R' => 'yakout.ttf',
+                        'I' => 'yakout.ttf',
+                        'useOTL' => 0xFF,
+                        'useKashida' => 75,
+                    ]
+                ],
+            'default_font' => 'yakout'
+        ]);
+
+
+
+
+        $stylesheet = file_get_contents(FCPATH.'assets/admin/css/invoice.css');
+
+        $pdf->SetFooter($_SERVER['HTTP_HOST'].'|{PAGENO}|'.date(DATE_RFC822));
+
+
+        $pdf->WriteHTML($stylesheet,1);
+        $pdf->WriteHTML($html,2);
+        $pdf->Output($filename, 'D');
+
     }
 
 

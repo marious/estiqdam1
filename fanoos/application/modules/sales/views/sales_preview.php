@@ -215,9 +215,15 @@
                     <i class="fa fa-money"></i> <?= lang('view_payment') ?>
                 </a>
 
+
+                <a href="<?= site_url('sales/pdf_invoice/'.get_orderId($order->id)) ?>" class="btn btn-info pull-right" style="margin-right: 5px;">
+                    <i class="fa fa-download"></i> <?= lang('pdf_invoice') ?> </a>
+
                 <a href="<?php echo base_url()?>sales/add_payment/<?php echo get_orderID($order->id) ?> " data-target="#modalSmall" data-toggle="modal" class="btn bg-purple pull-right" style="margin-right: 5px;">
                     <i class="fa fa-money"></i> <?= lang('add_payment') ?>
                 </a>
+
+
             <?php } ?>
 
         </div>

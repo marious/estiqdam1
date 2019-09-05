@@ -22,10 +22,11 @@
                             type="text" autocomplete="off">
                 </td>
                 <td>
-                    <input id="amount" name="amount" class="form-control" value="<?php if(isset($payment) && !empty($payment)){ echo $payment->amount ;}else{ echo $order->due_payment; } ?>"
+                    <input id="amount" name="amount" class="form-control" value="<?php if(isset($payment) && !empty($payment)){ echo $payment->amount ;}else{ echo isset($order) ? $order->due_payment :
+                        $orderinfo->due_payment; } ?>"
                            type="text" onkeyup="receivedAmount(this);" autocomplete="off">
                     <span style=" color: #E13300" id="msg"></span>
-                    <input type="hidden" value="<?php echo $order->due_payment?>" id="due" >
+                    <input type="hidden" value="<?php echo isset($order) ? $order->due_payment : $orderinfo->due_payment?>" id="due" >
                 </td>
                 <td>
                     <select  id="to_account" name="to_account" class="form-control">
