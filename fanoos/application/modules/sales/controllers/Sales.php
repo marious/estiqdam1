@@ -17,6 +17,7 @@ class Sales extends MY_Controller
 
     public function all_invoices()
     {
+
         $this->load_daterange_datepicker();
         $this->load_js_validation();
 
@@ -63,9 +64,12 @@ class Sales extends MY_Controller
 
     public function update_invoice($order_id = null)
     {
+
+
+
+
         $this->load_daterange_datepicker();
 
-//        $this->cart->destroy();
         $order_id = $order_id - INVOICE_PRE;
         $this->data['order'] = $this->db->get_where('invoices', ['id' => $order_id])->row();
 
@@ -81,7 +85,7 @@ class Sales extends MY_Controller
             $this->data['form'] = $this->form_builder->create_form('sales/update_save_sales', true, ['id' => 'form-invoice']);
         }
         else
-         {
+        {
             $this->data['form'] = $this->form_builder->create_form('sales/save_quotation', true, ['id' => 'form-invoice']);
         }
 
@@ -107,12 +111,17 @@ class Sales extends MY_Controller
             ];
         }
 
+
+
+        $this->cart->destroy();
         $this->cart->insert($cart);
+
 
         $_SESSION['discount']               = $this->data['order']->discount;
         $_SESSION['amount_received']        = $this->data['order']->amount_received;
         $_SESSION['payment_method']         = $this->data['order']->payment_method;
         $_SESSION['p_reference']            = $this->data['order']->p_reference;
+
 
 
         $categories = $this->db->order_by('category', 'asc')->get('product_category')->result();
@@ -138,6 +147,7 @@ class Sales extends MY_Controller
         $this->load->module('banks');
         $this->data['accounts'] = $this->banks->Bank_model->get();
 
+
         $this->admin_template('create_invoice', $this->data);
     }
 
@@ -146,7 +156,7 @@ class Sales extends MY_Controller
      */
     public function invoice()
     {
-                $this->cart->destroy();
+        $this->cart->destroy();
 
         // temp
         $orderinfo = new stdClass();
@@ -194,6 +204,8 @@ class Sales extends MY_Controller
         $id = $this->input->post('product_id');
         $this->load->module('items');
         $product = $this->items->Item_model->get($id);
+
+        //var_dump($_SESSION);
 
         if (!empty($this->input->post('rowid')))
         {
