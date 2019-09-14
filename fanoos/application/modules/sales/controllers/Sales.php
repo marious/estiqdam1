@@ -70,6 +70,8 @@ class Sales extends MY_Controller
 
         $this->load_daterange_datepicker();
 
+       // $this->data['units'] = $this->db->get('units')->result();
+
         $order_id = $order_id - INVOICE_PRE;
         $this->data['order'] = $this->db->get_where('invoices', ['id' => $order_id])->row();
 
@@ -85,7 +87,7 @@ class Sales extends MY_Controller
             $this->data['form'] = $this->form_builder->create_form('sales/update_save_sales', true, ['id' => 'form-invoice']);
         }
         else
-        {
+         {
             $this->data['form'] = $this->form_builder->create_form('sales/save_quotation', true, ['id' => 'form-invoice']);
         }
 
@@ -98,6 +100,16 @@ class Sales extends MY_Controller
         $cart_item = json_decode($this->data['order']->cart);
 
         foreach ($cart_item as $item) {
+            $product = $this->db->get_where('items', ['id' => $item->id])->row();
+            $this->db->where_in('id', [$product->retail_unit, $product->wholesale_unit]);
+            $q = $this->db->get('units');
+            $units = $q->result();
+
+            if (!isset($item->unit))
+            {
+                $item->unit = null;
+            }
+
             $cart[] = [
                 'id'            => $item->id,
                 'qty'           => $item->qty,
@@ -108,9 +120,11 @@ class Sales extends MY_Controller
                 'type'          => $item->type,
                 'bundle'        => $item->bundle,
                 'tax'           => $item->tax,
+                'units'         => $units,
+                'unit'          => $item->unit,
+
             ];
         }
-
 
 
         $this->cart->destroy();
@@ -146,7 +160,6 @@ class Sales extends MY_Controller
         $this->data['products'] = $products;
         $this->load->module('banks');
         $this->data['accounts'] = $this->banks->Bank_model->get();
-
 
         $this->admin_template('create_invoice', $this->data);
     }
@@ -216,6 +229,21 @@ class Sales extends MY_Controller
             $this->cart->update($data);
         }
 
+
+        if ($product->retail_price != null)
+        {
+            $price = $product->retail_price;
+        } else {
+            $price = $product->sales_price;
+        }
+
+
+        $this->db->where_in('id', [$product->retail_unit, $product->wholesale_unit]);
+        $q = $this->db->get('units');
+        $units = $q->result();
+
+
+
         if ($product)
         {
             // Product tax check
@@ -223,13 +251,15 @@ class Sales extends MY_Controller
             $data = [
                 'id'            => $product->id,
                 'qty'           => 1,
-                'price'         => $product->sales_price,
+                'price'         => $price,
                 'purchase_cost' => $product->purchase_cost,
                 'name'          => $product->name,
                 'description'   => $product->description,
                 'tax'           => $tax,
                 'type'          => FALSE,
                 'bundle'        => '',
+                'unit'          => 0,
+                'units'         => $units,
             ];
             $this->cart->insert($data);
         }
@@ -271,6 +301,29 @@ class Sales extends MY_Controller
                 'rowid' => $this->input->post('rowid'),
                 'description' => $this->input->post('o_val'),
             ];
+        }
+        else if ($type == 'uni')
+        {
+            var_dump($product->wholesale_unit);
+            if ($product->wholesale_unit == $this->input->post('o_val'))
+            {
+                $price = $product->wholesale_price;
+            } else {
+                $price = $product->purchase_cost;
+            }
+
+
+
+            $tax = $this->product_tax_calculate($product->tax, $qty, $price);
+
+            $data = [
+                'rowid' => $this->input->post('rowid'),
+                'unit' => $this->input->post('o_val'),
+                'tax' => $tax,
+                'price' => $price,
+            ];
+
+
         }
 
         $this->cart->update($data);
@@ -354,13 +407,29 @@ class Sales extends MY_Controller
             foreach ($this->cart->contents() as $item) {
                 $o_details['product_id']        = $item['id'];
                 $o_details['qty']               = $item['qty'];
+                $unit                           = $item['unit'];
 
                 $product = $this->db->get_where('items', ['id' => $o_details['product_id']])->row();
+
+
+
+                if ($product->wholesale_unit == $unit)
+                {
+                    $o_details['qty'] = $product->wholesale_qty * $item['qty'];
+                }
+                elseif ($product->retail_unit == $unit)
+                {
+                    $o_details['qty'] = $product->retail_qty * $item['qty'];
+                }
+
+
+
                 if ($product->type == 'Inventory')
                 {
                     if ($product->inventory < $o_details['qty'])
                     {
                         $this->message->custom_error_msg('sales/invoice', lang('qty_is_greater_than_inventory'));
+                            redirect('sales/new_invoice');
                     }
                 }
 
@@ -446,15 +515,29 @@ class Sales extends MY_Controller
                 $o_details['qty']               = $item['qty'];
                 $o_details['tax_amount']        = $item['tax'];
                 $o_details['description']       = $item['description'];
+                $o_details['unit_id']           = $item['unit'];
 
                 //save order details
                 $this->db->insert('order_details', $o_details);
+
+
+                $product = $this->db->get_where('items', ['id' => $o_details['product_id']])->row();
+                if ($product->wholesale_unit == $unit)
+                {
+                    $total_qty = $product->wholesale_qty * $item['qty'];
+                }
+                elseif ($product->retail_unit == $unit)
+                {
+                    $total_qty = $product->retail_qty * $item['qty'];
+                } else {
+                    $total_qty = $item['qty'];
+                }
 
                 //TODO: track this product in inventory
                 $p_details = $this->db->get_where('items', ['id' => $item['id']])->row();
                 if ($p_details->type == 'Inventory')
                 {
-                    $p_qty['inventory'] = $p_details->inventory - $item['qty'];
+                    $p_qty['inventory'] = $p_details->inventory - $total_qty;
                     $this->db->where('id', $item['id']);
                     $this->db->update('items', $p_qty);
                 }
@@ -704,6 +787,7 @@ class Sales extends MY_Controller
 
         $id = $id - INVOICE_PRE;
         $this->data['order'] = $this->db->get_where('invoices', ['id' => $id])->row();
+
         if (!$this->data['order']) {
             redirect('/', 'refresh');
         }
@@ -965,5 +1049,55 @@ class Sales extends MY_Controller
 
     }
 
+
+
+
+    public function delete_invoice($id = null)
+    {
+        $id = $id - INVOICE_PRE;
+        $order = $this->db->get_where('invoices', ['id' => $id])->row();
+
+        if ($order->type == 'Invoice')
+        {
+            // delete payment
+            $this->db->delete('payment', ['order_id' => $order->id, 'type' => 'Sales']);
+
+            // return inventory
+            $products = $this->db->get_where('order_details', ['order_id' => $order->id])->result();
+
+            foreach ($products as $item)
+            {
+                // Update Inventory
+                $product = $this->db->get_where('items', ['id' => $item->product_id])->row();
+
+                $qty = 1;
+                if ($product->wholesale_unit == $item->unit_id)
+                {
+                    $qty = $product->wholesale_qty ;
+                }
+                else if ($product->retail_unit == $item->unit_id)
+                {
+                    $qty = $product->retail_qty;
+                }
+
+                if ($product->type == 'Inventory')
+                {
+                    $inv_data['inventory'] = $qty + $product->inventory;
+                    $this->db->where('id', $item->product_id);
+                    $this->db->update('items', $inv_data);
+                }
+
+            }
+
+            // delete order details
+            $this->db->delete('order_details', ['order_id' => $order->id]);
+        }
+
+
+        $this->db->delete('invoices', ['id' => $order->id]);
+        $this->message->delete_success('sales/all_invoices');
+
+
+    }
 
 }

@@ -1,5 +1,4 @@
 
-
 if ($('#transactions-table').length)
 {
 

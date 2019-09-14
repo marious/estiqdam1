@@ -202,10 +202,15 @@
 <script>
 
     if ($('.datepicker').length) {
-        $('.datepicker').datepicker();
+        $('.datepicker').datepicker({
+            todayHighlight: true
+        });
     }
     $('body').on('focus', '.datepicker', function() {
-        $(this).datepicker();
+        $(this).datepicker({
+            todayHighlight: true
+
+        });
     });
 </script>
 

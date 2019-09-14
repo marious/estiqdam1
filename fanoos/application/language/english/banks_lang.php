@@ -9,3 +9,4 @@ $lang['account_edited'] = 'Bank Account Edited Successfully';
 $lang['all_banks_accounts'] = 'All Banks Accounts';
 $lang['balance'] = 'Balance';
 $lang['success_account_delete'] = 'Bank Account Deleted Successfully';
+$lang['currency'] = 'Currency';

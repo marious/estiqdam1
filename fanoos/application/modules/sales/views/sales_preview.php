@@ -70,6 +70,7 @@
                             <th><?= lang('sl') ?>.</th>
                             <th><?= lang('product') ?></th>
                             <th><?= lang('description') ?></th>
+                            <th><?= lang('unit') ?></th>
                             <th><?= lang('price') ?></th>
                             <th><?= lang('qty') ?></th>
                             <th><?= lang('subtotal') ?> (<?= setting('currency_symbol') ?>)</th>
@@ -81,6 +82,7 @@
                             <td><?= $i ?></td>
                             <td><?= $item->product_name ?></td>
                             <td><?= $item->description ?></td>
+                            <td><?= $item->unit_id ? $this->db->get_where('units', ['id' => $item->unit_id])->row()->name : '' ?></td>
                             <td><?= $item->sales_cost ?></td>
                             <td><?= $item->qty ?></td>
                             <td><?= setting('currency_symbol').' '.$this->localization->currencyFormat($item->sales_cost * $item->qty) ?></td>
@@ -202,7 +204,7 @@
         <div class="col-xs-12">
             <a id="printButton" class="btn btn-default"><i class="fa fa-print"></i> <?= lang('print') ?></a>
 
-            <a onclick="return confirm('Are you sure want to delete this Invoice ?');" href="<?php echo base_url()?>admin/sales/deleteInvoice/<?php echo get_orderID($order->id) ?> " class="btn btn-danger pull-right" style="margin-right: 5px;">
+            <a onclick="return confirm('Are you sure want to delete this Invoice ?');" href="<?php echo base_url()?>sales/delete_invoice/<?php echo get_orderID($order->id) ?> " class="btn btn-danger pull-right" style="margin-right: 5px;">
                 <i class="fa fa-trash"></i> <?= lang('delete') ?>
             </a>
 

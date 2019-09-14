@@ -124,6 +124,10 @@ class Customer_model extends MY_Model
             $sub_array[] = $i;
             $sub_array[] = $row->title;
             $sub_array[] = $row->mobile;
+            $sub_array[] = $this->get_customer_transactions_info($row->id)['total_sales'];
+            $sub_array[] = $this->get_customer_transactions_info($row->id)['grand_total'];
+            $sub_array[] = $this->get_customer_transactions_info($row->id)['received_amount'];
+            $sub_array[] = $this->get_customer_transactions_info($row->id)['due_payment'];
             $sub_array[] = '<div class="manage-buttons">' . draw_actions_button(site_url('customers/edit_customer/' . $row->id), site_url('customers/delete_customer/'.$row->id), 'customers') . '</div>';
             $data[] = $sub_array;
             $i++;
@@ -132,6 +136,38 @@ class Customer_model extends MY_Model
         echo $this->datatable->output($data, $count);
     }
 
+
+
+    public function get_customer_transactions_info($customer_id)
+    {
+        $transactions_info = $this->db->select('customer_id, customer_name, COUNT(id) AS total_sales, SUM(grand_total) AS grand_total, 
+                SUM(amount_received) AS received_amount, SUM(discount) AS discount_total, SUM(due_payment) AS due_payment')
+            ->from('invoices')
+            ->group_by('customer_id')
+            ->where('customer_id', $customer_id)
+            ->where('status !=', 'Cancel')
+            ->get()
+            ->row();
+
+        if ($transactions_info) {
+            return [
+                'total_sales' => $transactions_info->total_sales,
+                'grand_total' => $transactions_info->grand_total,
+                'received_amount' => $transactions_info->received_amount,
+                'discount_total' => $transactions_info->discount_total,
+                'due_payment' => $transactions_info->due_payment,
+            ];
+        }
+
+        return [
+            'total_sales'       => 0,
+            'grand_total'       => 0,
+            'received_amount'   => 0,
+            'discount_total'    => 0,
+            'due_payment'       => 0,
+        ];
+
+    }
 
 
     public function get_vendors()

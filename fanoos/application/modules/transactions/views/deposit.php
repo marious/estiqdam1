@@ -64,6 +64,24 @@
                                 </div>
                             </div>
 
+
+                            <?php if (MULTI_CURRENCY): ?>
+                            <!-- Currency -->
+                            <div class="form-group clearfix">
+                                <label for="category" class="col-sm-4 control-label"><?= lang('currency') ?></label>
+                                <div class="col-sm-6 col-md-pull-2">
+                                    <select name="category" id="category" class="form-control">
+                                        <?php if (is_array($currencies) && count($currencies)): ?>
+                                            <?php foreach ($currencies as $currency): ?>
+                                                <option value="<?= $currency->id ?>"><?= $currency->name ?></option>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <?php endif; ?>
+
+
                             <!-- payee -->
                             <div class="form-group clearfix">
                                 <label for="payee" class="col-sm-4 control-label"><?= lang('payee') ?></label>

@@ -23,13 +23,43 @@ class Item_model extends MY_Model
         [
             'field' => 'purchase_cost',
             'label' => 'lang:purchase_cost',
-            'rules' => 'trim|numeric',
+            'rules' => 'required|trim|numeric',
         ],
         [
             'field' => 'description',
             'label' => 'lang:description',
             'rules' => 'trim',
-        ]
+        ],
+        [
+            'field' => 'retail_unit',
+            'label' => 'lang:retail_unit',
+            'rules' => 'trim|callback__check_retail_unit',
+        ],
+        [
+            'field' => 'retail_qty',
+            'label' => 'lang:retail_qty',
+            'rules' => 'trim|integer|callback__check_retail_qty',
+        ],
+        [
+            'field' => 'retail_price',
+            'label' => 'lang:retail_price',
+            'rules' => 'trim|numeric|callback__check_retail_price',
+        ],
+        [
+            'field' => 'wholesale_unit',
+            'label' => 'lang:wholesale_unit',
+            'rules' => 'trim|callback__check_wholesale_unit',
+        ],
+        [
+            'field' => 'wholesale_qty',
+            'label' => 'lang:wholesale_qty',
+            'rules' => 'trim|integer|callback__check_wholesale_qty',
+        ],
+        [
+            'field' => 'wholesale_price',
+            'label' => 'lang:wholesale_price',
+            'rules' => 'trim|numeric|callback__check_wholesale_price',
+        ],
     ];
 
 

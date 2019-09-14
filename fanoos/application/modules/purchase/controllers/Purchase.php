@@ -49,6 +49,7 @@ class Purchase extends MY_Controller
 
         $this->data['form'] = $this->form_builder->create_form('purchase/save_purchase', true, ['id' => 'form-invoice']);
         $this->data['vendors'] = $this->db->get('vendors')->result();
+        $this->data['units'] = $this->db->get('units')->result();
 
         $categories = $this->db->order_by('category', 'asc')->get('product_category')->result();
 
@@ -122,6 +123,8 @@ class Purchase extends MY_Controller
             }
         }
         $data['products'] = $products;
+        $data['units']  = $this->db->get('units')->result();
+
         $this->load->view('add_product_cart',$data);
     }
 
@@ -135,6 +138,7 @@ class Purchase extends MY_Controller
     {
         $id = $this->input->post('product_id');
         $product = $this->db->get_where('items', array( 'id' => $id ))->row();
+
         if(!empty($this->input->post('rowid'))){
             $data = array(
                 'rowid' => $this->input->post('rowid'),
@@ -143,6 +147,10 @@ class Purchase extends MY_Controller
             $this->cart->update($data);
         }
 
+        $this->db->where_in('id', [$product->retail_unit, $product->wholesale_unit]);
+        $q = $this->db->get('units');
+        $units = $q->result();
+
         if($product)
         {
             $data = array(
@@ -150,8 +158,11 @@ class Purchase extends MY_Controller
                 'qty'               => 1,
                 'price'             => $product->purchase_cost,
                 'name'              => $product->name,
-                'description'       => $product->buying_info,
+                'description'       => $product->description,
+                'unit'              => 0,
+                'units'             => $units,
                 //'options' => array('Size' => 'L', 'Color' => 'Red')
+
             );
             $this->cart->insert($data);
         }
@@ -162,26 +173,51 @@ class Purchase extends MY_Controller
     public function update_cart_item()
     {
         $type = $this->input->post('type');
+        $row = $this->input->post('rowid');
+        $cart_data = $this->cart->contents();
+        $product = $this->db->get_where('items', ['id' => $cart_data[$row]['id']])->row();
+
+        $data = [];
+
         if ($type == 'qty')
         {
             $data = array(
-                'rowid' => $this->input->post('rowid'),
+                'rowid' => $row,
                 'qty'   => (int)$this->input->post('o_val')
             );
         }
         elseif ($type === 'prc')
         {
             $data = array(
-                'rowid' => $this->input->post('rowid'),
+                'rowid' => $row,
                 'price'   => (float)$this->input->post('o_val')
             );
         }
         elseif ($type === 'des')
         {
             $data = array(
-                'rowid' => $this->input->post('rowid'),
+                'rowid' => $row,
                 'description'   => $this->input->post('o_val')
             );
+        }
+        elseif ($type == 'uni')
+        {
+
+            if ($product->wholesale_unit == $this->input->post('o_val'))
+            {
+                $price = $product->wholesale_price;
+            } else {
+                $price = $product->purchase_cost;
+            }
+
+            $data = array(
+                'rowid' => $row,
+                'unit'  => $this->input->post('o_val'),
+            );
+            if (isset($price))
+            {
+                $data['price'] = $price;
+            }
         }
 
         $this->cart->update($data);
@@ -266,6 +302,7 @@ class Purchase extends MY_Controller
                 $o_details['qty']               = $item['qty'];
                 $o_details['unit_price']        = $item['price'];
                 $o_details['sub_total']         = $item['subtotal'];
+                $o_details['unit_id']           = $item['unit'];
                 //save order details
                 $this->db->insert('purchase_details', $o_details);
             }
@@ -350,13 +387,15 @@ class Purchase extends MY_Controller
             }
 
 
-         //   $this->message->save_success('purchase/purchase_list');
+            $this->message->save_success('purchase/purchase_list');
+            redirect('purchase/new_purchase');
+
 
         }
 
 
 
-        $this->system_message->set_error(validation_errors());
+       // $this->system_message->set_error(validation_errors());
         redirect('purchase/new_purchase');
     }
 
@@ -648,31 +687,50 @@ class Purchase extends MY_Controller
         $order_id = $this->input->post('order_id');
         
         $purchase_order = $this->db->get_where('purchase_order', ['id' => $order_id])->row();
-        
+
+
         foreach ($id as $key => $item) 
         {
             if ($qty[$key] <= 0)
                 continue;
             $purchase_product = $this->db->get_where('purchase_details', ['id' => $item])->row();
-            
+            $product = $this->db->get_where('items', ['id' => $purchase_product->product_id])->row();
+
+
+
+            $total_qty = $qty[$key];
+
+
+
+
+            if ($purchase_product->unit_id == $product->wholesale_unit)
+            {
+                $total_qty = $qty[$key] * $product->wholesale_qty;
+            }
+
+
+
             $data = [];
             $data['order_id']       = $purchase_order->id;
             $data['vendor_id']      = $purchase_order->vendor_id;
             $data['vendor_name']    = $purchase_order->vendor_name;
             $data['product_id']     = $purchase_product->product_id;
             $data['product_name']   = $purchase_product->product_name;
-            $data['qty']            = $qty[$key];
+            $data['qty']            = $total_qty;
             $data['receiver']       = $receiver->first_name . ' ' . $receiver->last_name;
             
             // insert Received Product 
             $this->db->insert('received_product', $data);
             // update
-            $total_received = $purchase_product->total_received + $qty[$key];
+            $total_received = $purchase_product->total_received + $total_qty;
             $this->db->set('total_received', $total_received, false)->where('id', $item)->update('purchase_details');
+
+
+
             // update inventory 
             $product = $this->db->get_where('items', ['id' => $purchase_product->product_id])->row();
             $inventory_data = [];
-            $inventory_data['inventory'] = $product->inventory + $qty[$key];
+            $inventory_data['inventory'] = $product->inventory + $total_qty;
             $this->db->where('id', $purchase_product->product_id);
             $this->db->update('items', $inventory_data);
         }

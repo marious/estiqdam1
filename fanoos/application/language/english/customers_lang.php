@@ -36,3 +36,7 @@ $lang['website'] = 'Website';
 $lang['billing_address'] = 'Billing Address';
 $lang['vendor_note'] = 'Vendor Note';
 $lang['saved_vendor'] = 'Vendor Saved Successfully';
+$lang['total_sales'] = 'Total Sales';
+$lang['total_amount'] = 'Total Amount';
+$lang['received_amount'] = 'Received Amount';
+$lang['payment_due'] = 'Payment Due';

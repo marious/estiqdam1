@@ -49,11 +49,12 @@ class Banks extends MY_Controller
 
         if ($this->form_validation->run($this) == true)
         {
-            if (!$id) {$data['balance'] = $_POST['balance'];}
-            $data['account'] = $_POST['account_title'];
-            $data['branch'] = $_POST['branch'];
-            $data['description'] = $_POST['description'];
-            $data['account_number'] = $_POST['account_number'];
+            if (!$id) {$data['balance']     = $_POST['balance'];}
+            $data['account']                = $_POST['account_title'];
+            $data['branch']                 = $_POST['branch'];
+            $data['description']            = $_POST['description'];
+            $data['account_number']         = $_POST['account_number'];
+            $data['currency']               = isset($_POST['currency']) ? $_POST['currency'] : null;
             if ($this->Bank_model->save($data, $id))
             {
                 $_SESSION['success_toastr'] = $id ? lang('account_edited') : lang('account_added');
@@ -62,6 +63,8 @@ class Banks extends MY_Controller
             }
         }
 
+
+        $this->data['currencies'] = $this->db->get('currencies')->result();
         $this->admin_template('add', $this->data);
     }
 

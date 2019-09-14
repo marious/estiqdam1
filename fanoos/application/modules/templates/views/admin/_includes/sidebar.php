@@ -84,7 +84,7 @@
 
 
           <li class="treeview <?= is_sidebar_menu_active('banks') ?>">
-              <a href="#"><i class="fa fa-bank"></i> <span><?= lang('banks') ?></span>
+              <a href="#"><i class="fa fa-bank"></i> <span><?= lang('accounts') ?></span>
                   <span class="pull-right-container">
                     <i class="fa fa-angle-left pull-right"></i>
                 </span>

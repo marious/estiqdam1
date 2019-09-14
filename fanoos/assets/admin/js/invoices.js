@@ -1,7 +1,7 @@
 $('#customers-list').select2({
     ajax: {
         url: root + '/customers/get',
-        type: "get",
+        type: "post",
         dataType: 'json',
         delay: 250,
         data: function (params) {
@@ -17,7 +17,8 @@ $('#customers-list').select2({
                 })
             };
         },
-        cache: true
+        cache: true,
+        allowClear: true
     }
 });
 //======================================================================================================================

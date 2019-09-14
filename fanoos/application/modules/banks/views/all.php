@@ -11,6 +11,7 @@
                         <th>No.</th>
                         <th><?=lang('name')?></th>
                         <th><?= lang('balance') ?></th>
+                        <th><?= lang('currency') ?></th>
                         <th><?= lang('account_number') ?></th>
                         <th><?= lang('branch') ?></th>
                         <th class="align-right"><?= lang('manage'); ?></th>

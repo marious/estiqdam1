@@ -14,7 +14,7 @@ $(function () {
             // {"width": "18%", "targets":4},
 
             {
-                "targets":[0,1,2,3,4,5],
+                "targets":[0,1,2,3,4,5,6],
                 "orderable":false,
             },
         ]

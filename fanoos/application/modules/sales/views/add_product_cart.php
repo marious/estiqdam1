@@ -5,7 +5,8 @@
             <tr style="background-color: #ECEEF1;">
                 <th style="width: 15px">#</th>
                 <th class="col-sm-2"><?= lang('product/service') ?></th>
-                <th class="col-md-6"><?= lang('description') ?></th>
+                <th class="col-md-4"><?= lang('description') ?></th>
+                <th class="col-sm-1"><?= lang('unit') ?></th>
                 <th class=""><?= lang('qty') ?></th>
                 <th class=""><?= lang('rate') ?></th>
                 <th class=""><?= lang('amount') ?></th>
@@ -46,21 +47,40 @@
                             <?php if(isset($cart['type']) && $cart['type']){ ?>
                                 <?php echo $cart['description']?>
                             <?php } else { ?>
-                                <input class="form-control" type="text" name="description" onblur ="updateItem(this);" id="<?php echo 'des'.$cart['rowid'] ?>" value="<?php echo $cart['description']?>">
+                                <input class="form-control" type="text" name="description" onblur ="updateItem(this);"
+                                       id="<?php echo 'des'.$cart['rowid'] ?>" value="<?php echo $cart['description']?>" autocomplete="off">
 
                             <?php } ?>
                         </div>
                     </td>
 
+
+
                     <td>
                         <div class="form-group form-group-bottom">
-                            <input class="form-control" type="text" name="qty" onblur ="updateItem(this);" value="<?php echo $cart['qty'] ?>" id="<?php echo 'qty'.$cart['rowid'] ?>">
+                            <?php if (is_array($cart['units']) && count($cart['units'])): ?>
+                                <select class="form-control" name="unit" id="<?php echo 'uni'.$cart['rowid'] ?>" onchange="updateItem(this)">
+                                    <?php foreach ($cart['units'] as $unit): ?>
+                                        <?php $selected = $cart['unit'] == $unit->id ? 'selected' : ''; ?>
+                                        <option value="<?= $unit->id ?>" <?=  $selected; ?>><?= $unit->name ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            <?php endif; ?>
+                        </div>
+                    </td>
+
+
+                    <td>
+                        <div class="form-group form-group-bottom">
+                            <input class="form-control" type="text" name="qty" onblur ="updateItem(this);"
+                                   value="<?php echo $cart['qty'] ?>" id="<?php echo 'qty'.$cart['rowid'] ?>" autocomplete="off">
                         </div>
                     </td>
 
                     <td>
                         <div class="form-group form-group-bottom">
-                            <input class="form-control" type="text" name="price" value="<?php echo $cart['price'] ?>" onblur ="updateItem(this);" id="<?php echo 'prc'.$cart['rowid'] ?>">
+                            <input class="form-control" type="text" name="price" value="<?php echo $cart['price'] ?>"
+                                   onblur ="updateItem(this);" id="<?php echo 'prc'.$cart['rowid'] ?>" autocomplete="off">
                         </div>
                     </td>
 
@@ -108,6 +128,12 @@
                 <td>
                     <div class="form-group form-group-bottom">
                         <input class="form-control" type="text">
+                    </div>
+                </td>
+
+                <td>
+                    <div class="form-group form-group-bottom">
+
                     </div>
                 </td>
 

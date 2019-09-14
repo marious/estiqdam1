@@ -28,6 +28,8 @@ class Items extends MY_Controller
     {
         $this->load_icheck();
 
+        array_push($this->data['js_file'], site_url('assets/admin/js/items.js'));
+
         $this->data['page_header'] = $id && is_numeric($id) ? '<i class="fa fa-arrow-circle-o-right"></i> ' . lang('edit_product'):
             '<i class="fa fa-arrow-circle-o-right"></i> ' . lang('add_new_product');
 
@@ -48,6 +50,7 @@ class Items extends MY_Controller
         $this->data['id'] = $id;
         $this->data['taxes'] = $this->taxes->Tax_model->get();
         $this->data['categories'] = $this->db->order_by('category', 'asc')->get('product_category')->result();
+        $this->data['units'] = $this->db->get('units')->result();
 
 
         // Process the form
@@ -67,7 +70,20 @@ class Items extends MY_Controller
             // inventory
             $data['track_inventory'] = 'Yes';
             $data['type'] = 'Inventory';
-            $data['inventory'] = 0;
+
+            if (!$id)
+            {
+                $data['inventory'] = 0;
+            }
+
+            // retail and wholesale
+            $data['retail_unit']    = $this->input->post('retail_unit') ? $this->input->post('retail_unit') : null;
+            $data['retail_qty']     = $this->input->post('retail_qty') ? $this->input->post('retail_qty') : null;
+            $data['retail_price']   = $this->input->post('retail_price') ? $this->input->post('retail_price') : null;
+
+            $data['wholesale_unit']     = $this->input->post('wholesale_unit') ? $this->input->post('wholesale_unit') : null;
+            $data['wholesale_price']    = $this->input->post('wholesale_price') ? $this->input->post('wholesale_price') : null;
+            $data['wholesale_qty']      = $this->input->post('wholesale_qty') ? $this->input->post('wholesale_qty') : null;
 
 
             if ($this->Item_model->save($data, $id))
@@ -248,4 +264,150 @@ class Items extends MY_Controller
             $this->message->delete_success('items/categories');
         }
     }
+
+
+   //===================================================================================================================
+    // Custom Validation
+   //===================================================================================================================
+
+
+    public function _check_retail_unit()
+    {
+        $retail_unit = $this->input->post('retail_unit');
+        if ($retail_unit != '' && !$this->check_unit($retail_unit))
+        {
+            $this->form_validation->set_message('_check_retail_unit', lang('unit_wrong'));
+            return false;
+        }
+
+        return true;
+    }
+
+    public function _check_retail_qty()
+    {
+        $retail_qty = $this->input->post('retail_qty');
+        $retail_unit = $this->input->post('retail_unit');
+        $valid = true;
+        if (isset($retail_unit) && !empty($retail_unit) && empty($retail_qty))
+        {
+            $valid = false;
+        }
+
+
+
+        if ($valid == false)
+        {
+            $this->form_validation->set_message('_check_retail_qty', lang('not_valid_retail_qty'));
+            return false;
+        }
+
+        return true;
+    }
+
+    public function _check_retail_price()
+    {
+        $retail_price   = (float) $this->input->post('retail_price');
+        $retail_unit    = $this->input->post('retail_unit');
+        $sale_price     = (float) $this->input->post('sales_price');
+        $valid          = true;
+
+
+        if (!empty($retail_unit) && !empty($retail_unit) && empty($retail_price))
+        {
+            $valid = false;
+        }
+
+        if (!empty($retail_unit) &&  $retail_price < $sale_price)
+        {
+            $this->form_validation->set_message('_check_retail_price', lang('retail_price_low_sale'));
+            return false;
+        }
+
+        if ($valid == false)
+        {
+            $this->form_validation->set_message('_check_retail_price', lang('not_valid_retail_price'));
+            return false;
+        }
+
+        return true;
+    }
+
+    public function _check_wholesale_unit()
+    {
+        $wholesale_unit = $this->input->post('wholesale_unit');
+        if ($wholesale_unit != '' && !$this->check_unit($wholesale_unit))
+        {
+            $this->form_validation->set_message('_check_wholesale_unit', lang('unit_wrong'));
+            return false;
+        }
+
+        return true;
+    }
+
+    public function _check_wholesale_qty()
+    {
+        $wholesale_qty  = $this->input->post('wholesale_qty');
+        $wholesale_unit = $this->input->post('wholesale_unit');
+        $valid = true;
+
+        if (isset($wholesale_unit) && !empty($wholesale_unit) && empty($wholesale_qty))
+        {
+            $valid = false;
+        }
+
+
+
+        if ($valid == false)
+        {
+            $this->form_validation->set_message('_check_wholesale_qty', lang('not_valid_wholesale_qty'));
+            return false;
+        }
+
+        return true;
+    }
+
+    public function _check_wholesale_price()
+    {
+        $wholesale_price    = $this->input->post('wholesale_price');
+        $wholesale_unit     = $this->input->post('wholesale_unit');
+        $wholesale_qty      = $this->input->post('wholesale_qty');
+        $purchase_price     = $this->input->post('purchase_cost');
+        $valid              = true;
+
+
+
+        if (isset($wholesale_unit) && !empty($wholesale_unit) && empty($purchase_price))
+        {
+            $valid = false;
+        }
+
+
+        if (isset($purchase_price))
+        {
+            $wholesale_qty_price = $wholesale_qty * $purchase_price;
+
+            if ($wholesale_price < $wholesale_qty_price)
+            {
+                $this->form_validation->set_message('_check_wholesale_price', lang('wholesale_price_low_sale'));
+                return false;
+            }
+        }
+
+        if ($valid == false)
+        {
+            $this->form_validation->set_message('_check_wholesale_price', lang('not_valid_wholesale_price'));
+            return false;
+        }
+
+        return true;
+
+    }
+
+
+    public function check_unit($unit = null)
+    {
+        $unit = $this->db->get_where('units', ['id' => $unit])->row();
+        return $unit ? $unit : false;
+    }
+
 }

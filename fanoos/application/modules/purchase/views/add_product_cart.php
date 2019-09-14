@@ -4,7 +4,8 @@
             <tr style="background-color: #ECEEF1">
                 <th style="width: 15px">#</th>
                 <th class="col-sm-2"><?php  echo strtoupper(lang('product/service')) ?></th>
-                <th class="col-sm-5"><?php  echo strtoupper(lang('description')) ?></th>
+                <th class="col-sm-4"><?php  echo strtoupper(lang('description')) ?></th>
+                <th class="col-sm-1"><?= lang('unit') ?></th>
                 <th class=""><?php  echo strtoupper(lang('qty')) ?></th>
                 <th class=""><?php  echo strtoupper(lang('rate')) ?></th>
                 <th class=""><?php  echo strtoupper(lang('amount')) ?></th>
@@ -39,13 +40,28 @@
 
                 <td>
                     <div class="form-group form-group-bottom">
-                        <input class="form-control" type="text" name="description" onblur ="pur_updateItem(this);" id="<?php echo 'des'.$cart['rowid'] ?>" value="<?php echo $cart['description']?>">
+                        <input class="form-control" type="text" name="description"
+                               onblur ="pur_updateItem(this);" id="<?php echo 'des'.$cart['rowid'] ?>" value="<?php echo $cart['description']?>" autocomplete="off">
                     </div>
                 </td>
 
                 <td>
                     <div class="form-group form-group-bottom">
-                        <input class="form-control" type="text" name="qty" onblur ="pur_updateItem(this);" value="<?php echo $cart['qty'] ?>" id="<?php echo 'qty'.$cart['rowid'] ?>">
+                        <?php if (is_array($cart['units']) && count($cart['units'])): ?>
+                            <select class="form-control" name="unit" id="<?php echo 'uni'.$cart['rowid'] ?>" onchange="pur_updateItem(this)">
+                                <?php foreach ($cart['units'] as $unit): ?>
+                                    <?php $selected = $cart['unit'] == $unit->id ? 'selected' : ''; ?>
+                                    <option value="<?= $unit->id ?>" <?=  $selected; ?>><?= $unit->name ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        <?php endif; ?>
+                    </div>
+                </td>
+
+                <td>
+                    <div class="form-group form-group-bottom">
+                        <input class="form-control" type="text" name="qty" onblur ="pur_updateItem(this);" value="<?php echo $cart['qty'] ?>"
+                               id="<?php echo 'qty'.$cart['rowid'] ?>" autocomplete="off">
                     </div>
                 </td>
 
@@ -95,19 +111,25 @@
 
             <td>
                 <div class="form-group form-group-bottom">
-                    <input class="form-control" type="text" name="description">
+                    <input class="form-control" type="text" name="description" autocomplete="off">
                 </div>
             </td>
 
             <td>
                 <div class="form-group form-group-bottom">
-                    <input class="form-control" type="text" name="qty">
+
                 </div>
             </td>
 
             <td>
                 <div class="form-group form-group-bottom">
-                    <input class="form-control" type="text" name="rate">
+                    <input class="form-control" type="text" name="qty" autocomplete="off">
+                </div>
+            </td>
+
+            <td>
+                <div class="form-group form-group-bottom">
+                    <input class="form-control" type="text" name="rate" autocomplete="off">
                 </div>
             </td>
 
@@ -153,7 +175,8 @@
                 </td>
 
                 <td style="text-align: right; padding-right: 30px">
-                    <input type="" class="form-control" style="text-align: right" onblur="pur_order_discount(this)" value="<?php echo $this->session->userdata('discount');?>" name="discount">
+                    <input type="" class="form-control" style="text-align: right" onblur="pur_order_discount(this)"
+                           value="<?php echo $this->session->userdata('discount');?>" name="discount" autocomplete="off">
                 </td>
 
             </tr>
@@ -164,7 +187,8 @@
                 </td>
 
                 <td style="text-align: right; padding-right: 30px">
-                    <input type="" class="form-control" style="text-align: right" onblur="pur_tax(this)" value="<?php echo $this->session->userdata('tax');?>" name="tax">
+                    <input type="" class="form-control" style="text-align: right" onblur="pur_tax(this)"
+                           value="<?php echo $this->session->userdata('tax');?>" name="tax" autocomplete="off">
                 </td>
 
             </tr>
@@ -175,7 +199,8 @@
                 </td>
 
                 <td style="text-align: right; padding-right: 30px">
-                    <input type="" class="form-control" style="text-align: right" onblur="pur_shipping(this)" value="<?php echo $this->session->userdata('shipping');?>" name="shipping">
+                    <input type="" class="form-control" style="text-align: right" onblur="pur_shipping(this)"
+                           value="<?php echo $this->session->userdata('shipping');?>" name="shipping" autocomplete="off">
                 </td>
 
             </tr>

@@ -1,4 +1,4 @@
-<?php
+<?php 
 $lang['settings'] = 'Settings';
 $lang['save'] = 'Save';
 $lang['success_sended_data'] = 'Sended data saved successfully';
@@ -76,3 +76,5 @@ $lang['action'] = 'Action';
 $lang['update'] = 'Update';
 $lang['received_product'] = 'Received Product';
 $lang['pdf_invoice'] = 'Pdf Invoice';
+$lang['unit'] = 'Unit';
+$lang['accounts'] = 'Accounts';

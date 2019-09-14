@@ -27,6 +27,22 @@
                     </div>
                     <?php endif; ?>
 
+                    <?php if (MULTI_CURRENCY): ?>
+                    <div class="form-group">
+                        <label for="currency" class="col-sm-2 control-label"><?= lang('currency') ?></label>
+                        <div class="col-sm-6">
+                            <select name="currency" id="currency" class="form-control">
+                                <?php if (is_array($currencies) && count($currencies)): ?>
+                                <?php foreach ($currencies as $currency): ?>
+                                        <?php $selected = $currency->id == $account->currency ? 'selected' : ''; ?>
+                                        <option value="<?= $currency->id ?>" <?= $selected ?>><?= $currency->name ?></option>
+                                <?php endforeach; ?>
+                                <?php endif; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <?php endif; ?>
+
                     <!-- account number -->
                     <div class="form-group">
                         <label for="account_number" class="col-sm-2 control-label"><?= lang('account_number') ?> </label>

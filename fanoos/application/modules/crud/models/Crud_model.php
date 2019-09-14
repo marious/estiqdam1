@@ -80,6 +80,9 @@ class Crud_model extends MY_Model
                                 <li> <a href="add_payment/' . $orderId . '" data-target="#modalSmall" data-toggle="modal"><i class="fa fa-money text-success"></i>'. lang('add_payment').'</a> </li>
                                 <li> <a href="paymentList/' . $orderId . '" data-target="#myModal" data-toggle="modal"><i class="fa fa-money text-success"></i>'. lang('view_payment').'</a> </li>
                                 <li><a href="pdf_invoice/'.$orderId . '"><i class="fa fa-file-pdf-o text-success"></i> '.lang('pdf_invoice').'</a></li>
+                                <li><a onclick="return confirm(\'Are you sure want to delete this Invoice ?\');" href="sales/delete_invoice/'.$orderId.'"><i class="fa fa-trash-o text-danger"></i>
+                                '.lang('delete').'
+                                </a> </li>
                                
                             </ul>
                         </div>

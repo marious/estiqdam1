@@ -87,10 +87,12 @@ class Bank_model extends MY_Model
         $i = 1;
 
         foreach ($q->result() as $row) {
+            $currency = $this->db->get_where('currencies', ['id' => $row->currency])->row();
             $sub_array = [];
             $sub_array[] = $i;
             $sub_array[] = $row->account;
             $sub_array[] = $row->balance;
+            $sub_array[] = $currency->name ? $currency->name : '';
             $sub_array[] = $row->account_number;
             $sub_array[] = $row->branch;
             $sub_array[] = '<div class="manage-buttons">' . draw_actions_button(site_url('banks/edit/' . $row->id), site_url('banks/delete/'.$row->id), 'banks') . '</div>';

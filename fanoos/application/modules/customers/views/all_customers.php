@@ -32,6 +32,10 @@
                         <th>No.</th>
                         <th><?=lang('name')?></th>
                         <th><?= lang('mobile') ?></th>
+                        <th><?= lang('total_sales') ?></th>
+                        <th><?= lang('total_amount') ?></th>
+                        <th><?= lang('received_amount') ?></th>
+                        <th><?= lang('payment_due') ?></th>
                         <th class="align-right"><?= lang('manage'); ?></th>
                     </tr>
                     </thead>

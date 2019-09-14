@@ -33,3 +33,4 @@ $lang['not_valid_account'] = 'Please Choose valid account';
 $lang['all_transactions'] = 'All Transactions';
 $lang['type'] = 'Type';
 $lang['balance'] = 'Balance';
+$lang['currency'] = 'Currency';

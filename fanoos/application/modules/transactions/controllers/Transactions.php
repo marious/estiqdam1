@@ -258,6 +258,7 @@ class Transactions extends MY_Controller
             $ref = $this->input->post('ref_number');
             $payer = $this->input->post('payee');
             $cat = $this->input->post('category');
+            $currency = isset($_POST['currency']) ? $_POST['currency'] : null;
 
             if (!is_numeric($payer))
             {
@@ -284,6 +285,7 @@ class Transactions extends MY_Controller
                 'payerid'       => $payer,
                 'category'      => $cat,
                 'balance'       => $balance_after_deposite,
+                'currency'      => $currency,
 
             ]);
             $this->db->trans_complete();
@@ -299,6 +301,8 @@ class Transactions extends MY_Controller
             redirect('transactions/deposit');
         }
 
+
+        $this->data['currencies'] = $this->db->get('currencies')->result();
 
         $this->admin_template('deposit', $this->data);
     }
