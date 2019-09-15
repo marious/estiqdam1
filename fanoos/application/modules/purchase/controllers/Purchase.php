@@ -395,7 +395,7 @@ class Purchase extends MY_Controller
 
 
 
-       // $this->system_message->set_error(validation_errors());
+        // $this->system_message->set_error(validation_errors());
         redirect('purchase/new_purchase');
     }
 
@@ -685,11 +685,11 @@ class Purchase extends MY_Controller
         $id = $this->input->post('id');
         $qty = $this->input->post('qty');
         $order_id = $this->input->post('order_id');
-        
+
         $purchase_order = $this->db->get_where('purchase_order', ['id' => $order_id])->row();
 
 
-        foreach ($id as $key => $item) 
+        foreach ($id as $key => $item)
         {
             if ($qty[$key] <= 0)
                 continue;
@@ -718,7 +718,7 @@ class Purchase extends MY_Controller
             $data['product_name']   = $purchase_product->product_name;
             $data['qty']            = $total_qty;
             $data['receiver']       = $receiver->first_name . ' ' . $receiver->last_name;
-            
+
             // insert Received Product 
             $this->db->insert('received_product', $data);
             // update
@@ -734,7 +734,7 @@ class Purchase extends MY_Controller
             $this->db->where('id', $purchase_product->product_id);
             $this->db->update('items', $inventory_data);
         }
-        
+
         redirect('purchase/received_product_list');
     }
 
@@ -777,5 +777,57 @@ class Purchase extends MY_Controller
         $this->admin_template('received_crud', $this->data);
 
     }
+
+
+
+    public function delete_purchase($id = null)
+    {
+        $id = $id - INVOICE_PRE;
+
+        $purchase_order = $this->db->get_where('purchase_order', ['id' => $id])->row();
+
+        if (!is_array($purchase_order) && !count($purchase_order))
+        {
+            redirect('dashboard', 'refresh');
+        }
+
+        $pur_products = $this->db->get_where('purchase_details', ['purchase_id' => $id, 'type' => 'Purchase'])->result();
+
+        foreach ($pur_products as $item)
+        {
+            // Update inventory
+            $product = $this->db->get_where('items', ['id' => $item->product_id])->row();
+            $inv_data['inventory'] = $product->inventory - $item->total_received;
+            $this->db->where('id', $item->product_id);
+            $this->db->update('items', $inv_data);
+        }
+
+        $return_ref = $this->db->get_where('purchase_order', ['return_ref' => $id]);
+
+        foreach ($return_ref as $item) {
+            $this->db->delete('purchase_details', ['purchase_id' => $item->id]);
+            $this->db->delete('purchase_order', ['id' => $item->id]);
+        }
+
+        // Delete from purchase details
+        $this->db->delete('purchase_details', ['purchase_id' => $purchase_order->id]);
+
+        // delete from payment
+        $this->db->delete('payment', ['order_id' => $purchase_order->id, 'type' => 'Purchase']);
+
+
+        // delete from received product
+        $this->db->delete('received_product', ['order_id' => $purchase_order->id]);
+
+        // delete from purchase order
+        $this->db->delete('purchase_order', ['id' => $id]);
+
+        $this->message->delete_success('purchase/purchase_list');
+
+
+
+    }
+
+
 
 }
