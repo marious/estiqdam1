@@ -201,9 +201,10 @@ class Sales extends MY_Controller
         $this->data['products'] = $products;
 
 
-        $this->load->module('banks');
-        $this->data['accounts'] = $this->banks->Bank_model->get();
-        $this->data['categories'] = $this->db->get_where('categories', ['type' => 'Income'])->result();
+
+        $this->data['accounts'] = $this->get_accounts();
+        $this->data['categories'] = $this->get_income_categories();
+
 
         $this->_discount_session();
         $this->admin_template('create_invoice', $this->data);
@@ -258,7 +259,7 @@ class Sales extends MY_Controller
                 'tax'           => $tax,
                 'type'          => FALSE,
                 'bundle'        => '',
-                'unit'          => 0,
+                'unit'          => 1,
                 'units'         => $units,
             ];
             $this->cart->insert($data);
@@ -508,6 +509,7 @@ class Sales extends MY_Controller
 
             $o_details['order_id'] = $order_id;
             foreach ($this->cart->contents() as $item) {
+
                 $o_details['product_id']        = $item['id'];
                 $o_details['product_name']      = $item['name'];
                 $o_details['purchase_cost']     = $item['purchase_cost'];
@@ -579,6 +581,7 @@ class Sales extends MY_Controller
                 $account_data['date'] = $payment_data['payment_date'];
                 $account_data['ref'] = $payment_data['order_ref'];
                 $account_data['payer'] = $order->customer_id;
+                $account_data['payment_method'] = trim($this->input->post('method'));
                 $account_data['description'] = $this->input->post('description');
                 $this->db->insert('payment', $payment_data);
                 // Update purchase order
@@ -825,8 +828,8 @@ class Sales extends MY_Controller
         $data['order'] = $this->db->get_where('invoices', ['id' => $id])->row();
 
         $this->load->module('banks');
-        $data['accounts'] = $this->banks->Bank_model->get();
-        $data['categories'] = $this->db->get_where('categories', ['type' => 'Income'])->result();
+        $data['accounts'] = $this->get_accounts();
+        $data['categories'] = $this->get_income_categories();
 
 
         $data['modal_subview'] = $this->load->view('modal/_add_payment', $data, false);
@@ -886,6 +889,7 @@ class Sales extends MY_Controller
         $account_data['ref'] = $data['order_ref'];
         $account_data['payer'] = $order->customer_id;
         $account_data['description'] = $this->input->post('description');
+        $account_data['payment_method'] = trim($this->input->post('payment_method'));
 
         if ($id)
         {
@@ -933,30 +937,49 @@ class Sales extends MY_Controller
 
     public function save_income_sale_to_account($data)
     {
-        $this->load->module('banks');
-        $this->load->module('transactions');
-        $current_account = $this->banks->Bank_model->get($data['account'], true);
+
+
+        $current_account = $this->db->get_where('account_head', ['id' => $data['account']])->row();
         if ($current_account)
         {
-            $balance_after_deposite = $current_account->balance + $data['amount'];
+            $balance_after_deposit = $current_account->balance + $data['amount'];
             $this->db->trans_start();
-            $this->Bank_model->save(['balance' => $balance_after_deposite], $current_account->id);
-            $this->Transaction_model->save([
-                'account_id'    => $data['account'],
-                'account'       => $current_account->account,
-                'type'          => 'Income',
-                'amount'        => $data['amount'],
-                'date'          => $data['date'],
-                'description'   => $data['description'],
-                'ref'           => $data['ref'],
-                'dr'            => '0.00',
-                'cr'            => $data['amount'],
-                'tax'           => '0.00',
-                'category'      => $data['category'],
-                'payerid'       => $data['payer'],
-                'balance'       => $balance_after_deposite,
+            $this->db->where('id', $data['account']);
+            $this->db->update('account_head', ['balance' => $balance_after_deposit]);
 
-            ]);
+            $transaction_data['account_id']                         = $data['account'];
+            $transaction_data['transaction_type_id']                = 1;       // deposit
+            $transaction_data['transaction_type']                   = lang('deposit');
+            $transaction_data['amount']                             = $data['amount'];
+            $transaction_data['description']                        = $data['description'];
+            $transaction_data['ref']                                = $data['ref'];
+            $transaction_data['date_time']                          = $data['date'];
+            $transaction_data['category_id']                        = $data['category'];
+            $transaction_data['payment_method']                     = $data['payment_method'];
+            $transaction_data['balance']                            = $balance_after_deposit;
+
+            $this->db->insert('transactions', $transaction_data);
+            $id = $this->db->insert_id();
+            $transaction_id['transaction_id'] = TRANSACTION_PREFIX + $id;
+            $this->db->where('id', $id);
+            $this->db->update('transactions', $transaction_id);
+
+//            $this->Transaction_model->save([
+//                'account_id'    => $data['account'],
+//                'account'       => $current_account->account,
+//                'type'          => 'Income',
+//                'amount'        => $data['amount'],
+//                'date'          => $data['date'],
+//                'description'   => $data['description'],
+//                'ref'           => $data['ref'],
+//                'dr'            => '0.00',
+//                'cr'            => $data['amount'],
+//                'tax'           => '0.00',
+//                'category'      => $data['category'],
+//                'payerid'       => $data['payer'],
+//                'balance'       => $balance_after_deposit,
+//
+//            ]);
             $this->db->trans_complete();
             if ($this->db->trans_status === false)
             {
@@ -992,6 +1015,7 @@ class Sales extends MY_Controller
                 'order_id' => $id,
             ])->result();
         }
+
 
         $data['paymnet'] = $this->db->get_where('payment', [
             'order_id'  => $id,
@@ -1040,6 +1064,7 @@ class Sales extends MY_Controller
 
         $stylesheet = file_get_contents(FCPATH.'assets/admin/css/invoice.css');
 
+        date_default_timezone_set(TIME_ZONE);
         $pdf->SetFooter($_SERVER['HTTP_HOST'].'|{PAGENO}|'.date(DATE_RFC822));
 
 
@@ -1100,4 +1125,15 @@ class Sales extends MY_Controller
 
     }
 
+
+    protected function get_accounts()
+    {
+        return $this->db->get_where('account_head', ['account_type_id' => 1])->result();
+    }
+
+
+    public function get_income_categories()
+    {
+        return $this->db->order_by('name', 'asc')->get_where('transaction_category', ['type' => 1])->result();
+    }
 }

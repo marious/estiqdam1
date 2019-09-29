@@ -15,8 +15,18 @@
 }(jQuery));
 
 
-$('input[name="qty"], input[name="amount"]').inputFilter(function(value) {
+$('input[name="qty"], input[name="amount"], #balance, #amount').inputFilter(function(value) {
     return /^-?\d*[.,]?\d*$/.test(value);
+});
+
+$('body').on('input', '#balance', function() {
+
+    this.value = this.value
+        .replace(/[^\d.]/g, '')             // numbers and decimals only
+        // .replace(/(^[\d]{2})[\d]/g, '$1')   // not more than 2 digits at the beginning
+        .replace(/(\..*)\./g, '$1')         // decimal can't exist more than once
+        .replace(/(\.[\d]{4})./g, '$1');    // not more than 4 digits after decimal
+
 });
 
 
@@ -428,4 +438,49 @@ function saveCategory() {
 
         }
     });
+}
+
+
+//==========================================================
+//  Transaction Type
+//==========================================================
+function transactionType(str) {
+    let type = str.value;
+
+    if (type === '') {
+        $('#account').css({'display' : 'none'});
+        $('#method').css({'display': 'none'});
+        $('#category').html('<option value="">'+select+'...</option>');
+        exit;
+    }
+
+    if (type === 'AP' || type === 'AR') {
+        $('#account').css({'display' : 'none'});
+        $('#method').css({'display': 'none'});
+        $('#trn_category').css({'display': 'block'});
+        $('#transfer-account').css({'display': 'none'});
+    } else if (type === 'TR') {
+        $("#trn_category").css({'display':'none'});
+        $('#transfer-account').css({'display': 'block'});
+        $('#method').css({'display': 'block'});
+        $(".select2").css({'width':'100%'});
+    } else {
+        $('#account').css({'display' : 'block'});
+        $('#method').css({'display': 'block'});
+        $('#trn_category').css({'display': 'block'});
+        $(".select2").css({'width':'100%'});
+        $('#transfer-account').css({'display': 'none'});
+    }
+
+    $.ajax({
+        type: "POST",
+        url: root + 'transactions/get_transaction_category',
+        data: {type: type, csrf_test_name: getCookie('csrf_cookie_name')},
+        cache: false,
+        success: function(result) {
+            $('#category').html('<option value="">'+select+'...</option>');
+            $('#category').append(result);
+        }
+    });
+
 }

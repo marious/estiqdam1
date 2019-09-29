@@ -71,10 +71,9 @@ class Purchase extends MY_Controller
         }
 
         $this->data['products'] = $products;
-        $this->load->module('banks');
-        $this->data['accounts'] = $this->banks->Bank_model->get();
-        $this->data['categories'] = $this->db->get_where('categories', ['type' => 'Income'])->result();
 
+        $this->data['accounts'] = $this->get_accounts();
+        $this->data['categories'] = $this->db->order_by('name', 'asc')->get_where('transaction_category', ['type' => 2])->result();
 
 
 
@@ -351,7 +350,7 @@ class Purchase extends MY_Controller
 
                     // Check account has the specified amount
                     $account_id = $this->input->post('from_account');
-                    $account = $this->banks->Bank_model->get($account_id, true);
+                    $account = $this->db->get_where('account_head', ['id' => $account_id])->row();
                     if ($payment_data['amount'] > $account->balance)
                     {
                         $this->message->custom_error_msg('purchase/purchase_invoice/'.get_orderId($purchase->id), lang('amount_greater_account_balance'));
@@ -367,6 +366,7 @@ class Purchase extends MY_Controller
                     $account_data['date'] = $payment_data['payment_date'];
                     $account_data['ref'] = $payment_data['order_ref'];
                     $account_data['description'] = $this->input->post('description');
+                    $account_data['payment_method'] = trim($this->input->posT('payment_method'));
 
 
                     //insert
@@ -395,7 +395,7 @@ class Purchase extends MY_Controller
 
 
 
-        // $this->system_message->set_error(validation_errors());
+       // $this->system_message->set_error(validation_errors());
         redirect('purchase/new_purchase');
     }
 
@@ -493,9 +493,8 @@ class Purchase extends MY_Controller
     public function add_payment($id = null)
     {
         $id = $id - INVOICE_PRE;
-        $this->load->module('banks');
-        $data['categories'] = $this->db->get_where('categories', ['type' => 'Expense'])->result();
-        $data['accounts'] = $this->banks->Bank_model->get();
+        $data['categories'] = $this->db->order_by('name', 'asc')->get_where('transaction_category', ['type' => 2])->result();
+        $data['accounts'] = $this->get_accounts();
         $data['purchase_order'] = $this->db->get_where('purchase_order', ['id' => $id])->row();
         $data['modal_subview'] = $this->load->view('modal/_add_payment', $data, false);
     }
@@ -512,18 +511,10 @@ class Purchase extends MY_Controller
         $order_ref = $this->input->post('order_ref');
         $data['order_ref'] = $order_ref == '' ? get_orderId($data['order_id']) . '/' . date('d/m/Y') : $order_ref;
         $data['amount'] = (float) $this->input->post('amount');
-        $data['method'] = $this->input->post('payment_method');
-        $payment_method = $data['method'];
+        $data['method'] = trim($this->input->post('payment_method'));
 
-        switch ($payment_method) {
-            case 'cash':
-                $data['payment_method'] = 'Cash';
-                break;
-            case 'bank':
-                $data['payment_method'] = 'Bank Transfer';
-                $data['payment_ref'] = $this->input->post('payment_ref');
-                break;
-        }
+
+
 
         $data['type'] = 'Purchase';
         $sales_person = $this->ion_auth->user()->row();
@@ -552,7 +543,7 @@ class Purchase extends MY_Controller
 
         // Check account has the specified amount
         $account_id = $this->input->post('from_account');
-        $account = $this->banks->Bank_model->get($account_id, true);
+        $account = $this->db->get_where('account_head', ['id' => $account_id])->row();
         if ($data['amount'] > $account->balance)
         {
             $this->message->custom_error_msg('purchase/purchase_invoice/'.get_orderId($purchase_order->id), lang('amount_greater_account_balance'));
@@ -568,6 +559,7 @@ class Purchase extends MY_Controller
         $account_data['date'] = $data['payment_date'];
         $account_data['ref'] = $data['order_ref'];
         $account_data['description'] = $this->input->post('description');
+        $account_data['payment_method'] = trim($this->input->post('payment_method'));
 
 
 
@@ -616,31 +608,53 @@ class Purchase extends MY_Controller
 
     public function save_account_purchase_expense($data)
     {
-        $this->load->module('banks');
-        $this->load->module('transactions');
-        $current_account = $this->banks->Bank_model->get($data['account'], true);
+       $current_account = $this->db->get_where('account_head', ['id' => $data['account']])->row();
+
+
         if ($current_account)
         {
             $current_account_balance = $current_account->balance;
             $balance_after_expense = abs($current_account_balance - $data['amount']);
             $this->db->trans_start();
-            $this->banks->Bank_model->save(array('balance' => $balance_after_expense), $current_account->id);
-            $this->transactions->Transaction_model->save([
-                'account_id' => $data['account'],
-                'account' => $current_account->account,
-                'type' => 'Expense',
-                'payeeid' => $data['payee'],
-                'amount' => $data['amount'],
-                'category' => $data['category'],
-                'date'  => $data['date'],
-                'ref' => $data['ref'],
-                'description' => $data['description'],
-                'dr' => $data['amount'],
-                'cr' => '0.00',
-                'tax' => '0.00',
-                'balance' => $balance_after_expense,
-                'payee_type' => $data['payee_type'],
-            ]);
+            $this->db->where('id', $data['account']);
+            $this->db->update('account_head', ['balance' => $balance_after_expense]);
+
+            $transaction_data['account_id']                         = $data['account'];
+            $transaction_data['transaction_type_id']                = 2;       // Expenses
+            $transaction_data['transaction_type']                   = lang('expense');
+            $transaction_data['amount']                             = $data['amount'];
+            $transaction_data['description']                        = $data['description'];
+            $transaction_data['ref']                                = $data['ref'];
+            $transaction_data['date_time']                          = $data['date'];
+            $transaction_data['category_id']                        = $data['category'];
+            $transaction_data['payment_method']                     = $data['payment_method'];
+            $transaction_data['balance']                            = $balance_after_expense;
+
+
+
+            $this->db->insert('transactions', $transaction_data);
+            $id = $this->db->insert_id();
+            $transaction_id['transaction_id'] = TRANSACTION_PREFIX + $id;
+            $this->db->where('id', $id);
+            $this->db->update('transactions', $transaction_id);
+
+
+//            $this->transactions->Transaction_model->save([
+//                'account_id' => $data['account'],
+//                'account' => $current_account->account,
+//                'type' => 'Expense',
+//                'payeeid' => $data['payee'],
+//                'amount' => $data['amount'],
+//                'category' => $data['category'],
+//                'date'  => $data['date'],
+//                'ref' => $data['ref'],
+//                'description' => $data['description'],
+//                'dr' => $data['amount'],
+//                'cr' => '0.00',
+//                'tax' => '0.00',
+//                'balance' => $balance_after_expense,
+//                'payee_type' => $data['payee_type'],
+//            ]);
             $this->db->trans_complete();
             if ($this->db->trans_status === false)
             {
@@ -685,11 +699,11 @@ class Purchase extends MY_Controller
         $id = $this->input->post('id');
         $qty = $this->input->post('qty');
         $order_id = $this->input->post('order_id');
-
+        
         $purchase_order = $this->db->get_where('purchase_order', ['id' => $order_id])->row();
 
 
-        foreach ($id as $key => $item)
+        foreach ($id as $key => $item) 
         {
             if ($qty[$key] <= 0)
                 continue;
@@ -718,7 +732,7 @@ class Purchase extends MY_Controller
             $data['product_name']   = $purchase_product->product_name;
             $data['qty']            = $total_qty;
             $data['receiver']       = $receiver->first_name . ' ' . $receiver->last_name;
-
+            
             // insert Received Product 
             $this->db->insert('received_product', $data);
             // update
@@ -734,7 +748,7 @@ class Purchase extends MY_Controller
             $this->db->where('id', $purchase_product->product_id);
             $this->db->update('items', $inventory_data);
         }
-
+        
         redirect('purchase/received_product_list');
     }
 
@@ -812,7 +826,7 @@ class Purchase extends MY_Controller
         // Delete from purchase details
         $this->db->delete('purchase_details', ['purchase_id' => $purchase_order->id]);
 
-        // delete from payment
+        // delete from payment`
         $this->db->delete('payment', ['order_id' => $purchase_order->id, 'type' => 'Purchase']);
 
 
@@ -830,4 +844,9 @@ class Purchase extends MY_Controller
 
 
 
+
+    protected function get_accounts()
+    {
+        return $this->db->get_where('account_head', ['account_type_id' => 1])->result();
+    }
 }

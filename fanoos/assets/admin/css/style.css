@@ -1,5 +1,9 @@
+@import url('https://fonts.googleapis.com/css?family=Heebo:100,300,400,500,700,800,900');
+
 body {
+    font-family: "Heebo", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 15px;
+    color: #222;
 }
 
 h1, h2, h3, h4, h5,h6 {
@@ -23,12 +27,17 @@ h1, h2, h3, h4, h5,h6 {
 }
 
 .dr {
-    color: red;
+    color: #009900;
     font-weight: bold;
 }
 
 .cr {
-    color: green;
+    color: #DD4B39;;
+    font-weight: bold;
+}
+
+.balance {
+    color: #0066A4;;
     font-weight: bold;
 }
 
@@ -250,3 +259,29 @@ h1, h2, h3, h4, h5,h6 {
     color: #fff;
     border-bottom: 1px solid #f4f4f4;
 }
+
+#myModal .modal-dialog {
+    width: 50%;
+}
+.form-group {
+    position: relative;
+    clear: both;
+    overflow: auto;
+}
+.form-group.has-error .select2-container {
+    border: 1px solid red;
+}
+.help-block {
+    color: red;
+}
+
+.help-block-2 {
+    display: block;
+    margin: 5px 0 10px 0;
+    color: #737373;
+}
+/*#product-error {*/
+    /*display: inline-block;*/
+    /*position: absolute;*/
+    /*bottom: 0;*/
+/*}*/

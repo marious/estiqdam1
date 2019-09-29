@@ -55,7 +55,7 @@
                             <option value="">-- <?= lang('select_account') ?> --</option>
                             <?php if (is_array($accounts) && count($accounts)): ?>
                             <?php foreach ($accounts as $account): ?>
-                                    <option value="<?= $account->id ?>"><?= $account->account ?></option>
+                                    <option value="<?= $account->id ?>"><?= $account->account_title ?></option>
                             <?php endforeach; ?>
                             <?php endif; ?>
                         </select>
@@ -68,9 +68,12 @@
                     <div class="form-group form-group-bottom">
                         <label><?= lang('payment_method') ?></label>
                         <select id="method" class="form-control" name="payment_method">
-                            <option value="">-- <?= lang('select_payment_method') ?> --</option>
-                            <option value="cash" <?php if(!empty($payment)) echo $payment->method == 'Cash'?'selected':'' ?>><?= lang('cash') ?></option>
-                            <option value="bank" <?php if(!empty($payment)) echo $payment->method == 'bank'?'selected':'' ?>><?= lang('bank_transfer') ?></option>
+                            <option value=""><?= lang('please_select') ?>...</option>
+                            <option value="<?= lang('cash') ?>"><?= lang('cash') ?></option>
+                            <option value="<?= lang('check') ?>"><?= lang('check') ?></option>
+                            <option value="<?= lang('credit_card') ?>"><?= lang('credit_card') ?></option>
+                            <option value="<?= lang('debit_card') ?>"><?= lang('debit_card') ?></option>
+                            <option value="<?= lang('electronic_transfer') ?>"><?= lang('electronic_transfer') ?></option>
                         </select>
                     </div>
                 </div>

@@ -203,12 +203,24 @@
 
     if ($('.datepicker').length) {
         $('.datepicker').datepicker({
-            todayHighlight: true
+            todayHighlight: true,
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            autoclose: true,
+            changeMonth: true,
+            changeYear: true,
+            orientation: "bottom left" // left bottom of the input field
         });
     }
     $('body').on('focus', '.datepicker', function() {
         $(this).datepicker({
-            todayHighlight: true
+            todayHighlight: true,
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            autoclose: true,
+            changeMonth: true,
+            changeYear: true,
+            orientation: "bottom left" // left bottom of the input field
 
         });
     });
@@ -230,9 +242,49 @@
 </script>
 
 
+<script>
+    //display all dataTables
+    var handleDisplayAll = function() {
+            "use strict";
+            0 !== $(".display-all").length && $(".display-all").DataTable({
+                "iDisplayLength": "All",
+                "bSort" : false,
+                searching: false,
+                info: false,
+                paging: false,
 
+                dom: "Bfrtip",
+                buttons: [{
+                    extend: "copy",
+                    className: "btn-sm"
+                }, {
+                    extend: "csv",
+                    className: "btn-sm"
+                }, {
+                    extend: "excel",
+                    className: "btn-sm"
+                }, {
+                    extend: 'pdf',
+                    orientation: 'landscape',
+                    className: "btn-sm"
+                }, {
+                    extend: "print",
+                    className: "btn-sm"
+                }],
+                responsive: !0
+            })
+        },
+        displayALL = function() {
+            "use strict";
+            return {
+                init: function() {
+                    handleDisplayAll()
+                }
+            }
+        }();
 
-
+    displayALL.init();
+</script>
 
 
 </body>

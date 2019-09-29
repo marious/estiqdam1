@@ -9,6 +9,7 @@
                 <th width="15%"><?= lang('amount') ?></th>
                 <th width="15%"><?= lang('from_account') ?></th>
                 <th width="15%"><?= lang('payment_method') ?></th>
+                <th width="15%"><?= lang('category') ?></th>
             </tr>
             </thead>
             <tbody>
@@ -32,16 +33,30 @@
                         <option value="">-- <?= lang('select_account') ?> --</option>
                         <?php if (is_array($accounts) && count($accounts)): ?>
                             <?php foreach ($accounts as $account): ?>
-                                <option value="<?= $account->id ?>"><?= $account->account ?></option>
+                                <option value="<?= $account->id ?>"><?= $account->account_title ?></option>
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </select>
                 </td>
                 <td>
                     <select id="method" class="form-control" name="payment_method">
-                        <option value="cash" <?php if(isset($payment) && !empty($payment)) echo $payment->method == 'cash'?'selected':'' ?>><?= lang('cash') ?></option>
-                        <option value="bank" <?php if(isset($payment) && !empty($payment)) echo $payment->method == 'bank'?'selected':'' ?>><?= lang('bank_transfer') ?></option>
+                        <option value=""><?= lang('please_select') ?>...</option>
+                        <option value="<?= lang('cash') ?>"><?= lang('cash') ?></option>
+                        <option value="<?= lang('check') ?>"><?= lang('check') ?></option>
+                        <option value="<?= lang('credit_card') ?>"><?= lang('credit_card') ?></option>
+                        <option value="<?= lang('debit_card') ?>"><?= lang('debit_card') ?></option>
+                        <option value="<?= lang('electronic_transfer') ?>"><?= lang('electronic_transfer') ?></option>
                     </select>
+                </td>
+                <td>
+                    <?php if (is_array($categories) && count($categories)): ?>
+                    <select name="category" id="category" class="form-control">
+                        <option value=""><?= lang('please_select') ?></option>
+                        <?php foreach ($categories as $category): ?>
+                        <option value="<?= $category->id ?>"><?= $category->name ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <?php endif; ?>
                 </td>
             </tr>
             </tbody>

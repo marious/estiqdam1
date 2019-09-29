@@ -25,7 +25,7 @@
 
           <?php if (in_array('show_users', $logged_in_user_permissions)): ?>
           <li class="treeview <?= is_sidebar_menu_active('customers') ?>">
-              <a href="#"><i class="fa fa-users text-green"></i> <span><?= lang('customers') ?></span>
+              <a href="#"><i class="fa fa-users text-green"></i> <span><?= lang('customers') ?> & <?=  lang('vendors') ?></span>
                   <span class="pull-right-container">
                     <i class="fa fa-angle-left pull-right"></i>
                 </span>
@@ -83,17 +83,6 @@
 
 
 
-          <li class="treeview <?= is_sidebar_menu_active('banks') ?>">
-              <a href="#"><i class="fa fa-bank"></i> <span><?= lang('accounts') ?></span>
-                  <span class="pull-right-container">
-                    <i class="fa fa-angle-left pull-right"></i>
-                </span>
-              </a>
-              <ul class="treeview-menu">
-                  <li class="<?= is_tree_sidebar_menu_active('banks', 'all'); ?>"><a href="<?= site_url('banks/all'); ?>"><i class="fa fa-circle-o"></i> <?= lang('all_banks'); ?></a></li>
-                  <li class="<?= is_tree_sidebar_menu_active('banks', 'add_product'); ?>"><a href="<?= site_url('banks/add'); ?>"><i class="fa fa-circle-o"></i> <?= lang('add_bank'); ?></a></li>
-              </ul>
-          </li>
 
 
           <li class="treeview <?= is_sidebar_menu_active('transactions') ?>">
@@ -103,11 +92,18 @@
                     </span>
               </a>
               <ul class="treeview-menu">
-                  <li class="<?= is_tree_sidebar_menu_active('transactions', 'all'); ?>"><a href="<?= site_url('transactions/all'); ?>"><i class="fa fa-circle-o"></i> <?= lang('all_transactions'); ?></a></li>
-                  <li class="<?= is_tree_sidebar_menu_active('transactions', 'deposit'); ?>"><a href="<?= site_url('transactions/deposit'); ?>"><i class="fa fa-circle-o"></i> <?= lang('add_income'); ?></a></li>
-                  <li class="<?= is_tree_sidebar_menu_active('transactions', 'expense'); ?>"><a href="<?= site_url('transactions/expense'); ?>"><i class="fa fa-circle-o"></i> <?= lang('add_expense'); ?></a></li>
-                  <li class="<?= is_tree_sidebar_menu_active('transactions', 'transfer'); ?>"><a href="<?= site_url('transactions/transfer'); ?>"><i class="fa fa-circle-o"></i> <?= lang('add_transfer'); ?></a></li>
+                  <li class="<?= is_tree_sidebar_menu_active('transactions', 'all_transaction'); ?>"><a href="<?= site_url('transactions/all_transaction'); ?>"><i class="fa fa-circle-o"></i> <?= lang('all_transactions'); ?></a></li>
+                  <li class="<?= is_tree_sidebar_menu_active('transactions', 'add_transaction'); ?>"><a href="<?= site_url('transactions/add_transaction'); ?>"><i class="fa fa-circle-o"></i> <?= lang('add_transaction'); ?></a></li>
+                  <li class="<?= is_tree_sidebar_menu_active('transactions', 'chart_of_account'); ?>"><a href="<?= site_url('transactions/chart_of_account'); ?>"><i class="fa fa-circle-o"></i> <?= lang('accounts'); ?></a></li>
+                  <li class="<?= is_tree_sidebar_menu_active('transactions', 'income_category'); ?>"><a href="<?= site_url('transactions/income_category'); ?>"><i class="fa fa-circle-o"></i> <?= lang('income_categories'); ?></a></li>
+                  <li class="<?= is_tree_sidebar_menu_active('transactions', 'expense_category'); ?>"><a href="<?= site_url('transactions/expense_category'); ?>"><i class="fa fa-circle-o"></i> <?= lang('expense_categories'); ?></a></li>
               </ul>
+          </li>
+
+
+          <li <?= is_sidebar_menu_active('reports'); ?>">
+              <a href="<?= site_url('reports') ?>"><i class="fa fa-file"></i> <span><?= lang('reports') ?></span>
+              </a>
           </li>
 
 
@@ -126,6 +122,8 @@
             </ul>
           </li>
 <?php endif; ?>
+
+
 
 
 

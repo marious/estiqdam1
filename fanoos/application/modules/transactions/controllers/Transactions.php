@@ -1,376 +1,1066 @@
 <?php
+
+/**
+ * @property  new_transaction_balance
+ */
 class Transactions extends MY_Controller
 {
+
+    private $new_transaction_balance;
+
     public function __construct()
     {
         parent::__construct();
         $this->lang->load('transactions');
         $this->load->model('Transaction_model');
+        $this->load->library('form_builder');
+        $this->load->library('form_validation');
     }
 
 
-    public function all()
+
+    public function chart_of_account()
     {
-        $this->data['page_header'] = '<i class="fa fa-arrow-circle-o-right"></i> ' . lang('all_transactions');
+        $account_type = $this->db->get('account_type')->result();
+
+        $result = [];
+        foreach ($account_type as $type) {
+            $tem_head = $this->db->select('account_head.*, account_type.account_type')
+                        ->from('account_head')
+                        ->join('account_type', 'account_head.account_type_id = account_type.id', 'left')
+                        ->where('account_head.account_type_id', $type->id)
+                        ->get()
+                        ->result();
+
+            foreach ($tem_head as $item) {
+                $result[] = $item;
+            }
+        }
+
+
+        $this->data['account_head'] = $result;
+        $this->admin_template('chart_of_account', $this->data);
+
+    }
+
+
+
+    public function add_account()
+    {
+        $data['modal_subview'] = $this->load->view('_modal/add_account', '', false);
+    }
+
+
+
+    public function save_new_account()
+    {
+        $id = $this->input->post('id');
+        if (!empty($id))
+        {
+            $id = $this->encryption->decrypt(str_replace(array('-', '_', '~'), array('+', '/', '='), $id));
+            if (empty($id))
+            {
+                $this->message->norecord_found('transactions/chart_of_account');
+            }
+        }
+
+        $this->form_validation->set_rules('account_title', lang('account_title'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('description', lang('description'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('account_number', lang('account_number'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('balance', lang('balance'), 'trim|required|xss_clean|numeric');
+
+        if ($this->form_validation->run() == TRUE)
+        {
+            $data['account_title']              = $this->input->post('account_title');
+            $data['description']                = $this->input->post('description');
+            $data['account_number']             = $this->input->post('account_number');
+            $data['balance']                    = $this->input->post('balance');
+            $data['account_type_id']            = 1;
+
+            if ($id) {
+                $this->db->where('id', $id);
+                $this->db->update('account_head', $data);
+            } else {
+                $this->db->insert('account_head', $data);
+            }
+            $this->message->save_success('transactions/chart_of_account');
+        }
+        else
+        {
+            $error = validation_errors();
+            $this->message->custom_error_msg('transactions/chart_of_account', $error);
+        }
+    }
+
+
+    public function add_transaction()
+    {
+        $this->data['accounts'] = $this->db->get_where('account_head', [
+            'account_type_id' => 1,
+        ])->result();
+
+        $this->admin_template('add_transactions', $this->data);
+    }
+
+
+    public function get_transaction_category()
+    {
+        $type = trim($this->input->post('type'));
+        if ($type == 'Deposit' || $type == 'AR')
+        {
+            $id = 1;
+        } else {
+            $id = 2;
+        }
+
+        $categories = $this->db->order_by('name', 'asc')->get_where('transaction_category', ['type' => $id])->result();
+        $output = '';
+        if (is_array($categories) && count($categories))
+        {
+            foreach ($categories as $category) {
+                $output .= '<option value="'.$category->id.'">'.$category->name.'</option>';
+            }
+        }
+        echo $output;
+    }
+
+
+    public function save_transaction()
+    {
+        $transaction_type = trim($this->input->post('transaction_type'));
+
+        $this->form_validation->set_rules('transaction_type', lang('transaction_type'), 'trim|required|xss_clean');
+
+        if ($transaction_type == 'Deposit' || $transaction_type == 'Expenses')
+        {
+            $this->form_validation->set_rules('account', lang('account'), 'trim|required|xss_clean');
+            $this->form_validation->set_rules('payment_method', lang('payment_method'), 'trim|required|xss_clean');
+            $this->form_validation->set_rules('category_id', lang('category_id'), 'trim|required|xss_clean');
+        }
+        else if ($transaction_type == 'TR')
+        {
+            $this->form_validation->set_rules('from_account', lang('from_account'), 'trim|required|xss_clean');
+            $this->form_validation->set_rules('to_account', lang('to_account'), 'trim|required|xss_clean');
+            $this->form_validation->set_rules('payment_method', lang('payment_method'), 'trim|required|xss_clean');
+        }
+        else
+        {
+            $this->form_validation->set_rules('category_id', lang('category_id'), 'trim|required|xss_clean');
+        }
+
+        $this->form_validation->set_rules('amount', lang('amount'), 'trim|required|xss_clean|numeric');
+        $this->form_validation->set_rules('description', lang('description'), 'trim|required|xss_clean');
+
+        if ($this->form_validation->run() == true)
+        {
+            if ($transaction_type == 'Deposit' || $transaction_type == 'Expenses')
+            {
+                $data['account_id']             = $this->input->post('account');
+                $data['payment_method']         = $this->input->post('payment_method');
+                $data['category_id']            = $this->input->post('category_id');
+            }
+            elseif ($transaction_type == 'TR')
+            {
+                $from_account_id                = $this->input->post('from_account');
+                $to_account_id                  = $this->input->post('to_account');
+                $data['payment_method']         = $this->input->post('payment_method');
+
+                if ($from_account_id == $to_account_id) {
+                    $this->message->custom_error_msg('transactions/add_transaction', lang('same_account_transfer_not_allowed'));
+                }
+            }
+            else
+            {
+                $data['category_id']            = $this->input->post('category_id');
+            }
+
+            if ($transaction_type == 'AP')
+            {
+                $data['account_id'] = 4;
+            }
+            elseif ($transaction_type == 'AR')
+            {
+                $data['account_id'] = 2;
+            }
+
+            $transaction_type = $this->_transaction_type($transaction_type);
+            $data['transaction_type_id'] = $transaction_type[0];
+            $data['transaction_type'] = $transaction_type[1];
+
+            $data['amount']         = floatval($this->input->post('amount'));
+            $data['ref']            = trim($this->input->post('ref'));
+            $data['description']    = trim($this->input->post('description'));
+
+            if ($data['transaction_type_id'] == 3)  // Accounts Payable A/P
+            {
+                $balance = $this->db->get_where('account_head', ['id' => 4])->row()->balance;
+                $data['balance'] = $balance + $data['amount'];
+                $account_head['balance'] = $balance + $data['amount'];
+                $this->db->where('id', 4);
+                $this->db->update('account_head', $account_head);
+            }
+            elseif ($data['transaction_type_id'] == 4)      // Accounts Receivable A/R
+            {
+                $balance = $this->db->get_where('account_head', ['id' => 2])->row()->balance;
+                $data['balance'] = $balance + $data['amount'];
+                $account_head['balance'] = $balance + $data['amount'];
+                $this->db->where('id', 2);
+                $this->db->update('account_head', $account_head);
+            }
+            elseif ($data['transaction_type_id'] == 5)      // Transfer Balance
+            {
+                $from_account_balance = $this->db->get_where('account_head', ['id' => $from_account_id])->row()->balance;
+                $to_account_balance = $this->db->get_where('account_head', ['id' => $to_account_id])->row()->balance;
+
+                if ($data['amount'] > $from_account_balance)
+                {
+                    $this->message->custom_error_msg('transactions/add_transaction', lang('amount_transfer_bigger_balance'));
+                }
+
+                $data_from['balance'] = $from_account_balance - $data['amount'];
+                $data_to['balance'] = $to_account_balance + $data['amount'];
+
+                $this->db->where('id', $from_account_id);
+                $this->db->update('account_head', $data_from);
+
+                $this->db->where('id', $to_account_id);
+                $this->db->update('account_head', $data_to);
+            }
+            else        // account
+            {
+                $balance = $this->db->get_where('account_head', ['id' => $data['account_id']])->row()->balance;
+
+                if ($data['transaction_type_id'] == 1)
+                {
+                    // Deposit
+                    $data['balance'] = $balance + $data['amount'];
+                    $account_head['balance'] = $balance + $data['amount'];
+
+                    $this->db->where('id', $data['account_id']);
+                    $this->db->update('account_head', $account_head);
+                }
+
+                if ($data['transaction_type_id'] == 2)
+                {
+                    // Expenses
+                    if ($data['amount'] > $balance)
+                    {
+                        $this->message->custom_error_msg('transactions/add_transaction', lang('account_balance_not_valid'));
+                    }
+                    $data['balance'] = $balance - $data['amount'];
+                    $account_head['balance'] = $balance - $data['amount'];
+
+                    $this->db->where('id', $data['account_id']);
+                    $this->db->update('account_head', $account_head);
+                }
+            }
+
+            if ($data['transaction_type_id'] != 5)
+            {
+                $this->db->insert('transactions', $data);
+
+                $id = $this->db->insert_id();
+                $transaction_id['transaction_id'] = TRANSACTION_PREFIX + $id;
+                $this->db->where('id', $id);
+                $this->db->update('transactions', $transaction_id);
+            }
+            else
+            {
+                // From account Transfer
+                $this->db->insert('transactions', $data);
+                $trn_from_id = $this->db->insert_id();
+                $data_from['transaction_id']        = TRANSACTION_PREFIX + $trn_from_id;
+                $data_from['transaction_type']      = lang('transfer');
+                $data_from['transaction_type_id']   = 5;
+                $data_from['account_id']            = $from_account_id;
+                $data_from['category_id']           = 99;
+
+                $this->db->where('id', $trn_from_id);
+                $this->db->update('transactions', $data_from);
+
+                // To Account Transfer
+                $this->db->insert('transactions', $data);
+                $trn_to_id                          = $this->db->insert_id();
+                $data_to['transaction_id']          = TRANSACTION_PREFIX + $trn_from_id;
+                $data_to['transaction_type']        = lang('deposit');
+                $data_to['transaction_type_id']     = 1 ;
+                $data_to['account_id']              = $to_account_id ;
+                $data_to['category_id']             = 99;
+
+                $this->db->where('id', $trn_to_id);
+                $this->db->update('transactions', $data_to);
+
+                $ref = [
+                    [
+                        'id' => $trn_from_id,
+                        'transfer_ref' => $data_to['transaction_id']
+                    ],
+                    [
+                        'id' => $trn_to_id,
+                        'transfer_ref' => $data_from['transaction_id'],
+                    ]
+                ];
+
+                $this->db->update_batch('transactions', $ref, 'id');
+
+            }
+
+            $this->message->save_success('transactions/add_transaction');
+
+
+        }
+        else
+        {
+            $error = validation_errors();
+            $this->message->custom_error_msg('transactions/add_transaction', $error);
+        }
+
+    }
+
+
+    public function _transaction_type($prm)
+    {
+        /* @transaction_type
+         *
+         * Deposit
+         * Expense
+         * Accounts Payable
+         * Accounts Receivable
+         *
+         * @transaction_type_id
+         *
+         * 1 = Deposit
+         * 2 = Expense
+         * 3 = Accounts Payable(A/P)
+         * 4 = Accounts Receivable(A/R)
+         *
+         */
+
+        switch ($prm)
+        {
+            case 'Deposit':
+                $transaction[0] = 1;
+                $transaction[1] = lang('deposit');
+                return $transaction;
+                break;
+            case 'Expenses':
+                $transaction[0] = 2;
+                $transaction[1] = lang('expense');
+                return $transaction;
+                break;
+            case 'AP':
+                $transaction[0] = 3;
+                $transaction[1] = 'A/P';
+                return $transaction;
+                break;
+            case 'AR':
+                $transaction[0] = 4;
+                $transaction[1] = 'AR';
+                return $transaction;
+                break;
+            case 'TR':
+                $transaction[0] = 5;
+                $transaction[1] = lang('account_transfer');
+                return $transaction;
+                break;
+        }
+    }
+
+
+
+    public function all_transaction()
+    {
+        $this->load_daterange_datepicker();
         $this->load_datatable();
-        $this->data['css_cdn'] = [
-            'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css',
-        ];
-        $this->data['js_cdn'] = [
-            'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js',
-        ];
-        array_push($this->data['js_file'], site_url('assets/admin/js/transactions.js'));
-        $this->admin_template('all', $this->data);
+        array_push($this->data['js_file'], site_url('assets/admin/js/dataTableAjax.js'));
+        $this->data['accounts'] = $this->db->get('account_head')->result();
+        $this->admin_template('transaction_list', $this->data);
     }
 
 
-    public function load_all_transactions()
+    public function transaction_list()
     {
-        $this->Transaction_model->get_all_transactions();
-    }
+        $this->load->model('Global_model');
+        $this->Global_model->table = 'transactions';
+        $this->Global_model->order = ['id' => 'desc'];
+        $list = $this->Global_model->get_transactions_dataTables();
 
+        $data = [];
+        $no = $_POST['start'];
 
+        foreach ($list as $item) {
 
+            $no++;
+            $row = [];
+            $row[] = '<a href="'.base_url().'transactions/view/'.$this->make_encryption($item->id).'">'.$item->transaction_id.'</a>';
+            $row[] = '<a href="'.base_url().'transactions/view_transaction/'.$this->make_encryption('account-'.$item->account_id).'">'.$item->account_name.'</a>';
+            $row[] = '<a href="'.base_url().'transactions/view_transaction/'.$this->make_encryption('transaction_type-'.$item->transaction_type_id).'">'.$item->transaction_type.'</a>';
+            $row[] = '<a href="'.base_url().'transactions/view_transaction/'.$this->make_encryption('category-'.$item->category_id).'">'.$item->category_name.'</a>';
 
-    public function transfer($id = false)
-    {
-        $this->load_datepicker();
-        $this->load->module('banks');
-        $this->data['accounts'] = $this->banks->Bank_model->get();
-
-        // Recent Transfers
-        $this->data['recent_transfers'] = $this->Transaction_model->get_recent_transaction('Transfer');
-
-
-        if ($id && is_numeric($id))
-        {
-            $transaction = $this->Transaction_model->get($id);
-            $transaction || redirect('dashboard');
-            $this->data['transaction'] = $transaction;
-        }
-        else
-        {
-            $this->data['transaction'] = $this->Transaction_model->get_new();
-            $this->data['transaction']->date = date('Y-m-d H:i:s');
-        }
-
-        // Process the form
-        $this->load->library('form_validation');
-        $this->form_validation->set_rules($this->Transaction_model->transaction_rules);
-        if ($this->form_validation->run($this) === true)
-        {
-
-            $from_account = $_POST['from'];
-            $to_account = $_POST['to'];
-            $date = trans_date_to_timestamp($_POST['date'], 'd/m/Y');
-            $amount = $_POST['amount'];
-            $description = $_POST['description'];
-            $debtor_account = $this->banks->Bank_model->get($from_account);
-            if ($amount > $debtor_account->balance)
+            if ($item->transaction_type_id == 1 || $item->transaction_type_id == 4)
             {
-                $_SESSION['error'] = lang('amount_transfer_bigger_balance');
-                $this->session->mark_as_flash('error');
-                redirect('transactions/transfer');
-            }
-            $debtor_account_balance = $debtor_account->balance - $amount;
-
-            $creditor_account = $this->banks->Bank_model->get($to_account);
-            $creditor_account_balance = $creditor_account->balance + $amount;
-
-            $this->db->trans_start();
-            $this->Transaction_model->save([
-                'account_id'        => $from_account,
-                'account'           => $debtor_account->account,
-                'amount'            => $amount,
-                'date'              => $date,
-                'description'       => $description,
-                'type'              => 'Transfer',
-                'dr'                => $amount,
-                'balance'           => $debtor_account_balance,
-            ]);
-            $this->banks->Bank_model->save(['balance' => $debtor_account_balance], $from_account);
-
-            $this->Transaction_model->save([
-                'account_id'        => $to_account,
-                'account'           => $creditor_account->account,
-                'amount'            => $amount,
-                'date'              => $date,
-                'description'       => $description,
-                'type'              => 'Transfer',
-                'cr'                => $amount,
-                'balance'           => $creditor_account_balance,
-            ]);
-            $this->banks->Bank_model->save(['balance' => $creditor_account_balance], $to_account);
-
-            $this->db->trans_complete();
-            if ($this->db->trans_status === false)
-            {
-                $_SESSION['error'] = 'Something error happen transaction try again';
-                $this->session->mark_as_flash('error');
-                redirect('transactions/transfer');
-            }
-
-            $_SESSION['success_toastr'] = lang('transaction_added_success');
-            $this->session->mark_as_flash('success_toastr');
-            redirect('transactions/transfer');
-
-
-        }
-
-        $this->admin_template('transfer', $this->data);
-    }
-
-
-
-    public function expense($id = false)
-    {
-        $this->load_datepicker();
-        array_push($this->data['js_file'], site_url('assets/admin/js/transactions.js'));
-        $this->load->module('banks');
-        $this->data['accounts'] = $this->banks->Bank_model->get();
-        // Recent Expenses
-        $this->data['recent_expenses'] = $this->Transaction_model->get_recent_transaction('Expense');
-        if ($id && is_numeric($id))
-        {
-            $transaction = $this->Transaction_model->get($id);
-            $transaction || redirect('dashboard');
-            $this->data['transaction'] = $transaction;
-        }
-        else
-        {
-            $this->data['transaction'] = $this->Transaction_model->get_new();
-            $this->data['transaction']->date = date('Y-m-d H:i:s');
-        }
-
-        $this->load->module('categories');
-        $this->data['expense_categories'] = $this->categories->Category_model->get();
-        $this->load->module('customers');
-        $this->data['customers'] = $this->customers->Customer_model->get();
-
-
-        $this->load->library('form_validation');
-        $this->form_validation->set_rules($this->Transaction_model->get_expense_rules());
-
-        if ($this->form_validation->run($this) == true)
-        {
-            $account = $this->input->post('account');
-            $date = trans_date_to_timestamp($_POST['date'], 'd/m/Y');
-            $amount = $this->input->post('amount');
-            $payee = $this->input->post('payee');
-            $cat = $this->input->post('category');
-            $description = $this->input->post('description');
-            $ref = $this->input->post('ref_number');
-
-            if (!is_numeric($payee))
-            {
-                $payee = 0;
-            }
-
-            // find the current balance of this account
-            $current_account = $this->banks->Bank_model->get($account);
-            if ($current_account)
-            {
-                $current_account_balance = $current_account->balance;
-                if ($current_account_balance < $amount)
-                {
-                    $_SESSION['error'] = lang('account_balance_not_valid');
-                    $this->session->mark_as_flash('error');
-                    redirect(site_url('transactions/expense'));
-                }
-
-                $balance_after_expense = abs($current_account_balance - $amount);
-                $this->db->trans_start();
-                $this->Bank_model->save(array('balance' => $balance_after_expense), $current_account->id);
-                $this->Transaction_model->save([
-                    'account_id' => $account,
-                    'account' => $current_account->account,
-                    'type' => 'Expense',
-                    'payeeid' => $payee,
-                    'amount' => $amount,
-                    'category' => $cat,
-                    'date'  => $date,
-                    'ref' => $ref,
-                    'description' => $description,
-                    'dr' => $amount,
-                    'cr' => '0.00',
-                    'tax' => '0.00',
-                    'balance' => $balance_after_expense,
-                ]);
-                $this->db->trans_complete();
-
-                if ($this->db->trans_status === false)
-                {
-                    $_SESSION['error'] = 'Something error happen transaction try again';
-                    $this->session->mark_as_flash('error');
-                    redirect('transactions/expense');
-                }
-
-                $_SESSION['success_toastr'] = lang('expense_added');
-                $this->session->mark_as_flash('success_toastr');
-                redirect('transactions/expense');
-
+                $row[] = '<span class="dr">'.$this->localization->currencyFormat($item->amount).'</span>';
             }
             else
             {
-                $_SESSION['error'] = lang('unkown_account');
-                $this->session->mark_as_flash('error');
-                redirect(site_url('transactions/expense'));
+                $row[] = '<span class="dr">'.$this->localization->currencyFormat(0).'</span>';
             }
-        }
 
-        $this->admin_template('expense', $this->data);
-    }
-
-
-
-    public function deposit($id = false)
-    {
-        $this->load_datepicker();
-        array_push($this->data['js_file'], site_url('assets/admin/js/transactions.js'));
-        $this->load->module('banks');
-        $this->load->module('banks');
-        $this->data['accounts'] = $this->banks->Bank_model->get();
-        // Recent Deposites
-        $this->data['recent_deposits'] = $this->Transaction_model->get_recent_transaction('Income');
-        if ($id && is_numeric($id))
-        {
-            $transaction = $this->Transaction_model->get($id);
-            $transaction || redirect('dashboard');
-            $this->data['transaction'] = $transaction;
-        }
-        else
-        {
-            $this->data['transaction'] = $this->Transaction_model->get_new();
-            $this->data['transaction']->date = date('Y-m-d H:i:s');
-        }
-
-        $this->load->module('categories');
-        $this->data['income_categories'] = $this->categories->Category_model->get_by(array('type' => 'Income'));
-
-        $this->load->library('form_validation');
-        $this->form_validation->set_rules($this->Transaction_model->get_deposite_rules());
-        if ($this->form_validation->run($this) == true)
-        {
-            $account = $this->input->post('account');
-            $date = trans_date_to_timestamp($_POST['date'], 'd/m/Y');
-            $amount = $this->input->post('amount');
-            $description = $this->input->post('description');
-            $ref = $this->input->post('ref_number');
-            $payer = $this->input->post('payee');
-            $cat = $this->input->post('category');
-            $currency = isset($_POST['currency']) ? $_POST['currency'] : null;
-
-            if (!is_numeric($payer))
+            if ($item->transaction_type_id == 2 || $item->transaction_type_id == 3 || $item->transaction_type_id == 5)
             {
-                $payer = 0;
+                $row[] = '<span class="cr">'.$this->localization->currencyFormat($item->amount).'</span>';
+            } else {
+                $row[] = '<span class="cr">'.$this->localization->currencyFormat(0).'</span>';
             }
 
-            // find the current balance of this account
-            $current_account = $this->banks->Bank_model->get($account);
-            $balance_after_deposite = $current_account->balance + $amount;
+            $row[] = '<span class="balance">'.$this->localization->currencyFormat($item->balance).'</span>';
+            $row[] = $this->localization->dateFormat($item->date_time);
 
-            $this->db->trans_start();
-            $this->Bank_model->save(['balance' => $balance_after_deposite], $current_account->id);
-            $this->Transaction_model->save([
-                'account_id'    => $account,
-                'account'       => $current_account->account,
-                'type'          => 'Income',
-                'amount'        => $amount,
-                'date'          => $date,
-                'description'   => $description,
-                'ref'           => $ref,
-                'dr'            => '0.00',
-                'cr'            => $amount,
-                'tax'           => '0.00',
-                'payerid'       => $payer,
-                'category'      => $cat,
-                'balance'       => $balance_after_deposite,
-                'currency'      => $currency,
+            // add html for action
+            $row[] = '<div class="btn-group"><a class="btn btn-xs btn-default" href="'.site_url('transactions/edit_transaction/'.$this->make_encryption($item->id)).'">
+                <i class="fa fa-pencil"></i></a>
+                <a href="'.site_url('transactions/delete_transaction/'.$this->make_encryption($item->id)).'" class="btn btn-danger btn-xs" 
+                        onclick="return confirm(\'Are you sure you want to delete\')">
+                    <i class="glyphicon glyphicon-trash"></i>
+                </a>
+                </div>';
+            $data[] = $row;
+        }
 
-            ]);
-            $this->db->trans_complete();
-            if ($this->db->trans_status === false)
+        $output = [
+            'draw'              => intval($_POST['draw']),
+            'recordTotal'       => $this->Global_model->count_all_transactions(),
+            'recordsFiltered'   => $this->Global_model->count_filtered_transactions(),
+            'data'              => $data,
+        ];
+
+        // output to json format
+        echo json_encode($output);
+    }
+
+
+    public function view($id = null)
+    {
+        if (!empty($id))
+        {
+            $id = $this->encryption->decrypt(str_replace(array('-', '_', '~'), array('+', '/', '='), $id));
+            $result = $this->db->select('transactions.*, account_head.account_title, transaction_category.name as category_name')
+                        ->from('transactions')
+                        ->join('account_head', 'account_head.id = transactions.account_id', 'left')
+                        ->join('transaction_category', 'transaction_category.id = transactions.category_id', 'left')
+                        ->where('transactions.id', $id)
+                        ->get()
+                        ->row();
+
+            $result == true || $this->message->norecord_found('transactions/all_transaction');
+
+            if (!empty($result->transfer_ref))
             {
-                $_SESSION['error'] = 'Something error happen transaction try again';
-                $this->session->mark_as_flash('error');
-                redirect('transactions/deposit');
+                $transfer_from = $this->db->select('transactions.*, account_head.account_title, transaction_category.name as category_name')
+                                    ->from('transactions')
+                                    ->join('account_head', 'account_head.id = transactions.account_id', 'left')
+                                    ->join('transaction_category', 'transaction_category.id = transactions.category_id', 'left')
+                                    ->where('transactions.id', $result->transfer_ref)
+                                    ->get()
+                                    ->row();
+                $this->data['transaction_from'] = $transfer_from;
             }
 
-            $_SESSION['success_toastr'] = lang('expense_added');
-            $this->session->mark_as_flash('success_toastr');
-            redirect('transactions/deposit');
+            $this->data['transaction'] = $result;
+            $this->data['account'] = $this->db->get_where('account_head', ['account_type_id' => 1])->result();
+            $this->admin_template('view_transaction', $this->data);
+
         }
-
-
-        $this->data['currencies'] = $this->db->get('currencies')->result();
-
-        $this->admin_template('deposit', $this->data);
     }
 
 
-
-
-
-    public function get_account_name($transaction)
+    public function view_transaction($id = null)
     {
-        $this->load->module('banks');
-        $account = $this->banks->Bank_model->get($transaction->account_id);
-        if ($account)
+        if (!empty($id))
         {
-            return $account->account;
-        }
-        return $transaction->account;
-    }
+            $id = $this->encryption->decrypt(str_replace(array('-', '_', '~'), array('+', '/', '='), $id));
+            $prm = explode('-', $id);
+            $this->data['column'] = $prm[0] . '_id';
+            $this->data['id'] = $prm[1];
 
-
-
-
-    public function _valid_date()
-    {
-        $date = $this->input->post('date');
-        if (strpos($date, '/') !== false)
-        {
-            $date_arr = explode('/', $date);
-            $day = (int) $date_arr[0];
-            $month = (int) $date_arr[1];
-            $year = (int) $date_arr[2];
-            if (!checkdate($month, $day, $year)) {
-                $this->form_validation->set_message('_valid_date', 'Not Valid Date');
-                return false;
-            }
-        }
-        else
-        {
-            $this->form_validation->set_message('_valid_date', 'Not Valid Date');
-            return false;
-        }
-        return true;
-    }
-
-
-
-
-    public function _valid_account()
-    {
-        $this->load->module('banks');
-        $account = $this->input->post('account');
-        if ($account != '')
-        {
-            $account_exist = $this->banks->Bank_model->get($account);
-            if ($account_exist)
+            if ($this->data['column'] == 'account_id')
             {
-                return true;
+                $result = $this->db->get_where('account_head', ['id' => $this->data['id']])->row()->account_title;
+                if (empty($result)) {
+                    $this->message->custom_error_msg('transactions/all_transaction', lang('no_record_found'));
+                }
+            }
+            elseif ($this->data['column'] == 'transaction_type_id')
+            {
+                $result = $this->db->get_where('transactions', [
+                    'transaction_type_id' => $this->data['id']
+                ])->row()->transaction_type;
+                if (empty($result)) {
+                    $this->message->custom_error_msg('transactions/all_transaction', lang('no_record_found'));
+                }
+            }
+            elseif ($this->data['column'] == 'category_id')
+            {
+                $result = $this->db->get_where('transaction_category', [
+                    'id' => $this->data['id']
+                ])->row()->name;
+                if (empty($result)) {
+                    $this->message->custom_error_msg('transactions/all_transaction', lang('no_record_found'));
+                }
             }
             else
             {
-                $this->form_validation->set_message('_valid_account', lang('not_valid_account'));
-                return false;
+                $this->message->custom_error_msg('transactions/all_transaction', lang('no_record_found'));
             }
         }
         else
         {
-            $this->form_validation->set_message('_valid_account', lang('not_valid_account'));
-            return false;
+            $this->message->custom_error_msg('transactions/all_transaction', lang('no_record_found'));
         }
+
+        $this->load_datatable();
+        array_push($this->data['js_file'], site_url('assets/admin/js/dataTableAjax.js'));
+
+        $this->data['title'] = $result;
+        $this->admin_template('transaction_view', $this->data);
+    }
+
+
+    public function transaction_view($id)
+    {
+        $this->load->model('Global_model');
+
+        $prm = explode('-', $id);
+
+        $column = $prm[0];
+        $id = $prm[1];
+        $this->Global_model->table = 'transactions';
+        $this->Global_model->col = $column;
+        $this->Global_model->colId = $id;
+
+        $this->Global_model->order = ['id' => 'desc'];
+        $list = $this->Global_model->get_transactions_dataTables($column,$id);
+
+        $data = [];
+        $num = $_POST['start'];
+
+        foreach ($list as $item) {
+            $num++;
+            $row = [];
+
+
+
+            $row[] = $item->transaction_id;
+            if ($column != 'account_id')
+            {
+                $row[] = '<a href="'.base_url().'transactions/view_transaction/'.$this->make_encryption('account-'.$item->account_id).'">'.$item->account_name.'</a>';
+            }
+
+            if ($column != 'transaction_type_id')
+            {
+                $row[] = '<a href="'.base_url().'transactions/view_transaction/'.$this->make_encryption('transaction_type-'.$item->transaction_type_id).'">'.$item->transaction_type.'</a>';
+            }
+
+            if ($column != 'category_id')
+            {
+                $row[] = '<a href="'.base_url().'transactions/view_transaction/'.$this->make_encryption('category-'.$item->category_id).'">'.$item->category_name.'</a>';
+            }
+
+            if($item->transaction_type_id == 1 || $item->transaction_type_id == 4){
+                $row[] = '<span class="dr">'.$this->localization->currencyFormat($item->amount).'</span>';
+            }else{
+                $row[] = '<span class="dr">'.$this->localization->currencyFormat(0).'</span>';
+            }
+
+            if($item->transaction_type_id == 2 || $item->transaction_type_id == 3 || $item->transaction_type_id == 5 ){
+                $row[] = '<span class="cr">'.$this->localization->currencyFormat($item->amount).'</span>';
+            }else{
+                $row[] = '<span class="cr">'.$this->localization->currencyFormat(0).'</span>';
+            }
+
+            $row[] = '<span class="balance">'.$this->localization->currencyFormat($item->balance).'</span>';
+            $row[] = $this->localization->dateFormat($item->date_time);
+
+            //add html for action
+            $row[] = '<div class="btn-group"><a class="btn btn-xs btn-default" href="'.site_url('transactions/edit_transaction/'.$this->make_encryption($item->id)).'">
+                <i class="fa fa-pencil"></i></a>
+                <a href="'.site_url('transactions/delete_transaction/'.$this->make_encryption($item->id)).'" class="btn btn-danger btn-xs" 
+                        onclick="return confirm(\'Are you sure you want to delete\')">
+                    <i class="glyphicon glyphicon-trash"></i>
+                </a>
+                </div>';
+            $data[] = $row;
+        }
+
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->Global_model->count_all_transactions(),
+            "recordsFiltered" => $this->Global_model->count_filtered_transactions(),
+            "data" => $data,
+        );
+        //output to json format
+        echo json_encode($output);
+
+
+    }
+
+
+
+
+    public function edit_transaction($id)
+    {
+        $id = $this->encryption->decrypt(str_replace(array('-', '_', '~'), array('+', '/', '='), $id));
+        $result = $this->db->select('transactions.*, account_head.account_title, transaction_category.name as category_name')
+                    ->from('transactions')
+                    ->join('account_head', 'account_head.id = transactions.account_id', 'left')
+                    ->join('transaction_category', 'transaction_category.id = transactions.category_id', 'left')
+                    ->where('transactions.id', $id)
+                    ->get()
+                    ->row();
+
+        $result == TRUE || $this->message->norecord_found('transactions/all_transaction');
+
+        if (!empty($result->transfer_ref))
+        {
+            $transfer_from = $this->db->select('transactions.*, account_head.account_title, transaction_category.name as category_name')
+                                    ->from('transactions')
+                                    ->join('account_head', 'account_head.id = transactions.account_id', 'left')
+                                    ->join('transaction_category', 'transaction_category.id = transactions.category_id', 'left')
+                                    ->where('transactions.transaction_id', $result->transfer_ref)
+                                    ->get()
+                                    ->row();
+
+            $this->data['transaction_from'] = $transfer_from;
+        }
+
+
+        $this->data['transaction'] = $result;
+        $this->data['accounts'] = $this->db->get_where('account_head', ['account_type_id' => 1])->result();
+
+        $this->admin_template('edit_transaction', $this->data);
+    }
+
+
+    public function delete_transaction($id = null)
+    {
+        $id = $this->encryption->decrypt(str_replace(array('-', '_', '~'), array('+', '/', '='), $id));
+
+        // Select all transactions will affected
+        $result = $this->db->select('*')
+                ->from('transactions')
+                ->where('id > ', $id)
+                ->order_by('id', 'desc')
+                ->get()
+                ->result();
+
+        // Select delete transaction row
+        $transaction = $this->db->get_where('transactions', ['id' => $id])->row();
+        $transaction == true || $this->message->norecord_found('transactions/all_transaction');
+
+        /**
+         * @deposit balance adjustment
+         * @deposit deduct from accounts head
+         * @select delete transaction row amount and balance
+         * @new_transaction_balance  = balance - amount
+         * @adjustTransactionBalance
+         *
+         * @deposit     = 1
+         * @expense     = 2
+         * @AP          = 3
+         * @AR          = 4
+         * @transfer    = 5
+         */
+
+        // Account head select
+        $account_balance = $this->db->get_where('account_head', ['id' => $transaction->account_id])->row()->balance;
+
+        if ($transaction->transaction_type_id == 1)     // Deposit
+        {
+            $accountBalance['balance'] = $account_balance - $transaction->amount;
+
+            $this->db->where('id', $transaction->account_id);
+            $this->db->update('account_head', $accountBalance);
+
+            // Batch update
+            $this->new_transaction_balance = $transaction->balance - $transaction->amount;
+            $this->_adjust_balance($result, $transaction);
+
+            // Delete transactions
+            $this->db->delete('transactions', ['id' => $id]);
+
+            // if account transfer has
+            if (!empty($transaction->transfer_ref))
+            {
+                // Batch update
+                $this->_transfer_adjustment($transaction->transfer_ref);
+            }
+        }
+        elseif ($transaction->transaction_type_id == 2 || $transaction->transaction_type_id == 5) // expense and transfer
+        {
+            $accountBalance['balance'] = $account_balance + $transaction->amount;
+
+            $this->db->where('id', $transaction->account_id);
+            $this->db->update('account_head', $accountBalance);
+
+            // Batch update
+            $this->new_transaction_balance = $transaction->balance + $transaction->amount;
+            $this->_adjust_balance($result, $transaction);
+
+            // Delete transactions
+            $this->db->delete('transactions', ['id' => $id]);
+
+            // if account transfer has
+            if (!empty($transaction->transfer_ref))
+            {
+                // Batch update
+                $this->_transfer_adjustment($transaction->transfer_ref);
+            }
+
+        }
+        elseif ($transaction->transaction_type_id == 3 || $transaction->transaction_type_id == 4)
+        {
+            $accountBalance['balance'] = $account_balance - $transaction->amount;
+
+            $this->db->where('id', $transaction->account_id);
+            $this->db->update('account_head', $accountBalance);
+
+            // Batch update
+            $this->new_transaction_balance = $transaction->balance - $transaction->amount;
+            $this->_adjust_balance($result, $transaction);
+
+            // Delete transactions
+            $this->db->delete('transactions', ['id' => $id]);
+        }
+
+        $this->message->delete_success('transactions/all_transaction');
+    }
+
+
+
+    public function search_transactions()
+    {
+        $this->load_datepicker();
+        $start_date = trim($this->input->post('start_date'));
+        $end_date = trim($this->input->post('end_date'));
+        $account_id = trim($this->input->post('account'));
+        $transaction_type = trim($this->input->post('transaction_type'));
+
+        $this->data['search'] = [
+            'start_date'        => $start_date,
+            'end_date'          => $end_date,
+            'account_id'        => $account_id,
+            'transaction_type'  => $transaction_type
+        ];
+
+        $result = $this->_search_transactions($start_date, $end_date, $account_id, $transaction_type);
+
+        $this->data['transactions'] = $result;
+        $this->data['accounts'] = $this->db->get('account_head')->result();
+
+        $this->admin_template('search', $this->data);
+    }
+
+
+    private function _search_transactions($start_date = null, $end_date = null, $account_id = null, $transaction_type = null)
+    {
+        $this->db->select('transactions.*, account_head.account_title, transaction_category.name', false);
+        $this->db->from('transactions');
+        $this->db->join('account_head', 'account_head.id = transactions.account_id', 'left');
+        $this->db->join('transaction_category', 'transaction_category.id = transactions.category_id', 'left');
+
+        if (!empty($start_date) && !empty($end_date))
+        {
+            $start_date = DateTime::createFromFormat('d/m/Y', $start_date)->format('Y-m-d');
+            $end_date = DateTime::createFromFormat('d/m/Y', $end_date)->format('Y-m-d');
+
+            if ($start_date == $end_date)
+            {
+                $this->db->like('transactions.date_time', $start_date);
+            }
+            else
+            {
+                $this->db->where('transactions.date_time >=', $start_date);
+                $this->db->where('transactions.date_time <=', $end_date.' '.'23:59:59');
+            }
+        }
+        elseif (!empty($start_date))
+        {
+            $start_date = DateTime::createFromFormat('d/m/Y', $start_date)->format('Y-m-d');
+            $this->db->like('transactions.date_time', $start_date);
+        }
+        elseif (!empty($end_date))
+        {
+            $end_date = DateTime::createFromFormat('d/m/Y', $end_date)->format('Y-m-d');
+            $this->db->like('transactions.date_time', $end_date);
+        }
+
+        if (!empty($account_id))
+        {
+            $this->db->where('transactions.account_id', $account_id);
+        }
+
+        if (!empty($transaction_type))
+        {
+            $this->db->where('transactions.transaction_type_id', $transaction_type);
+        }
+
+        $query_result = $this->db->get();
+        $result = $query_result->result();
+
+        return $result;
+    }
+
+
+
+
+
+    //==================================================================================================================
+    //*********************************************** Income Categories ************************************************
+    //==================================================================================================================
+    public function income_category()
+    {
+        $this->data['categories'] = $this->db->order_by('name', 'asc')->get_where('transaction_category', ['type' => 1])->result();
+        $this->admin_template('income_category', $this->data);
+    }
+
+
+    public function add_income_category($id = null)
+    {
+        $data['category'] = $this->db->get_where('transaction_category', ['id' => $id])->row();
+        $data['modal_subview'] = $this->load->view('_modal/add_income_category', $data, false);
+        //$this->load->view('');
+    }
+
+    public function save_income_category()
+    {
+        $this->form_validation->set_rules('name', lang('name'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('description', lang('description'), 'trim|required|xss_clean');
+
+        if ($this->form_validation->run() == true)
+        {
+            $id = $this->input->post('id');
+            $data['name'] = $this->input->post('name');
+            $data['description'] = $this->input->post('description');
+
+            if (empty($id))
+            {
+                $data['type'] = 1;
+                $this->db->insert('transaction_category', $data);
+            }
+            else
+            {
+                $this->db->where('id', $id);
+                $this->db->update('transaction_category', $data);
+            }
+            $this->message->save_success('transactions/income_category');
+        }
+        else
+        {
+            $errors = validation_errors();
+            $this->message->custom_error_msg('transactions/income_category', $errors);
+        }
+    }
+
+
+    //==================================================================================================================
+    //*********************************************** Expense Categories ************************************************
+    //==================================================================================================================
+
+    public function expense_category()
+    {
+        $this->data['categories'] = $this->db->order_by('name', 'asc')->get_where('transaction_category', ['type' => 2])->result();
+        $this->admin_template('expense_category', $this->data);
+    }
+
+    public function add_expense_category($id = null)
+    {
+        $data['category'] = $this->db->get_where('transaction_category', ['id' => $id])->row();
+        $data['modal_subview'] = $this->load->view('_modal/add_expense_category', $data, false);
+    }
+
+
+    public function save_expense_category()
+    {
+        $this->form_validation->set_rules('name', lang('name'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('description', lang('description'), 'trim|required|xss_clean');
+
+        if ($this->form_validation->run() == true)
+        {
+            $id = $this->input->post('id');
+            $data['name'] = $this->input->post('name');
+            $data['description'] = $this->input->post('description');
+
+            if (empty($id))
+            {
+                $data['type'] = 2;
+                $this->db->insert('transaction_category', $data);
+            }
+            else
+            {
+                $this->db->where('id', $id);
+                $this->db->update('transaction_category', $data);
+            }
+            $this->message->save_success('transactions/expense_category');
+        }
+        else
+        {
+            $errors = validation_errors();
+            $this->message->custom_error_msg('transactions/expense_category', $errors);
+        }
+    }
+
+
+    public function delete_category($id = null)
+    {
+        $result = $this->db->get_where('transactions', array('category_id' => $id))->result();
+        $category = $this->db->get_where('transaction_category', ['id' => $id])->row();
+        $url = $category->type == 1 ? 'transactions/income_category' : 'transactions/expense_category';
+
+        if (is_array($result) && count($result))
+        {
+            $this->message->custom_error_msg($url, lang('record_has_been_used'));
+        }
+        else
+        {
+            $this->db->delete('transaction_category', ['id' => $id]);
+            $this->message->delete_success($url);
+        }
+
+    }
+
+
+
+    private function make_encryption($data)
+    {
+        return str_replace(array('+', '/', '='), array('-', '_', '~'), $this->encryption->encrypt($data));
+    }
+
+    private function _adjust_balance($result, $transaction)
+    {
+        foreach ($result as $item) {
+            if ($transaction->account_id == $item->account_id)
+            {
+                if ($item->transaction_type_id == 1)
+                {
+                    $this->new_transaction_balance += $item->amount;
+                    $trans_update[] = [
+                        'id' => $item->id,
+                        'balance' => $this->new_transaction_balance,
+                    ];
+                }
+                elseif ($item->transaction_type_id == 2 || $item->transaction_type_id == 5)
+                {
+                    $this->new_transaction_balance -= $item->amount;
+                    $trans_update[] = [
+                        'id' => $item->id,
+                        'balance' => $this->new_transaction_balance,
+                    ];
+                }
+            }
+        }
+
+        if (isset($trans_update) && !empty($trans_update))
+        {
+            $this->db->update_batch('transactions', $trans_update, 'id');
+        }
+    }
+
+    private function _adjust_balance_other($result, $transaction)
+    {
+        foreach ($result as $item) {
+            if ($transaction->account_id == $item->account_id)
+            {
+                if ($item->transaction_type_id == 1 || $item->transaction_type_id == 3 || $item->transaction_type_id == 4)
+                {
+                    $this->new_transaction_balance += $item->amount;
+                    $trans_update[] = [
+                        'id' => $item->id,
+                        'balance' => $this->new_transaction_balance,
+                    ];
+                }
+                elseif ($item->transaction_type_id == 2)
+                {
+                    $this->new_transaction_balance -= $item->amount;
+                    $trans_update[] = [
+                        'id' => $item->id,
+                        'balance' => $this->new_transaction_balance,
+                    ];
+                }
+            }
+        }
+
+        if (isset($trans_update) && !empty($trans_update))
+        {
+            $this->db->update_batch('transactions', $trans_update, 'id');
+        }
+    }
+
+
+    private function _transfer_adjustment($transfer_ref)
+    {
+        $transfer = $this->db->get_where('transactions', array(
+            'transaction_id' => $transfer_ref
+        ))->row();
+
+        $result = $this->db->select("*")
+            ->from('transactions')
+            ->where('id >', $transfer->id)
+            ->order_by('id', 'asc')
+            ->get()
+            ->result();
+
+
+        // account head
+        $account_balance = $this->db->get_where('account_head', [
+            'id' => $transfer->account_id,
+        ])->row()->balance;
+
+        if ($transfer->transaction_type_id == 5)
+        {
+            $accountBalance['balance'] = $account_balance + $transfer->amount;
+            $this->new_transaction_balance = $transfer->balance + $transfer->amount;
+        }
+        else
+        {
+            $accountBalance['balance'] = $account_balance - $transfer->amount;
+            $this->new_transaction_balance = $transfer->balance - $transfer->amount;
+        }
+
+        // update account head
+        $this->db->where('id', $transfer->account_id);
+        $this->db->update('account_head', $accountBalance);
+
+
+        foreach ($result as $item)
+        {
+            if ($transfer->account_id == $item->account_id)
+            {
+                if ($item->transaction_type_id == 1)
+                {
+                    $this->new_transaction_balance += $item->amount;
+                    $trans_update[] = [
+                        'id' => $item->id,
+                        'balance' => $this->new_transaction_balance,
+                    ];
+                }
+                elseif ($item->transaction_type_id == 2 || $item->transaction_type_id == 5)
+                {
+                    $this->new_transaction_balance -= $item->amount;
+                    $trans_update[] = [
+                        'id' => $item->id,
+                        'balance' => $this->new_transaction_balance,
+                    ];
+                }
+            }
+        }
+
+        // Delete transaction
+        $this->db->delete('transactions', ['id' => $transfer->id]);
+
+        if (!empty($trans_update))
+        {
+            $this->db->update_patch('transactions', $trans_update, 'id');
+        }
+
     }
 }
