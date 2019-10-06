@@ -47,9 +47,11 @@ class Transactions extends MY_Controller
 
     public function add_account()
     {
-        $data['modal_subview'] = $this->load->view('_modal/add_account', '', false);
+        $data['countries'] = $this->db->get('countries')->result();
+        $data['modal_subview'] = $this->load->view('_modal/add_account', $data, false);
     }
-
+    
+    
 
 
     public function save_new_account()
@@ -67,15 +69,23 @@ class Transactions extends MY_Controller
         $this->form_validation->set_rules('account_title', lang('account_title'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('description', lang('description'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('account_number', lang('account_number'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('balance', lang('balance'), 'trim|required|xss_clean|numeric');
+        $this->form_validation->set_rules('balance', lang('balance'), 'trim|xss_clean|numeric');
+
+        if (MULTI_CURRENCY)
+        {
+            $this->form_validation->set_rules('account_currency', lang('account_currency'), 'trim|required|xss_clean');
+        }
 
         if ($this->form_validation->run() == TRUE)
         {
             $data['account_title']              = $this->input->post('account_title');
             $data['description']                = $this->input->post('description');
             $data['account_number']             = $this->input->post('account_number');
-            $data['balance']                    = $this->input->post('balance');
+            if (empty($id)) {
+                $data['balance']                    = $this->input->post('balance') ? $this->input->post('balance') : 0;
+            }
             $data['account_type_id']            = 1;
+            $data['account_currency']           = MULTI_CURRENCY ? $this->input->post('account_currency') : setting('default_currency');
 
             if ($id) {
                 $this->db->where('id', $id);
@@ -91,6 +101,42 @@ class Transactions extends MY_Controller
             $this->message->custom_error_msg('transactions/chart_of_account', $error);
         }
     }
+
+
+    public function edit_account($id = null)
+    {
+        $id = $this->encryption->decrypt(str_replace(array('-', '_', '~'), array('+', '/', '='), $id));
+        $result = $this->db->get_where('account_head', [
+            'id' => $id,
+        ])->row();
+        $result == TRUE || $this->message->norecord_found('transactions/chart_of_account');
+        $data['account'] = $result;
+        $data['countries'] = $this->db->get('countries')->result();
+
+        $data['modal_subview'] = $this->load->view('_modal/add_account', $data, false);
+    }
+
+
+    public function delete_account($id = null)
+    {
+        $id = $this->encryption->decrypt(str_replace(array('-', '_', '~'), array('+', '/', '='), $id));
+        $id == TRUE || $this->message->norecord_found('transactions/chart_of_account');
+
+        $result = $this->db->get_where('transactions', [
+            'account_id' => $id,
+        ])->row();
+
+        if ($result)
+        {
+            $this->message->custom_error_msg('transactions/chart_of_account', lang('record_has_been_used'));
+        }
+        else
+        {
+            $this->db->delete('account_head', ['id' => $id]);
+            $this->message->delete_success('transactions/chart_of_account');
+        }
+    }
+    
 
 
     public function add_transaction()
@@ -122,6 +168,37 @@ class Transactions extends MY_Controller
             }
         }
         echo $output;
+    }
+
+
+    public function check_account_currency()
+    {
+        $from_account = $this->input->post('from_account');
+        $to_account = $this->input->post('to_account');
+        if ($from_account && $to_account)
+        {
+            $f_account = $this->db->get_where('account_head', ['id' => $from_account])->row();
+            $to_account = $this->db->get_where('account_head', ['id' => $to_account])->row();
+            if ($from_account && $to_account)
+            {
+                $from_account_currency = $f_account->account_currency ? $f_account->account_currency : setting('default_currency');
+                $to_account_currency = $to_account->account_currency ? $to_account->account_currency : setting('default_currency');
+
+                if ($from_account_currency == $to_account_currency) {
+                    echo json_encode(['currency' => 0]);
+                    exit;
+                }
+                else
+                {
+                    echo json_encode(['from_currency' => $from_account_currency, 'to_currency' => $to_account_currency, 'currency' => 1]);
+                    exit;
+                }
+            }
+        }
+        else
+        {
+            echo json_encode(['currency' => 0]);
+        }
     }
 
 
@@ -209,16 +286,36 @@ class Transactions extends MY_Controller
             }
             elseif ($data['transaction_type_id'] == 5)      // Transfer Balance
             {
-                $from_account_balance = $this->db->get_where('account_head', ['id' => $from_account_id])->row()->balance;
-                $to_account_balance = $this->db->get_where('account_head', ['id' => $to_account_id])->row()->balance;
+                $from_account = $this->db->get_where('account_head', ['id' => $from_account_id])->row();
+                $to_account = $this->db->get_where('account_head', ['id' => $to_account_id])->row();
+
+                $from_account_balance = $from_account->balance;
+                $to_account_balance = $to_account->balance;
+
+                $from_account_currency = $from_account->account_currency;
+                $to_account_currency = $to_account->account_currency;
 
                 if ($data['amount'] > $from_account_balance)
                 {
                     $this->message->custom_error_msg('transactions/add_transaction', lang('amount_transfer_bigger_balance'));
                 }
 
+
+                $amount_2 = $data['amount'];
+
+                if ( MULTI_CURRENCY && ($from_account_currency != $to_account_currency) )
+                {
+                    $to_amount = trim($this->input->post('amount_2'));
+                    if (empty($to_amount))
+                    {
+                        $this->message->custom_error_msg('transactions/add_transaction', 'amount2 field is required');
+                    }
+                    $amount_2 = $to_amount;
+                }
+
+
                 $data_from['balance'] = $from_account_balance - $data['amount'];
-                $data_to['balance'] = $to_account_balance + $data['amount'];
+                $data_to['balance'] = $to_account_balance + $amount_2 ;
 
                 $this->db->where('id', $from_account_id);
                 $this->db->update('account_head', $data_from);
@@ -286,6 +383,7 @@ class Transactions extends MY_Controller
                 $data_to['transaction_type_id']     = 1 ;
                 $data_to['account_id']              = $to_account_id ;
                 $data_to['category_id']             = 99;
+                $data_to['amount']                  = $amount_2;
 
                 $this->db->where('id', $trn_to_id);
                 $this->db->update('transactions', $data_to);
@@ -390,6 +488,15 @@ class Transactions extends MY_Controller
 
         foreach ($list as $item) {
 
+                $currency = '';
+                if (MULTI_CURRENCY) {
+                    $currency = '(' . setting('currency_symbol') . ')';
+                    if ($item->account_currency) {
+                        $currency = '('. explode('-', $item->account_currency)[0] . ')';
+                    }
+                }
+
+
             $no++;
             $row = [];
             $row[] = '<a href="'.base_url().'transactions/view/'.$this->make_encryption($item->id).'">'.$item->transaction_id.'</a>';
@@ -413,7 +520,7 @@ class Transactions extends MY_Controller
                 $row[] = '<span class="cr">'.$this->localization->currencyFormat(0).'</span>';
             }
 
-            $row[] = '<span class="balance">'.$this->localization->currencyFormat($item->balance).'</span>';
+            $row[] = '<span class="balance">'.$this->localization->currencyFormat($item->balance) . $currency .'</span>';
             $row[] = $this->localization->dateFormat($item->date_time);
 
             // add html for action

@@ -2,57 +2,34 @@
 
 class Setting_model extends MY_Model 
 {
-
-    protected $table_name = 'settings';
-
-    protected $timestamps = false;
-
-    public $rules = [
-      [
-        'field' => 'en_website_title',
-        'label' => 'lang:en_website_title',
-        'rules' => 'trim',
-      ],
-      [
-        'field' => 'ar_website_title',
-        'label' => 'lang:ar_website_title',
-        'rules' => 'trim',
-      ],
-      [
-        'field' => 'en_meta_descriptions',
-        'label' => 'lang:en_meta_descriptions',
-        'rules' => 'trim',
-      ],
-      [
-        'field' => 'ar_meta_descriptions',
-        'label' => 'lang:ar_meta_descriptions',
-        'rules' => 'trim',
-      ],
-      [
-        'field' => 'en_meta_keywords',
-        'label' => 'lang:en_meta_keywords',
-        'rules' => 'trim',
-      ],
-      [
-        'field' => 'ar_meta_keywords',
-        'label' => 'lang:ar_meta_keywords',
-        'rules' => 'trim',
-      ],
-      
-    
-    ];
-
-
-
-    public function check_setting_exist($setting = '')
+    public function timezones()
     {
-        if (!empty($setting)) 
-        {
-            $query = $this->db->get_where($this->table_name, ['name' => $setting]);
-            return $query->row() ? $query->row()->id : false;
+        $timezoneIdentifiers = DateTimeZone::listIdentifiers();
+        $utcTime = new DateTime('now', new DateTimeZone('UTC'));
+
+        $tempTimezones = array();
+        foreach ($timezoneIdentifiers as $timezoneIdentifier) {
+            $currentTimezone = new DateTimeZone($timezoneIdentifier);
+
+            $tempTimezones[] = array(
+                'offset' => (int) $currentTimezone->getOffset($utcTime),
+                'identifier' => $timezoneIdentifier
+            );
         }
 
-        return false;
-    }
+        // Sort the array by offset,identifier ascending
+        usort($tempTimezones, function($a, $b) {
+            return ($a['offset'] == $b['offset']) ? strcmp($a['identifier'], $b['identifier']) : $a['offset'] - $b['offset'];
+        });
 
+        $timezoneList = array();
+        foreach ($tempTimezones as $tz) {
+            $sign = ($tz['offset'] > 0) ? '+' : '-';
+            $offset = gmdate('H:i', abs($tz['offset']));
+            $timezoneList[$tz['identifier']] = '(UTC ' . $sign . $offset . ') ' .
+                $tz['identifier'];
+        }
+
+        return $timezoneList;
+    }
 }

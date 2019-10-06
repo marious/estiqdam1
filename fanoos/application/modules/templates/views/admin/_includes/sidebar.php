@@ -142,16 +142,11 @@
 
 
 
-          <li class="treeview <?= is_sidebar_menu_active('settings'); ?>">
-              <a href="#"><i class="fa fa-gear"></i> <span><?= lang('settings') ?></span>
-                  <span class="pull-right-container">
-                    <i class="fa fa-angle-left pull-right"></i>
-                </span>
+          <li class="<?= is_sidebar_menu_active('settings'); ?>">
+              <a href="<?= site_url('settings') ?>"><i class="fa fa-gear"></i> <span><?= lang('settings') ?></span>
+
               </a>
-              <ul class="treeview-menu">
-                  <li class="<?= is_tree_sidebar_menu_active('settings', 'main'); ?>"><a href="<?= site_url('settings'); ?>"><i class="fa fa-circle-o"></i> <?= lang('main_settings'); ?></a></li>
-                  <li class="<?= is_tree_sidebar_menu_active('settings', 'expense_categories'); ?>"><a href="<?= site_url('settings/expense_categories'); ?>"><i class="fa fa-circle-o"></i> <?= lang('expense_categories'); ?></a></li>
-              </ul>
+
           </li>
         
       </ul>

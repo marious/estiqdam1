@@ -98,6 +98,13 @@
                         </tr>
                         </thead>
                         <?php if (is_array($transactions) && count($transactions)): ?>
+                        <?php
+                        $currency = '';
+                        if (MULTI_CURRENCY) {
+                            $currency = $transactions[0]->account_currency ? explode('-', $transactions[0]->account_currency)[0] :
+                                    setting('currency_symbol');
+                        }
+                            ?>
                         <tbody>
                         <?php foreach ($transactions as $transaction): ?>
                         <tr>
@@ -149,9 +156,9 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td><strong>= <?= $total_dr ?></strong></td>
-                            <td><strong>= <?= $total_cr ?></strong></td>
-                            <td><strong>= <?= $total_balance ?></strong></td>
+                            <td><strong>= <?= $total_dr . ' ' . $currency ?></strong></td>
+                            <td><strong>= <?= $total_cr . ' ' . $currency?></strong></td>
+                            <td><strong>= <?= $total_balance . ' ' . $currency?></strong></td>
                             <td></td>
                         </tr>
                     </table>

@@ -47,7 +47,7 @@
                         <div id="transfer-account" style="display: none;">
                             <div class="form-group">
                                 <label for="from-account"><?= lang('from_account') ?> <span class="required" aria-required="true">*</span></label>
-                                <select class="form-control select2" name="from_account" id="from-account">
+                                <select class="form-control select2" name="from_account" id="from-account" onchange="checkAccountCurrency()">
                                     <option value=""><?= lang('please_select') ?>...</option>
                                     <?php  foreach ($accounts as $account): ?>
                                         <option value="<?= $account->id ?>"><?= $account->account_title ?></option>
@@ -57,7 +57,7 @@
 
                             <div class="form-group">
                                 <label for="to-account"><?= lang('to_account') ?> <span class="required" aria-required="true">*</span></label>
-                                <select class="form-control select2" name="to_account" id="to-account">
+                                <select class="form-control select2" name="to_account" id="to-account" onchange="checkAccountCurrency()">
                                     <option value=""><?= lang('please_select') ?>...</option>
                                     <?php  foreach ($accounts as $account): ?>
                                         <option value="<?= $account->id ?>"><?= $account->account_title ?></option>
@@ -78,9 +78,18 @@
 
 
                         <div class="form-group">
-                            <label id="amount"><?= lang('amount') ?> <span class="required" aria-required="true">*</span></label>
-                            <input type="text" name="amount" class="form-control" id="amount" autocomplete="off">
+                            <label id="amount"><?= lang('amount') ?> <span class="currency"></span><span class="required" aria-required="true">*</span></label>
+                            <input type="text" name="amount" class="form-control numeric" id="amount" autocomplete="off">
                         </div>
+
+
+                        <?php if (MULTI_CURRENCY): ?>
+                        <div class="form-group" id="amount-2" style="display: none;">
+                            <label for="amount_2"><?= lang('amount') ?> - <span class="currency"></span>
+                                <span class="required" aria-required="true">*</span></label>
+                            <input type="text" name="amount_2" class="form-control numeric" id="amount_2" autocomplete="off">
+                        </div>
+                        <?php endif; ?>
 
 
                         <div class="form-group" id="method" style="display: none;">

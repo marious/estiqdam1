@@ -96,7 +96,7 @@ class Customers extends MY_Controller
             {
                 $_SESSION['success_toastr'] = lang('new_customer_added');
                 $this->session->mark_as_flash('success_toastr');
-                redirect('customers/all');
+                redirect('customers/all_customers');
             }
         }
 

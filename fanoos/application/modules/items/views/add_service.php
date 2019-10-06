@@ -106,7 +106,7 @@
                         <label for="" class="col-sm-2 control-label"></label>
                         <div class="col-sm-6">
                             <button type="submit" class="btn btn-success pull-left"><?= lang('save'); ?></button>
-                            <a href="<?= site_url('items/products') ?>" class="btn btn-default pull-left m-l-10"><?= lang('cancel'); ?></a>
+                            <a href="<?= site_url('items/services') ?>" class="btn btn-default pull-left m-l-10"><?= lang('cancel'); ?></a>
                         </div>
                     </div>
                 </div>

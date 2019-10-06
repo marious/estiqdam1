@@ -85,7 +85,8 @@ class Reports extends MY_Controller
                         ->row();
 
 
-            $this->data['account_name'] = $this->db->get_where('account_head', ['id' => $account_id])->row()->account_title;
+            $this->data['account'] =  $this->db->get_where('account_head', ['id' => $account_id])->row()->account_title;
+            $this->data['account_name'] = $this->data['account']->account_title;
         }
 
         $this->data['accounts'] = $this->db->get('account_head')->result();
@@ -155,7 +156,7 @@ class Reports extends MY_Controller
 
     private function _search_transactions($start_date = null, $end_date = null, $account_id = null, $transaction_type = null)
     {
-        $this->db->select('transactions.*, account_head.account_title, transaction_category.name', false);
+        $this->db->select('transactions.*, account_head.account_title, transaction_category.name, account_head.account_currency', false);
         $this->db->from('transactions');
         $this->db->join('account_head', 'account_head.id  =  transactions.account_id', 'left');
         $this->db->join('transaction_category', 'transaction_category.id  =  transactions.category_id', 'left');

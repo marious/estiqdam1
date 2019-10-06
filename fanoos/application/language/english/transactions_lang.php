@@ -72,3 +72,6 @@ $lang['transaction_id'] = 'Transaction Id';
 $lang['edit_transaction'] = 'Edit Transaction';
 $lang['update_transaction'] = 'Update Transaction';
 $lang['change_account'] = 'Change Account';
+$lang['account_currency'] = 'Account Currency';
+$lang['account_type'] = 'Account Type';
+$lang['currency'] = 'Currency';

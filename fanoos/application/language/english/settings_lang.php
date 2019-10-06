@@ -1,5 +1,6 @@
 <?php 
 $lang['general_settings'] = 'General Settings';
+$lang['company_info'] = 'Company Info';
 $lang['company_name'] = 'Company Name';
 $lang['contact_phone'] = 'Contact Phone';
 $lang['contact_fax'] = 'Contact Fax';
@@ -22,3 +23,12 @@ $lang['taxes'] = 'Taxes';
 $lang['new_tax'] = 'New Tax';
 $lang['tax_added'] = 'Tax Added Successfully';
 $lang['tax_updated'] = 'Tax Updated Successfully';
+$lang['city'] = 'City';
+$lang['postal_code'] = 'Postal Code';
+$lang['save_settings'] = 'Save Settings';
+$lang['localization'] = 'Localization';
+$lang['localization_settings'] = 'Localization Settings';
+$lang['time_zone'] = 'Time Zone';
+$lang['default_currency'] = 'Default Currency';
+$lang['currency_format'] = 'Currency Format';
+$lang['date_format'] = 'Date Format';

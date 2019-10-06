@@ -24,6 +24,9 @@
                             <th><?= lang('name') ?></th>
                             <th><?= lang('description') ?></th>
                             <th><?= lang('account_type') ?></th>
+                            <?php if (MULTI_CURRENCY): ?>
+                            <th><?= lang('currency') ?></th>
+                            <?php endif; ?>
                             <th><?= lang('balance') ?></th>
                             <th><?= lang('actions') ?></th>
                         </tr>
@@ -44,8 +47,27 @@
                             <td>
                                 <?= $account->account_type ?>
                             </td>
+                            <?php if (MULTI_CURRENCY): ?>
+                                <td>
+                                    <?= $account->account_currency ? $account->account_currency : setting('default_currency') ?>
+                                </td>
+                            <?php endif; ?>
                             <td>
                                 <?= $account->balance ?>
+                            </td>
+                            <td>
+                                <?php if ($account->sys): ?>
+                                <div class="btn-group">
+                                    <a data-target="#modalSmall" title="View" data-placement="top" data-toggle="modal"
+                                       class="btn btn-xs btn-default" href="<?php echo base_url()?>transactions/edit_account/<?php echo str_replace(array('+', '/', '='), array('-', '_', '~'), $this->encryption->encrypt($account->id))?>">
+                                        <i class="fa fa-pencil"></i>
+                                    </a>
+
+                                    <a class="btn btn-xs btn-danger" onClick="return confirm('Are you sure you want to delete?')"
+                                       href="<?php echo site_url('transactions/delete_account/'. str_replace(array('+', '/', '='), array('-', '_', '~'), $this->encryption->encrypt($account->id))) ?>">
+                                        <i class="glyphicon glyphicon-trash"></i></a>
+                                </div>
+                                <?php endif; ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>

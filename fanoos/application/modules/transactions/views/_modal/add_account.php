@@ -19,6 +19,28 @@
                    class="form-control" autocomplete="off">
         </div>
 
+        <?php if (MULTI_CURRENCY): ?>
+            <div class="form-group">
+                <label for="account_currency"><?= lang('account_currency') ?><span
+                            class="required"> *</span></label>
+                <select class="form-control select2" style="width: 100%;" name="account_currency">
+                    <?php foreach ($countries as $item) : ?>
+                        <?php
+                    $selected = '';
+                    if (empty($account->account_currency)) {
+                        $selected = setting('default_currency') == $item->currency_code . '-' . $item->country ? 'selected' : '';
+                    } else {
+                        $selected = $account->account_currency == $item->currency_code . '-' . $item->country ? 'selected' : '';
+                    }
+                        ?>
+                        <option value="<?php echo $item->currency_code . '-' . $item->country ?>" <?= $selected ?>>
+                            <?php echo $item->currency_code .' - '. $item->country  ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        <?php endif; ?>
+
         <div class="form-group">
             <label for="description"><?= lang('description') ?><span
                     class="required"> *</span></label>
@@ -29,7 +51,7 @@
     <div class="form-group">
         <label for="balance"><?= lang('balance') ?></label>
         <input type="text" id="balance" name="balance" value="<?php if(!empty($account)) echo $account->balance ?>"
-               class="form-control" autocomplete="off">
+               class="form-control" autocomplete="off" <?php if (!empty($account)) echo 'readonly'; ?>>
     </div>
 
 

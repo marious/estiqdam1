@@ -15,7 +15,7 @@
 }(jQuery));
 
 
-$('input[name="qty"], input[name="amount"], #balance, #amount').inputFilter(function(value) {
+$('input[name="qty"], input[name="amount"], #balance, #amount, .numeric').inputFilter(function(value) {
     return /^-?\d*[.,]?\d*$/.test(value);
 });
 
@@ -444,6 +444,31 @@ function saveCategory() {
 //==========================================================
 //  Transaction Type
 //==========================================================
+function checkAccountCurrency() {
+    let toAccount = $('#to-account').val();
+    let fromAccount = $('#from-account').val();
+    $.ajax({
+        type: 'POST',
+        url: root + 'transactions/check_account_currency',
+        cache: false,
+        data: {to_account: toAccount, from_account: fromAccount},
+        success: function(data) {
+            data = JSON.parse(data);
+            console.log(data);
+            if (data.currency == 1) {
+                $('#amount-2').show();
+                $('#amount .currency').text('From ' + data.from_currency);
+                $('#amount-2 .currency').text('To ' + data.to_currency);
+            } else {
+                $('#amount-2').hide();
+                $('#amount-2 .currency').text('');
+                $('#amount .currency').text('');
+            }
+        }
+
+    });
+}
+
 function transactionType(str) {
     let type = str.value;
 
@@ -459,17 +484,32 @@ function transactionType(str) {
         $('#method').css({'display': 'none'});
         $('#trn_category').css({'display': 'block'});
         $('#transfer-account').css({'display': 'none'});
+
+        $('#amount-2').hide();
+        $('#amount-2 .currency').innerText = '';
+        $('#amount .currency').innerText = '';
+
     } else if (type === 'TR') {
         $("#trn_category").css({'display':'none'});
         $('#transfer-account').css({'display': 'block'});
         $('#method').css({'display': 'block'});
+        $('#account').css({'display' : 'none'});
         $(".select2").css({'width':'100%'});
+
+        $('#amount-2').hide();
+        $('#amount-2 .currency').text('');
+        $('#amount .currency').text('');
+
     } else {
         $('#account').css({'display' : 'block'});
         $('#method').css({'display': 'block'});
         $('#trn_category').css({'display': 'block'});
         $(".select2").css({'width':'100%'});
         $('#transfer-account').css({'display': 'none'});
+
+        $('#amount-2').hide();
+        $('#amount-2 .currency').text('');
+        $('#amount .currency').text('');
     }
 
     $.ajax({

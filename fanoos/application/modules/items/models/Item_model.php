@@ -139,17 +139,33 @@ class Item_model extends MY_Model
         $data = [];
         $i = 1;
 
-        foreach ($q->result() as $row)
-        {
-            $sub_array =[];
-            $sub_array[] = $i;
-            $sub_array[] = $row->name;
-            $sub_array[] = $row->sales_price;
-            $sub_array[] = $row->inventory;
-            $sub_array[] = '<div class="manage-buttons">' . draw_actions_button(site_url('items/edit_'.$type.'s/' . $row->id), site_url('items/delete/'.$row->id), $type . 's') . '</div>';
-            $data[] = $sub_array;
-            $i++;
+        if ($type == 'product') {
+
+            foreach ($q->result() as $row)
+            {
+                $sub_array =[];
+                $sub_array[] = $i;
+                $sub_array[] = $row->name;
+                $sub_array[] = $row->sales_price;
+                $sub_array[] = $row->inventory;
+                $sub_array[] = '<div class="manage-buttons">' . draw_actions_button(site_url('items/edit_'.$type.'s/' . $row->id), site_url('items/delete/'.$row->id), $type . 's') . '</div>';
+                $data[] = $sub_array;
+                $i++;
+            }
+
+        } else {
+            foreach ($q->result() as $row)
+            {
+                $sub_array =[];
+                $sub_array[] = $i;
+                $sub_array[] = $row->name;
+                $sub_array[] = $row->sales_price;
+                $sub_array[] = '<div class="manage-buttons">' . draw_actions_button(site_url('items/edit_'.$type.'s/' . $row->id), site_url('items/delete/'.$row->id), $type . 's') . '</div>';
+                $data[] = $sub_array;
+                $i++;
+            }
         }
+
 
         $output = [
             "draw" => intval($_POST['draw']),

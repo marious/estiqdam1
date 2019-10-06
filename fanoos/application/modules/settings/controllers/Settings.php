@@ -1,104 +1,93 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Settings extends MY_Controller 
+class Settings extends MY_Controller
 {
-
-
-
     public function __construct()
     {
         parent::__construct();
-        $this->middleware->execute_middlewares(['not_authinticated']);
-        $this->lang->load('settings');
+        ini_set('max_input_vars', '3000');
+        $this->load->library('form_builder');
         $this->load->model('Setting_model');
+        $this->lang->load('settings');
     }
-
 
     public function index()
     {
-        $this->data['page_header'] = lang('settings');
-        $this->data['js_file'] = [site_url('assets/admin/plugins/axios.js'), site_url('assets/admin/js/currencies.js'),
-                site_url('assets/admin/js/taxes.js')];
-        $this->data['css_file'] = [site_url('assets/admin/css/modal.css'), site_url('assets/admin/css/animate.css')];
+        $tab = $this->input->get('tab');
+        $tab_view = explode('/', $tab);
+        $form = $this->form_builder->create_form();
+
+        if (!$this->input->get('tab'))
+        {
+            $view = 'company';
+            $tab = 'company';
+            $data = '';
+        }
+        elseif ($tab_view[0] == 'language')
+        {
+
+        }
+        else
+        {
+            $tab = $tab_view[0];
+            $view = $tab_view[0];
+            $data = '';
+        }
+
+
+        if ($tab_view[0] == 'localization')
+        {
+            $data['countries'] = $this->db->get('countries')->result();
+            $data['timezones'] = $this->Setting_model->timezones();
+        }
+
+        $data['tab'] = $tab;
+        $data['form'] = $form;
+        $this->data['tab'] = $tab;
+        $this->data['tab_view'] = $this->load->view('settings/includes/'.$view, $data, true);
+        $this->data['form'] = $form;
+
         $this->admin_template('index', $this->data);
     }
 
 
-    public function expense_categories()
+    public function save_settings()
     {
+        $settings = $this->input->post('settings');
+        $tab = $this->input->post('tab');
 
-    }
-
-
-
-
-    public function add()
-    {
-        // Process the form 
-        $this->load->library('form_validation');
-        $this->form_validation->set_rules($this->Setting_model->rules);
-        if ($this->form_validation->run($this) == TRUE)
+        if (!empty($settings))
         {
-
-            // check if the setting post exist
-            foreach ($_POST as $setting_name => $value) {
-
-                // check if the setting  is logo
-                if (isset($_FILES['logo']))
-                {
-                    $_SESSION['active_tab'] = 'logo';
-
-                    if ($file = $this->Setting_model->do_upload($this->Setting_model->upload_path, 'logo',
-                    ['width' => 700, 'height' => 500, 'destination' => 'assets/uploads'])) {
-                        $file_path = substr($file['full_path'], strpos($file['full_path'], 'assets'));
-                        $this->make_setting('logo', $file_path);
-                        $_SESSION['success'] = lang('logo_uploaded_successfully');
-                        $this->session->mark_as_flash('success');
-                    } else {
-                        $this->session->mark_as_flash('error');
-                    }
-                    redirect('settings');
-
-                }
-                else
-                {
-                    $this->set_session_active_tab($setting_name);
-                    $this->make_setting($setting_name, $value);
-                }
-
+            foreach ($settings as $id => $setting) {
+                $this->form_validation->set_rules('settings['.$id.']', lang($id), 'required|trim');
             }
-        } 
-        $_SESSION['success'] = lang('success_sended_data');
-        $this->session->mark_as_flash('success');
-        redirect('settings');
-    }
-
-
-    protected function make_setting($setting_name, $value)
-    {
-        if ($setting_id = $this->Setting_model->check_setting_exist($setting_name)) {
-            // update
-            $this->Setting_model->save(['value' => $value], $setting_id);
-        } else {
-            // create a new one
-            $this->Setting_model->save(['name' => $setting_name, 'value' => $value]);
         }
-    }
 
+        if ($this->form_validation->run() == TRUE)
+        {
+            foreach ($settings as $name => $val)
+            {
+                $this->db->where('name', $name);
+                $exists = $this->db->count_all_results('settings');
+                if ($exists == 0)
+                {
+                    $this->db->insert('settings', ['name' => $name]);
+                }
 
-    protected function set_session_active_tab($setting_name = '')
-    {
-        if ($setting_name == 'en_contact_address') {
-            $_SESSION['active_tab'] = 'general_content';
-            return;
-        } else if ($setting_name == 'facebook') {
-            $_SESSION['active_tab'] = 'social_media';
+                $this->db->where('name', $name);
+                $this->db->update('settings', ['value' => $val]);
+            }
+
+            $this->message->save_success('settings?tab='.$tab);
         }
-        return;
+        else
+        {
+            // Errors
+            $error = validation_errors();
+
+            $this->message->custom_error_msg('settings?tab='.$tab ,$error);
+        }
+
     }
-
-
-
-
-
 }
