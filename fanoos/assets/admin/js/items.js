@@ -25,7 +25,10 @@ $(function () {
 
         });
 
+    }
 
+
+    if ($('#services-table').length) {
         $('#services-table').DataTable({
             "processing": true,
             "serverSide": true,
@@ -49,6 +52,8 @@ $(function () {
         });
 
     }
+
+
 
     $('#sales_price, #retail_price, #purchase_cost, #wholesale_price').inputFilter(function(value) {
         return /^-?\d*[.,]?\d*$/.test(value);
