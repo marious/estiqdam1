@@ -6,3 +6,4 @@ define('MULTI_CURRENCY', true);
 define('TRANSACTION_PREFIX', '100');
 define('TIME_ZONE', 'Asia/Riyadh');
 define('DATE_FORMAT', 'd/m/Y');
+define('KENYA', true);

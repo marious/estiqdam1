@@ -9,6 +9,9 @@
                     'id' => 'add-transaction',
                     'onSubmit' => "return get_cookie('csrf_cookie_name')"
             ]) ?>
+    
+                
+            <input type="hidden" name="type" value="<?= $_GET['type'] ?>">
 
             <div class="box-body">
                 <!-- View massage -->
@@ -20,13 +23,11 @@
 
                         <div class="form-group">
                             <label for="transaction_type"><?= lang('transaction_type') ?><span class="required" aria-required="true">*</span></label>
-                            <select class="form-control select2" name="transaction_type" id="transaction_type" onchange="transactionType(this)">
+                            <select class="form-control select2" name="transaction_type" id="transaction_type" onchange="transactionType(this)" disabled>
                                 <option value=""><?= lang('please_select') ?>...</option>
-                                <option value="Deposit"><?= lang('deposit') ?></option>
-                                <option value="Expenses"><?= lang('expense') ?></option>
-                                <option value="AP"><?= lang('accounts_payable') ?></option>
-                                <option value="AR"><?= lang('accounts_receivable') ?></option>
-                                <option value="TR"><?= lang('account_transfer') ?></option>
+                                <option value="Deposit" <?= $type == 'income' ? 'selected' : '' ?>><?= lang('income') ?></option>
+                                <option value="Expenses" <?= $type == 'expense' ? 'selected' : '' ?>><?= lang('expense') ?></option>
+                                <option value="TR" <?php echo $type == 'transfer' ? 'selected' : ''; ?>><?= lang('account_transfer') ?></option>
                             </select>
                         </div>
 
@@ -101,6 +102,7 @@
                                 <option value="<?= lang('credit_card') ?>"><?= lang('credit_card') ?></option>
                                 <option value="<?= lang('debit_card') ?>"><?= lang('debit_card') ?></option>
                                 <option value="<?= lang('electronic_transfer') ?>"><?= lang('electronic_transfer') ?></option>
+                                <option value="M-PESA">M-PESA</option>
                             </select>
                         </div>
 
@@ -137,5 +139,13 @@
 
 <script>
     var select = '<?= lang('please_select') ?>';
+
+    document.getElementById('add-transaction').addEventListener('submit', function() {
+        let transactionType = document.getElementById('transaction_type');
+        if (transactionType.disabled) {
+            transactionType.disabled = false;
+        } 
+    });
+
 
 </script>

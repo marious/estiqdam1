@@ -51,6 +51,7 @@
               </ul>
           </li>
 
+          <?php if (!KENYA): ?>
           <li class="treeview <?= is_sidebar_menu_active('purchase') ?>">
               <a href="#"><i class="fa fa-opencart text-blue"></i> <span><?= lang('purchase') ?></span>
                   <span class="pull-right-container">
@@ -63,6 +64,7 @@
                   <li class="<?= is_tree_sidebar_menu_active('purchase', 'received_product_list'); ?>"><a href="<?= site_url('purchase/received_product_list'); ?>"><i class="fa fa-circle-o"></i> <?= lang('received_product'); ?></a></li>
               </ul>
           </li>
+        <?php endif; ?>
 
 
           <li class="treeview <?= is_sidebar_menu_active('items') ?>">
@@ -72,8 +74,10 @@
                 </span>
               </a>
               <ul class="treeview-menu">
+                  <?php if (!KENYA): ?>
                   <li class="<?= is_tree_sidebar_menu_active('items', 'products'); ?>"><a href="<?= site_url('items/products'); ?>"><i class="fa fa-circle-o"></i> <?= lang('all_products'); ?></a></li>
                   <li class="<?= is_tree_sidebar_menu_active('items', 'add_product'); ?>"><a href="<?= site_url('items/add_product'); ?>"><i class="fa fa-circle-o"></i> <?= lang('add_product'); ?></a></li>
+                <?php endif; ?>
                   <li class="<?= is_tree_sidebar_menu_active('items', 'services'); ?>"><a href="<?= site_url('items/services'); ?>"><i class="fa fa-circle-o"></i> <?= lang('all_services'); ?></a></li>
                   <li class="<?= is_tree_sidebar_menu_active('items', 'add_service'); ?>"><a href="<?= site_url('items/add_service'); ?>"><i class="fa fa-circle-o"></i> <?= lang('add_service'); ?></a></li>
                   <li class="<?= is_tree_sidebar_menu_active('items', 'categories'); ?>"><a href="<?= site_url('items/categories'); ?>"><i class="fa fa-circle-o"></i> <?= lang('categories'); ?></a></li>
@@ -93,15 +97,25 @@
               </a>
               <ul class="treeview-menu">
                   <li class="<?= is_tree_sidebar_menu_active('transactions', 'all_transaction'); ?>"><a href="<?= site_url('transactions/all_transaction'); ?>"><i class="fa fa-circle-o"></i> <?= lang('all_transactions'); ?></a></li>
-                  <li class="<?= is_tree_sidebar_menu_active('transactions', 'add_transaction'); ?>"><a href="<?= site_url('transactions/add_transaction'); ?>"><i class="fa fa-circle-o"></i> <?= lang('add_transaction'); ?></a></li>
-                  <li class="<?= is_tree_sidebar_menu_active('transactions', 'chart_of_account'); ?>"><a href="<?= site_url('transactions/chart_of_account'); ?>"><i class="fa fa-circle-o"></i> <?= lang('accounts'); ?></a></li>
+                    <li class="<?= is_tree_sidebar_menu_active('transactions', 'chart_of_account'); ?>"><a href="<?= site_url('transactions/chart_of_account'); ?>"><i class="fa fa-circle-o"></i> <?= lang('accounts'); ?></a></li>
+                
+
+                  <li><a href="<?= site_url('transactions/add_transaction?type=income') ?>"><i class="fa fa-circle-o"></i><?= lang('add_income') ?></a></li>
+
+
+
+                  <li><a href="<?= site_url('transactions/add_transaction?type=expense') ?>"><i class="fa fa-circle-o"></i><?= lang('add_expense') ?></a></li>
+
+                  <li><a href="<?= site_url('transactions/add_transaction?type=transfer') ?>"><i class="fa fa-circle-o"></i><?= lang('add_transfer') ?></a></li>
+
+
                   <li class="<?= is_tree_sidebar_menu_active('transactions', 'income_category'); ?>"><a href="<?= site_url('transactions/income_category'); ?>"><i class="fa fa-circle-o"></i> <?= lang('income_categories'); ?></a></li>
                   <li class="<?= is_tree_sidebar_menu_active('transactions', 'expense_category'); ?>"><a href="<?= site_url('transactions/expense_category'); ?>"><i class="fa fa-circle-o"></i> <?= lang('expense_categories'); ?></a></li>
               </ul>
           </li>
 
 
-          <li <?= is_sidebar_menu_active('reports'); ?>">
+          <li <?= is_sidebar_menu_active('reports'); ?>>
               <a href="<?= site_url('reports') ?>"><i class="fa fa-file"></i> <span><?= lang('reports') ?></span>
               </a>
           </li>
@@ -125,7 +139,8 @@
 
 
 
-
+        
+        <?php if (!KENYA): ?>
 
           <li class="treeview <?= is_sidebar_menu_active('roles'); ?>">
               <a href="#"><i class="fa fa-key text-red"></i> <span><?= lang('roles_and_permissions') ?></span>
@@ -139,6 +154,7 @@
               </ul>
           </li>
 
+        <?php endif; ?>
 
 
 

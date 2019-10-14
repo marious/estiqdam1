@@ -145,6 +145,13 @@ class Transactions extends MY_Controller
             'account_type_id' => 1,
         ])->result();
 
+        $this->data['type'] = '';
+        if (isset($_GET['type']))
+        {
+            $this->data['type'] = trim($_GET['type']);
+        }
+
+
         $this->admin_template('add_transactions', $this->data);
     }
 
@@ -204,6 +211,8 @@ class Transactions extends MY_Controller
 
     public function save_transaction()
     {
+        $type = $this->input->post('type');
+
         $transaction_type = trim($this->input->post('transaction_type'));
 
         $this->form_validation->set_rules('transaction_type', lang('transaction_type'), 'trim|required|xss_clean');
@@ -403,14 +412,14 @@ class Transactions extends MY_Controller
 
             }
 
-            $this->message->save_success('transactions/add_transaction');
+            $this->message->save_success('transactions/add_transaction?type='.$type);
 
 
         }
         else
         {
             $error = validation_errors();
-            $this->message->custom_error_msg('transactions/add_transaction', $error);
+            $this->message->custom_error_msg('transactions/add_transaction?type=' . $type, $error);
         }
 
     }

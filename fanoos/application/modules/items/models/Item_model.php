@@ -23,7 +23,7 @@ class Item_model extends MY_Model
         [
             'field' => 'purchase_cost',
             'label' => 'lang:purchase_cost',
-            'rules' => 'required|trim|numeric',
+            'rules' => 'trim|numeric',
         ],
         [
             'field' => 'description',
