@@ -5,7 +5,7 @@
                 <h3 class="box-title"><?= lang('transactions_list') ?></h3>
                 <div class="box-tools" style="padding-top: 5px">
                     <div class="input-group input-group-sm" >
-                        <a class="btn bg-navy btn-sm btn-flat" href="<?php echo site_url('transactions/add_transaction') ?>"><i class="fa fa-fw fa-plus"></i><?= lang('add_transaction') ?></a>
+<!--                        <a class="btn bg-navy btn-sm btn-flat" href="--><?php ////echo site_url('transactions/add_transaction') ?><!--"><i class="fa fa-fw fa-plus"></i>--><?php ////echo lang('add_transaction') ?><!--</a>-->
                     </div>
                 </div>
             </div>
