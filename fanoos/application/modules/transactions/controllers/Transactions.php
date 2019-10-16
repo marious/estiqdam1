@@ -539,6 +539,9 @@ class Transactions extends MY_Controller
                         onclick="return confirm(\'Are you sure you want to delete\')">
                     <i class="glyphicon glyphicon-trash"></i>
                 </a>
+                <a target="_blank" href="'.site_url('transactions/print_transaction/' . $this->make_encryption($item->id)).'" class="btn btn-primary btn-xs">
+                <i class="glyphicon glyphicon-print"></i>
+                </a>
                 </div>';
             $data[] = $row;
         }
@@ -754,6 +757,36 @@ class Transactions extends MY_Controller
         $this->data['accounts'] = $this->db->get_where('account_head', ['account_type_id' => 1])->result();
 
         $this->admin_template('edit_transaction', $this->data);
+    }
+
+
+
+    public function print_transaction($id)
+    {
+        $id = $this->encryption->decrypt(str_replace(array('-', '_', '~'), array('+', '/', '='), $id));
+        $result = $this->db->select('transactions.*, account_head.account_title, transaction_category.name as category_name')
+                    ->from('transactions')
+                    ->join('account_head', 'account_head.id = transactions.account_id', 'left')
+                    ->join('transaction_category', 'transaction_category.id = transactions.category_id', 'left')
+                    ->where('transactions.id', $id)
+                    ->get()
+                    ->row();
+           
+        $result == TRUE || $this->message->norecord_found('transactions/all_transaction');
+        $this->data['transaction'] = $result;
+        $account = $this->db->get_where('account_head', ['id' => $result->account_id])->row();
+
+        $currency = substr_replace(setting('default_currency'), '', strpos(setting('default_currency'), '-'));
+
+        if ($account->account_currency) {
+            $currency = substr_replace($account->account_currency, '', strpos($account->account_currency, '-'));
+        }
+
+        $this->data['currency'] = $currency;
+
+
+        $this->admin_template('print_transaction', $this->data);
+
     }
 
 
