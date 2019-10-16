@@ -233,3 +233,15 @@
 
 
 </section>
+
+<script>
+
+    $(document).ready(function() {
+        $('#printButton').click(function() {
+            const mode = 'iframe';
+            const close = mode == 'popup';
+            const options = {mode: mode, popClose: close};
+            $('div.print-invoice').printArea(options);
+        });
+    });
+</script>
