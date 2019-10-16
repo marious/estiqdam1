@@ -21,7 +21,7 @@
         <div class="row invoice-info">
 
             <div class="col-sm-4 invoice-col">
-                <?= lang('billing_address') ?>
+                <?=  'Billing To' ?>
                 <address>
                     <strong><?= $customer->title ?></strong><br>
                     <?= $order->b_address ?><br>
@@ -30,10 +30,10 @@
             <!-- /.col -->
             <?php if($type != 'Quotation'){ ?>
                 <div class="col-sm-4 invoice-col">
-                    <?= lang('shipping_address') ?>
+                    <?php //echo lang('shipping_address') ?>
                     <address>
-                        <strong><?= $customer->title ?></strong><br>
-                        <?= $order->s_address ?><br>
+                        <strong><?php //echo $customer->title ?></strong><br>
+                        <?php //echo $order->s_address ?><br>
                     </address>
                 </div>
             <?php } ?>
@@ -66,15 +66,15 @@
             <div class="col-xs-12 table-responsive">
                 <table class="table table-striped">
                     <thead>
-                        <tr>
-                            <th><?= lang('sl') ?>.</th>
-                            <th><?= lang('product') ?></th>
-                            <th><?= lang('description') ?></th>
-                            <th><?= lang('unit') ?></th>
-                            <th><?= lang('price') ?></th>
-                            <th><?= lang('qty') ?></th>
-                            <th><?= lang('subtotal') ?> (<?= setting('currency_symbol') ?>)</th>
-                        </tr>
+                    <tr>
+                        <th><?= lang('sl') ?>.</th>
+                        <th><?= lang('product') ?></th>
+                        <th><?= lang('description') ?></th>
+                        <!-- <th><?php //echo lang('unit') ?></th> -->
+                        <th><?= lang('price') ?></th>
+                        <th><?= lang('qty') ?></th>
+                        <th><?= lang('subtotal') ?> (<?= setting('currency_symbol') ?>)</th>
+                    </tr>
                     </thead>
                     <tbody>
                     <?php $i = 1; foreach ($order_details as $item): ?>
@@ -82,12 +82,12 @@
                             <td><?= $i ?></td>
                             <td><?= $item->product_name ?></td>
                             <td><?= $item->description ?></td>
-                            <td><?= $item->unit_id ? $this->db->get_where('units', ['id' => $item->unit_id])->row()->name : '' ?></td>
+                            <!-- <td><?php //echo $item->unit_id ? $this->db->get_where('units', ['id' => $item->unit_id])->row()->name : '' ?></td> -->
                             <td><?= $item->sales_cost ?></td>
                             <td><?= $item->qty ?></td>
                             <td><?= setting('currency_symbol').' '.$this->localization->currencyFormat($item->sales_cost * $item->qty) ?></td>
                         </tr>
-                    <?php $i++; endforeach; ?>
+                        <?php $i++; endforeach; ?>
                     </tbody>
                 </table>
             </div>
