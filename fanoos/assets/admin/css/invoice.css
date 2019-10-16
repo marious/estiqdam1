@@ -82,3 +82,8 @@
         text-align:center;
     }
 }
+
+.company-title {
+    text-align: center;
+    text-transform: uppercase;
+}
