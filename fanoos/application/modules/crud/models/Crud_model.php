@@ -76,7 +76,6 @@ class Crud_model extends MY_Model
                             <ul class="dropdown-menu pull-right">
                               
                                 <li> <a href="sale_preview/' . $orderId . '"><i class="fa fa-eye text-success"></i>'. lang('view').'</a> </li>
-                                <li> <a href="update_invoice/' . $orderId . '"><i class="fa fa-shopping-cart text-success"></i>'. lang('update').'</a> </li>
                                 <li> <a href="add_payment/' . $orderId . '" data-target="#modalSmall" data-toggle="modal"><i class="fa fa-money text-success"></i>'. lang('add_payment').'</a> </li>
                                 <li> <a href="paymentList/' . $orderId . '" data-target="#myModal" data-toggle="modal"><i class="fa fa-money text-success"></i>'. lang('view_payment').'</a> </li>
                                 <li><a href="pdf_invoice/'.$orderId . '"><i class="fa fa-file-pdf-o text-success"></i> '.lang('pdf_invoice').'</a></li>
