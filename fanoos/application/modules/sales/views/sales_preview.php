@@ -66,15 +66,15 @@
             <div class="col-xs-12 table-responsive">
                 <table class="table table-striped">
                     <thead>
-                    <tr>
-                        <th><?= lang('sl') ?>.</th>
-                        <th><?= lang('product') ?></th>
-                        <th><?= lang('description') ?></th>
-                        <!-- <th><?php //echo lang('unit') ?></th> -->
-                        <th><?= lang('price') ?></th>
-                        <th><?= lang('qty') ?></th>
-                        <th><?= lang('subtotal') ?> (<?= setting('currency_symbol') ?>)</th>
-                    </tr>
+                        <tr>
+                            <th><?= lang('sl') ?>.</th>
+                            <th><?= lang('product') ?></th>
+                            <th><?= lang('description') ?></th>
+                            <!-- <th><?php //echo lang('unit') ?></th> -->
+                            <th><?= lang('price') ?></th>
+                            <th><?= lang('qty') ?></th>
+                            <th><?= lang('subtotal') ?> (<?= setting('currency_symbol') ?>)</th>
+                        </tr>
                     </thead>
                     <tbody>
                     <?php $i = 1; foreach ($order_details as $item): ?>
@@ -87,7 +87,7 @@
                             <td><?= $item->qty ?></td>
                             <td><?= setting('currency_symbol').' '.$this->localization->currencyFormat($item->sales_cost * $item->qty) ?></td>
                         </tr>
-                        <?php $i++; endforeach; ?>
+                    <?php $i++; endforeach; ?>
                     </tbody>
                 </table>
             </div>
@@ -143,10 +143,10 @@
                                 <th><?= lang('tax') ?>:</th>
                                 <td><?= setting('currency_symbol').' '.$this->localization->currencyFormat($order->tax) ?></td>
                             </tr>
-                            <?php $discount_amount = ($order->cart_total * $order->discount)/100; ?>
+                            <?php $discount_amount = $order->discount; ?>
                             <tr>
                                 <th><?= lang('discount') ?>:</th>
-                                <td><?= setting('currency_symbol').' - '.$this->localization->currencyFormat($discount_amount) ?> (<?= $order->discount?>%)</td>
+                                <td><?= setting('currency_symbol').' - '.$this->localization->currencyFormat($discount_amount) ?></td>
                             </tr>
                             <tr>
                                 <th><?= lang('grand_total') ?>:</th>
@@ -235,7 +235,7 @@
 </section>
 
 <script>
-
+    
     $(document).ready(function() {
         $('#printButton').click(function() {
             const mode = 'iframe';

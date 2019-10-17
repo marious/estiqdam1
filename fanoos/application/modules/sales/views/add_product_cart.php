@@ -202,7 +202,7 @@
 
         <tr>
             <td colspan="5" style="text-align: right">
-                <?= lang('discount') ?> %
+                <?= lang('discount') ?> 
             </td>
 
             <td style="text-align: right; padding-right: 30px">
@@ -219,7 +219,7 @@
             <?php
             $gtotal = $this->cart->total();
             $discount = $_SESSION['discount'];
-            $discount_amount = ($gtotal * $discount) / 100;
+            $discount_amount =  $discount;
             ?>
             <td style="text-align: right; padding-right: 30px; font-weight: bold; font-size: 16px">
                 <?php echo default_currency() . ' ' . $this->localization->currencyFormat($gtotal + $total_tax - $discount_amount, setting('currency_format')) ?>

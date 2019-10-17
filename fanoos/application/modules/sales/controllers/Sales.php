@@ -355,6 +355,24 @@ class Sales extends MY_Controller
     }
 
 
+    function order_discount() 
+    {
+        $discount = (float)$this->input->post('discount');
+        if (!empty($discount)) {
+            $data = [
+                'discount' => $discount,
+            ];
+        }
+        else {
+            $data = [
+                'discount' => 0,
+            ];
+        }
+
+        $_SESSION['discount'] = $data['discount'];
+    }
+
+
     public function remove_item()
     {
         $data = [
@@ -453,7 +471,7 @@ class Sales extends MY_Controller
             $data['tax'] = $total_tax;
             $gtotal = $this->cart->total();
             $discount = $_SESSION['discount'];
-            $discount_amount = ($gtotal * $discount)/100;
+            $discount_amount = $discount;
             $data['grand_total'] = $this->cart->total() + $total_tax - $discount_amount;
             $data['cart'] = json_encode($this->cart->contents());
 //        $data['type']           = ucwords($this->session->userdata('type'));
@@ -628,7 +646,7 @@ class Sales extends MY_Controller
         $data['tax'] = $total_tax;
         $gtotal = $this->cart->total();
         $discount = $_SESSION['discount'];
-        $discount_amount = ($gtotal * $discount)/100;
+        $discount_amount = $discount;
         $data['grand_total'] = $this->cart->total() + $total_tax - $discount_amount;
         $data['amount_received']= (float)$this->input->post('amount_received') + $order_details->amount_received;
         $data['due_payment']    = $data['grand_total'] - $data['amount_received'];
