@@ -5,7 +5,7 @@
                 <h3 class="box-title"><?= lang('transactions_list') ?></h3>
                 <div class="box-tools" style="padding-top: 5px">
                     <div class="input-group input-group-sm" >
-
+                        
                     </div>
                 </div>
             </div>
