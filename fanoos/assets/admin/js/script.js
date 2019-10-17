@@ -70,7 +70,7 @@ if ($('#daterange-btn').length)
 function msgBox(type, msg) {
     $('#msg').html(`
         <div class="alert alert-${type}">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">Ã—</button>
         ${msg}
         </div>
     `);
@@ -85,7 +85,7 @@ function msgBox(type, msg) {
 function msgBoxModal(type, msg) {
     $('#msgModal').html(`
         <div class="alert alert-${type}">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">Ã—</button>
         ${msg}
         </div>
     `);
@@ -152,8 +152,8 @@ function get_product_id(str) {
         cache: false,
         success: function(response) {
             $.get(root + 'sales/show_cart', function(cart) {
-               $('#cart-view').html(cart);
-               $('.products').select2();
+                $('#cart-view').html(cart);
+                $('.products').select2();
             });
             $('#overlay').remove();
         }
@@ -192,8 +192,8 @@ function updateItem(str) {
         cache: false,
         success: function(response) {
             $.get(root + 'sales/show_cart', function(cart) {
-               $('#cart-view').html(cart);
-               $('.products').select2();
+                $('#cart-view').html(cart);
+                $('.products').select2();
             });
             $('#overlay').remove();
         }
@@ -219,12 +219,38 @@ function removeItem(str) {
         cache: false,
         success: function(response) {
             $.get(root + 'sales/show_cart', function(cart) {
-               $('#cart-view').html(cart);
-               $('.products').select2();
+                $('#cart-view').html(cart);
+                $('.products').select2();
             });
             $('#overlay').remove();
         }
     });
+}
+
+
+function order_discount(str) {
+    let discount = str.value;
+    let postUrl = root + '/sales/order_discount';
+    let csrftoken = getCookie('csrf_cookie_name');
+    loader();
+    $.ajax({
+        url: postUrl,
+        type: "POST",
+        data: {
+            discount: discount,
+            status: status,
+            'csrf_test_name': csrftoken
+        },
+        cache: false,
+        success: function(response) {
+            $.get(root + 'sales/show_cart', function(cart) {
+                $('#cart-view').html(cart);
+                $('.products').select2();
+            });
+            $('#overlay').remove();
+        }
+    });
+
 }
 
 
@@ -422,9 +448,9 @@ function getVendor(str) {
 function saveCategory() {
     const postUrl = $('#form-category').attr('action');
     let input = $('<input>')
-                        .attr('type', 'hidden')
-                        .attr('name', 'csrf_test_name')
-                        .val(getCookie('csrf_cookie_name'));
+        .attr('type', 'hidden')
+        .attr('name', 'csrf_test_name')
+        .val(getCookie('csrf_cookie_name'));
     $('#form-category').append($(input));
     $.ajax({
         url: postUrl,
@@ -523,4 +549,10 @@ function transactionType(str) {
         }
     });
 
+}
+
+
+if ($('#transaction_type').length)
+{
+    transactionType( document.getElementById('transaction_type') );
 }
