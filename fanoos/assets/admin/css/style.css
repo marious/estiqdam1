@@ -377,3 +377,13 @@ div.manage-buttons {
 .print-transaction .receipt-title {
     font-size: 19px;
 }
+
+@media print {
+    .print-sale-invoice table th {
+        font-size: 12px;
+    }
+
+    .print-sale-invoice table td {
+        font-size: 12px;
+    }
+}
