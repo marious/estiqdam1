@@ -1,4 +1,4 @@
-<?php 
+<?php
 $lang['settings'] = 'Settings';
 $lang['save'] = 'Save';
 $lang['success_sended_data'] = 'Sended data saved successfully';
@@ -90,3 +90,4 @@ $lang['expense'] = 'Expense';
 $lang['transfer'] = 'Transfer';
 $lang['reports'] = 'Reports';
 $lang['vendors'] = 'Vendors';
+$lang['service'] = 'Service';
