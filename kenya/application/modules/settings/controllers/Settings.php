@@ -7,6 +7,7 @@ class Settings extends MY_Controller
     {
         parent::__construct();
         $this->middleware->execute_middlewares(['not_authinticated']);
+        $this->middleware->only(['check_permission:show_settings'], ['index']);
 
         ini_set('max_input_vars', '3000');
         $this->load->library('form_builder');
