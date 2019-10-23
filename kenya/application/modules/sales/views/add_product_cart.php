@@ -6,7 +6,7 @@
                 <th style="width: 15px">#</th>
                 <th class="col-sm-2"><?= lang('service') ?></th>
                 <th class="col-md-4"><?= lang('description') ?></th>
-                <th class="col-sm-1"><?= lang('unit') ?></th>
+                <th class="col-sm-1"><?php //echo lang('unit') ?></th>
                 <th class=""><?= lang('qty') ?></th>
                 <th class=""><?= lang('rate') ?></th>
                 <th class=""><?= lang('amount') ?></th>
@@ -202,7 +202,7 @@
 
         <tr>
             <td colspan="5" style="text-align: right">
-                <?= lang('discount') ?> 
+                <?= lang('discount') ?>
             </td>
 
             <td style="text-align: right; padding-right: 30px">
