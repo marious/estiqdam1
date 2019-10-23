@@ -189,11 +189,13 @@
 
 
 
+        <?php if (in_array('show_settings', $logged_in_user_permissions)): ?>
 
-        <li class="<?= is_sidebar_menu_active('settings'); ?>">
-            <a href="<?= site_url('settings') ?>"><i class="fa fa-gear"></i> <span><?= lang('settings') ?></span>
-            </a>
-        </li>
+            <li class="<?= is_sidebar_menu_active('settings'); ?>">
+                <a href="<?= site_url('settings') ?>"><i class="fa fa-gear"></i> <span><?= lang('settings') ?></span>
+                </a>
+            </li>
+        <?php endif; ?>
 
     </ul>
 </section>
