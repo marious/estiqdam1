@@ -27,7 +27,7 @@
                                 <div class="col-sm-6 col-md-pull-2">
                                     <select name="branch_id" id="branch" class="form-control">
                                         <?php foreach ($branches as $branch): ?>
-                                        <option value="<?= $branch->id ?>"><?= $branch->name; ?></option>
+                                            <option value="<?= $branch->id ?>"><?= $branch->name; ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
@@ -39,7 +39,7 @@
                                 <div class="col-sm-6">
                                     <label class="radio-inline">
                                         <input type="radio" name="status" value="1" class="minimal"
-                                                <?php if ($customer->status == 1) echo 'checked'; ?>> Active
+                                            <?php if ($customer->status == 1) echo 'checked'; ?>> Active
                                     </label>
                                     <label class="radio-inline">
                                         <input type="radio" name="status" value="0" class="minimal"
@@ -120,10 +120,10 @@
                                     <select name="customer_level" class="form-control" id="customer_level">
                                         <?php foreach ($customer_levels as $customer_level): ?>
                                             <?php
-                                        $selected = '';
-                                        if ($customer_level->id == $customer->customer_level) {
-                                            $selected = 'selected';
-                                        }
+                                            $selected = '';
+                                            if ($customer_level->id == $customer->customer_level) {
+                                                $selected = 'selected';
+                                            }
                                             ?>
                                             <option value="<?= $customer_level->id ?>" <?= $selected ?>><?= $customer_level->level ?></option>
                                         <?php endforeach; ?>
@@ -184,10 +184,10 @@
                                 <div class="col-sm-6">
 
                                     <?php foreach ($balance_types as $balance_type): ?>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="balance_type" value="<?= $balance_type->id ?>" class="minimal">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="balance_type" value="<?= $balance_type->id ?>" class="minimal">
                                             <?= transText($balance_type->type, $lang) ?>
-                                    </label>
+                                        </label>
                                     <?php endforeach; ?>
 
                                 </div>
@@ -197,7 +197,7 @@
                                 <label for="l_datepicker" class="col-sm-3 control-label"><?= lang('balance_date'); ?> </label>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control datepicker" id="l_datepicker" name="balance_date" autocomplete="off"
-                                             value="<?= set_value('balance_date', date('d/m/Y', strtotime($customer->balance_date))) ?>">
+                                           value="<?= set_value('balance_date', date('d/m/Y', strtotime($customer->balance_date))) ?>">
                                 </div>
                             </div>
 
@@ -214,7 +214,7 @@
                     <div class="col-md-4 col-md-push-4">
                         <button type="submit" class="btn btn-success btn-lg"><?= lang('save'); ?></button>
                         &nbsp;
-                        <a href="<?= site_url('customers/all') ?>" class="btn btn-default btn-lg"><?= lang('cancel') ?></a>
+                        <a href="<?= site_url('customers/all_customers') ?>" class="btn btn-default btn-lg"><?= lang('cancel') ?></a>
                     </div>
 
                 </div>
