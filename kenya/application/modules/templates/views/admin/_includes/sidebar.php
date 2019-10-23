@@ -25,15 +25,13 @@
 
           <?php if (in_array('show_users', $logged_in_user_permissions)): ?>
           <li class="treeview <?= is_sidebar_menu_active('customers') ?>">
-              <a href="#"><i class="fa fa-users text-green"></i> <span><?= lang('customers') ?> & <?=  lang('vendors') ?></span>
+              <a href="#"><i class="fa fa-users text-green"></i> <span><?= lang('customers') ?></span>
                   <span class="pull-right-container">
                     <i class="fa fa-angle-left pull-right"></i>
                 </span>
               </a>
               <ul class="treeview-menu">
                   <li class="<?= is_tree_sidebar_menu_active('customers', 'all_customers'); ?>"><a href="<?= site_url('customers/all_customers'); ?>"><i class="fa fa-circle-o"></i> <?= lang('all_customers'); ?></a></li>
-                  <li class="<?= is_tree_sidebar_menu_active('customers', 'all_vendors'); ?>"><a href="<?= site_url('customers/all_vendors'); ?>"><i class="fa fa-circle-o"></i> <?= lang('all_vendors'); ?></a></li>
-
 
               </ul>
           </li>
