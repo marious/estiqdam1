@@ -367,7 +367,7 @@ div.manage-buttons {
 }
 
 .transaction-print-table td {
-    font-size: 13px;
+    font-size: 14px;
 }
 
 .transaction-print-table td.description {
@@ -379,6 +379,9 @@ div.manage-buttons {
 }
 
 @media print {
+    .print-sale-invoice, .print-transaction {
+        margin-top: 120px;
+    }
     .print-sale-invoice table th {
         font-size: 12px;
     }

@@ -4,6 +4,12 @@ class Items extends MY_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->middleware->execute_middlewares(['not_authinticated']);
+        $this->middleware->only(['check_permission:show_services'], ['services']);
+        $this->middleware->only(['check_permission:add_services'], ['add_service']);
+        $this->middleware->only(['check_permission:edit_services'], ['edit_services']);
+        $this->middleware->only(['check_permission:delete_services'], ['delete']);
+        $this->middleware->only(['check_permission:show_categories'], ['categories']);
         $this->lang->load('items');
         $this->load->model('Item_model');
         $this->load->module('taxes');

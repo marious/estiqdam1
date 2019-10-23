@@ -6,6 +6,12 @@ class Sales extends MY_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->middleware->execute_middlewares(['not_authinticated']);
+        $this->middleware->only(['check_permission:show_invoices'], ['all_invoices']);
+        $this->middleware->only(['check_permission:delete_invoice'], ['delete_invoice']);
+        $this->middleware->only(['check_permission:add_payment'], ['add_payment']);
+        $this->middleware->only(['check_permission:create_invoice'], ['invoice']);
+
         $this->load->library('cart');
         $this->load->library('form_builder');
         $this->lang->load('sales');

@@ -6,6 +6,10 @@ class Roles extends MY_Controller
     {
         parent::__construct();
         $this->middleware->execute_middlewares(['not_authinticated']);
+        $this->middleware->only(['check_permission:show_roles'], ['all']);
+        $this->middleware->only(['check_permission:add_roles'], ['add']);
+        $this->middleware->only(['check_permission:edit_roles'], ['edit']);
+        $this->middleware->only(['check_permission:delete_roles'], ['delete']);
         $this->lang->load('roles');
         $this->load->model('Role_model');
     }

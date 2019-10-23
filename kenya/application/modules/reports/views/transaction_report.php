@@ -30,7 +30,7 @@
                             <div class="col-sm-5">
                                 <div class="input-group">
                                     <input type="text" class="form-control datepicker" id="end_date" name="end_date" data-date-format="yyyy/mm/dd"
-                                           value="<?php if(!empty($search['end_date'])) echo $search['end_date'] ?>" autocomplete="off">
+                                            value="<?php if(!empty($search['end_date'])) echo $search['end_date'] ?>" autocomplete="off">
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar-o"></i>
                                     </div>
@@ -99,57 +99,57 @@
                         </thead>
                         <?php $currency = ''; ?>
                         <?php if (is_array($transactions) && count($transactions)): ?>
-                            <?php
-                            if (MULTI_CURRENCY) {
-                                $currency = $transactions[0]->account_currency ? explode('-', $transactions[0]->account_currency)[0] :
+                        <?php
+                        if (MULTI_CURRENCY) {
+                            $currency = $transactions[0]->account_currency ? explode('-', $transactions[0]->account_currency)[0] :
                                     setting('currency_symbol');
-                            }
+                        }
                             ?>
-                            <tbody>
-                            <?php foreach ($transactions as $transaction): ?>
-                                <tr>
-                                    <td><?= $transaction->transaction_id ?></td>
-                                    <td><?= $transaction->account_title ?></td>
-                                    <td><?= $transaction->transaction_type ?></td>
-                                    <td><?= $transaction->name ?></td>
-                                    <td>
-                                        <?php
-                                        if ($transaction->transaction_type_id == 1 || $transaction->transaction_type_id == 4)
-                                        {
-                                            echo '<span class="dr">'.$this->localization->currencyFormat($transaction->amount).'</span>';
-                                            $dr_amount = $transaction->amount;
-                                        }
-                                        else
-                                        {
-                                            echo '<span class="dr">'.$this->localization->currencyFormat(0).'</span>';
-                                            $dr_amount = 0;
-                                        }
-                                        $total_dr += $dr_amount;
-                                        ?>
-                                    </td>
-                                    <td>
-                                        <?php
-                                        if ($transaction->transaction_type_id == 2 || $transaction->transaction_type_id == 3 || $transaction->transaction_type_id == 5)
-                                        {
-                                            echo '<span class="cr">'.$this->localization->currencyFormat($transaction->amount).'</span>';
-                                            $cr_amount = $transaction->amount;
-                                        }
-                                        else
-                                        {
-                                            echo '<span class="cr">'.$this->localization->currencyFormat(0).'</span>';
-                                            $cr_amount = 0;
-                                        }
-                                        $total_cr += $cr_amount;
-                                        ?>
-                                    </td>
-                                    <td>
-                                        <?php echo '<span class="balance">'.$this->localization->currencyFormat($transaction->balance).'</span>'; ?>
-                                        <?php $total_balance += $transaction->balance; ?>
-                                    </td>
-                                    <td><?php echo $this->localization->dateFormat($transaction->date_time); ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                            </tbody>
+                        <tbody>
+                        <?php foreach ($transactions as $transaction): ?>
+                        <tr>
+                            <td><?= $transaction->transaction_id ?></td>
+                            <td><?= $transaction->account_title ?></td>
+                            <td><?= $transaction->transaction_type ?></td>
+                            <td><?= $transaction->name ?></td>
+                            <td>
+                                <?php
+                                if ($transaction->transaction_type_id == 1 || $transaction->transaction_type_id == 4)
+                                {
+                                    echo '<span class="dr">'.$this->localization->currencyFormat($transaction->amount).'</span>';
+                                    $dr_amount = $transaction->amount;
+                                }
+                                else
+                                {
+                                    echo '<span class="dr">'.$this->localization->currencyFormat(0).'</span>';
+                                    $dr_amount = 0;
+                                }
+                                $total_dr += $dr_amount;
+                                ?>
+                            </td>
+                            <td>
+                                <?php
+                                if ($transaction->transaction_type_id == 2 || $transaction->transaction_type_id == 3 || $transaction->transaction_type_id == 5)
+                                {
+                                    echo '<span class="cr">'.$this->localization->currencyFormat($transaction->amount).'</span>';
+                                    $cr_amount = $transaction->amount;
+                                }
+                                else
+                                {
+                                    echo '<span class="cr">'.$this->localization->currencyFormat(0).'</span>';
+                                    $cr_amount = 0;
+                                }
+                                $total_cr += $cr_amount;
+                                ?>
+                            </td>
+                            <td>
+                                <?php echo '<span class="balance">'.$this->localization->currencyFormat($transaction->balance).'</span>'; ?>
+                                <?php $total_balance += $transaction->balance; ?>
+                            </td>
+                            <td><?php echo $this->localization->dateFormat($transaction->date_time); ?></td>
+                        </tr>
+                        <?php endforeach; ?>
+                        </tbody>
                         <?php endif; ?>
                         <tr>
                             <td></td>

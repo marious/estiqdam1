@@ -11,6 +11,28 @@ class Transactions extends MY_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->middleware->execute_middlewares(['not_authinticated']);
+        $this->middleware->only(['check_permission:show_transactions'], ['all_transaction']);
+        $this->middleware->only(['check_permission:delete_transaction'], ['delete_transaction']);
+        $this->middleware->only(['check_permission:edit_transaction'], ['edit_transaction']);
+
+//        $this->middleware->only(['check_permission:show_accounts'], ['chart_of_account']);
+//        $this->middleware->only(['check_permission:add_account'], ['add_account']);
+//        $this->middleware->only(['check_permission:edit_account'], ['edit_account']);
+//        $this->middleware->only(['check_permission:delete_account'], ['delete_account']);
+
+
+        $this->middleware->only(['check_permission:income_categories'], ['income_category']);
+        $this->middleware->only(['check_permission:expense_categories'], ['expense_category']);
+        $this->middleware->only(['check_permission:add_income_category'], ['add_income_category']);
+        $this->middleware->only(['check_permission:edit_income_category'], ['edit_income_category']);
+        $this->middleware->only(['check_permission:delete_income_category'], ['delete_category']);
+
+        $this->middleware->only(['check_permission:add_expense_category'], ['add_expense_category']);
+        $this->middleware->only(['check_permission:edit_expense_category'], ['edit_expense_category']);
+
+
+        $this->logged_in_user_permissions = Modules::run('roles/get_active_user_permissions');
         $this->lang->load('transactions');
         $this->load->model('Transaction_model');
         $this->load->library('form_builder');
@@ -149,7 +171,14 @@ class Transactions extends MY_Controller
         if (isset($_GET['type']))
         {
             $this->data['type'] = trim($_GET['type']);
+        } else {
+            redirect(404);
         }
+
+
+      if (!in_array('add_' . $this->data['type'], $this->logged_in_user_permissions)) {
+        redirect(404);
+    }
 
 
         $this->admin_template('add_transactions', $this->data);
@@ -533,16 +562,28 @@ class Transactions extends MY_Controller
             $row[] = $this->localization->dateFormat($item->date_time);
 
             // add html for action
-            $row[] = '<div class="btn-group"><a class="btn btn-xs btn-default" href="'.site_url('transactions/edit_transaction/'.$this->make_encryption($item->id)).'">
+            $output = '';
+            if (in_array('edit_transaction', $this->logged_in_user_permissions)) {
+                $output = '<div class="btn-group"><a class="btn btn-xs btn-default" href="' . site_url('transactions/edit_transaction/' . $this->make_encryption($item->id)) . '">
                 <i class="fa fa-pencil"></i></a>
-                <a href="'.site_url('transactions/delete_transaction/'.$this->make_encryption($item->id)).'" class="btn btn-danger btn-xs" 
+                
+               ';
+            }
+
+            if (in_array('delete_transaction', $this->logged_in_user_permissions)) {
+                $output .= '<a href="'.site_url('transactions/delete_transaction/'.$this->make_encryption($item->id)).'" class="btn btn-danger btn-xs" 
                         onclick="return confirm(\'Are you sure you want to delete\')">
                     <i class="glyphicon glyphicon-trash"></i>
-                </a>
-                <a target="_blank" href="'.site_url('transactions/print_transaction/' . $this->make_encryption($item->id)).'" class="btn btn-primary btn-xs">
+                </a>';
+            }
+
+            $output .= ' <a target="_blank" href="'.site_url('transactions/print_transaction/' . $this->make_encryption($item->id)).'" class="btn btn-primary btn-xs">
                 <i class="glyphicon glyphicon-print"></i>
                 </a>
                 </div>';
+
+            $row[] = $output;
+
             $data[] = $row;
         }
 
@@ -980,6 +1021,11 @@ class Transactions extends MY_Controller
         //$this->load->view('');
     }
 
+    public function edit_income_category($id)
+    {
+        $this->add_income_category($id);
+    }
+
     public function save_income_category()
     {
         $this->form_validation->set_rules('name', lang('name'), 'trim|required|xss_clean');
@@ -1025,6 +1071,11 @@ class Transactions extends MY_Controller
     {
         $data['category'] = $this->db->get_where('transaction_category', ['id' => $id])->row();
         $data['modal_subview'] = $this->load->view('_modal/add_expense_category', $data, false);
+    }
+
+    public function edit_expense_category($id = null)
+    {
+        $this->add_expense_category($id);
     }
 
 

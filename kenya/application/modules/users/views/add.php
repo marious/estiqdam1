@@ -4,7 +4,7 @@
         <form class="form-horizontal" action="<?= site_url('users/add/'.$id); ?>" method="post" enctype="multipart/form-data">
             <div class="box box-info">
                 <div class="box-body">
-
+<?= csrf_field() ?>
                     <?php if (isset($note)): ?><p class="text-green note-text"><?= $note; ?></p><?php endif; ?>
                     <!-- username -->
                     <div class="form-group">
@@ -91,6 +91,8 @@
                         <label for="" class="col-sm-2 control-label"></label>
                         <div class="col-sm-6">
                             <button type="submit" class="btn btn-success pull-left" name="form1"><?= lang('save'); ?></button>
+                            &nbsp;&nbsp;
+                            <a href="<?= site_url('users/all') ?>" class="btn btn-default"><?= lang('cancel') ?></a>
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,11 @@
 <?php
 class Crud_model extends MY_Model
 {
+    public function __construct()
+    {
+        $this->logged_in_user_permissions = Modules::run('roles/get_active_user_permissions');
+    }
+
     function test() {
         echo 'hello';exit;
     }
@@ -68,7 +73,7 @@ class Crud_model extends MY_Model
                         </div>
                     ';
         }else{
-            return '
+            $output = '
                         <div class="btn-group dropdown">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                 '. lang('actions').'                                  <span class="caret"></span>
@@ -76,16 +81,27 @@ class Crud_model extends MY_Model
                             <ul class="dropdown-menu pull-right">
                               
                                 <li> <a href="sale_preview/' . $orderId . '"><i class="fa fa-eye text-success"></i>'. lang('view').'</a> </li>
-                                <li> <a href="add_payment/' . $orderId . '" data-target="#modalSmall" data-toggle="modal"><i class="fa fa-money text-success"></i>'. lang('add_payment').'</a> </li>
-                                <li> <a href="paymentList/' . $orderId . '" data-target="#myModal" data-toggle="modal"><i class="fa fa-money text-success"></i>'. lang('view_payment').'</a> </li>
-                                <li><a href="pdf_invoice/'.$orderId . '"><i class="fa fa-file-pdf-o text-success"></i> '.lang('pdf_invoice').'</a></li>
-                                <li><a onclick="return confirm(\'Are you sure want to delete this Invoice ?\');" href="sales/delete_invoice/'.$orderId.'"><i class="fa fa-trash-o text-danger"></i>
+                                                   ';
+
+            if (in_array('add_payment', $this->logged_in_user_permissions)) {
+                $output .= '<li> <a href="add_payment/' . $orderId . '" data-target="#modalSmall" data-toggle="modal"><i class="fa fa-money text-success"></i>'. lang('add_payment').'</a> </li>
+                            ';
+            }
+
+            $output .= ' <li> <a href="paymentList/' . $orderId . '" data-target="#myModal" data-toggle="modal"><i class="fa fa-money text-success"></i>'. lang('view_payment').'</a> </li>
+                                <li><a href="pdf_invoice/'.$orderId . '"><i class="fa fa-file-pdf-o text-success"></i> '.lang('pdf_invoice').'</a></li>';
+
+
+
+            if (in_array('delete_invoice', $this->logged_in_user_permissions)) {
+                $output .= ' <li><a onclick="return confirm(\'Are you sure want to delete this Invoice ?\');" href="sales/delete_invoice/'.$orderId.'"><i class="fa fa-trash-o text-danger"></i>
                                 '.lang('delete').'
-                                </a> </li>
-                               
-                            </ul>
-                        </div>
-                    ';
+                                </a> </li>';
+            }
+
+            $output .= '</ul>';
+            $output .= '</div>';
+            return $output;
         }
     }
 

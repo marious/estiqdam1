@@ -5,6 +5,19 @@ class Reports extends MY_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->middleware->execute_middlewares(['not_authinticated']);
+        $this->middleware->only(['check_permission:show_reports'], ['index']);
+        $this->middleware->only(['check_permission:show_transactions_report'], ['transaction']);
+        $this->middleware->only(['check_permission:show_summary_account_report'], ['summaryAccount']);
+        $this->middleware->only(['check_permission:show_summary_transactions_report'], ['summaryTransaction']);
+        $this->middleware->only(['check_permission:show_account_balance_report'], ['BalanceCheck']);
+        $this->middleware->only(['check_permission:show_sales_report'], ['salesReport']);
+        $this->middleware->only(['check_permission:show_payment_received_report'], ['paymentReceived']);
+        $this->middleware->only(['check_permission:show_customer_sales_report'], ['customerSales']);
+        $this->middleware->only(['check_permission:show_customer_summary_report'], ['customerSummaryReport']);
+        $this->middleware->only(['check_permission:show_customer_lifetime_sales_report'], ['customerLifetimeSales']);
+        $this->middleware->only(['check_permission:show_customer_due_payment_report'], ['customerDue']);
+        $this->middleware->only(['check_permission:show_customer_over_due_payment_report'], ['customerOverDue']);
         $this->load->model('Report_model');
         $this->lang->load('reports');
         $this->lang->load('transactions');

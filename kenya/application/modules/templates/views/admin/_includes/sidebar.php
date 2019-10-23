@@ -39,6 +39,7 @@
           </li>
           <?php endif; ?>
 
+
           <li class="treeview <?= is_sidebar_menu_active('sales') ?>">
               <a href="#"><i class="fa fa-cart-plus text-red"></i> <span><?= lang('sales') ?></span>
                   <span class="pull-right-container">
@@ -46,10 +47,15 @@
                 </span>
               </a>
               <ul class="treeview-menu">
+                  <?php if (in_array('create_invoice', $logged_in_user_permissions)): ?>
                   <li class="<?= is_tree_sidebar_menu_active('sales', 'invoice'); ?>"><a href="<?= site_url('sales/invoice'); ?>"><i class="fa fa-circle-o"></i> <?= lang('create_invoice'); ?></a></li>
+                  <?php endif; ?>
+                  <?php if (in_array('show_invoices', $logged_in_user_permissions)): ?>
                   <li class="<?= is_tree_sidebar_menu_active('sales', 'all_invoices'); ?>"><a href="<?= site_url('sales/all_invoices'); ?>"><i class="fa fa-circle-o"></i> <?= lang('all_invoices'); ?></a></li>
+                  <?php endif; ?>
               </ul>
           </li>
+
 
           <?php if (!KENYA): ?>
           <li class="treeview <?= is_sidebar_menu_active('purchase') ?>">
@@ -68,7 +74,7 @@
 
 
           <li class="treeview <?= is_sidebar_menu_active('items') ?>">
-              <a href="#"><i class="fa fa-cubes text-orange"></i> <span><?= lang('products_and_services') ?></span>
+              <a href="#"><i class="fa fa-cubes text-orange"></i> <span><?= lang('services') ?></span>
                   <span class="pull-right-container">
                     <i class="fa fa-angle-left pull-right"></i>
                 </span>
@@ -78,14 +84,31 @@
                   <li class="<?= is_tree_sidebar_menu_active('items', 'products'); ?>"><a href="<?= site_url('items/products'); ?>"><i class="fa fa-circle-o"></i> <?= lang('all_products'); ?></a></li>
                   <li class="<?= is_tree_sidebar_menu_active('items', 'add_product'); ?>"><a href="<?= site_url('items/add_product'); ?>"><i class="fa fa-circle-o"></i> <?= lang('add_product'); ?></a></li>
                 <?php endif; ?>
+                  <?php if (in_array('show_services', $logged_in_user_permissions)): ?>
                   <li class="<?= is_tree_sidebar_menu_active('items', 'services'); ?>"><a href="<?= site_url('items/services'); ?>"><i class="fa fa-circle-o"></i> <?= lang('all_services'); ?></a></li>
+                  <?php endif; ?>
+                  <?php if (in_array('add_service', $logged_in_user_permissions)): ?>
                   <li class="<?= is_tree_sidebar_menu_active('items', 'add_service'); ?>"><a href="<?= site_url('items/add_service'); ?>"><i class="fa fa-circle-o"></i> <?= lang('add_service'); ?></a></li>
+                  <?php endif; ?>
+                  <?php if (in_array('show_categories', $logged_in_user_permissions)): ?>
                   <li class="<?= is_tree_sidebar_menu_active('items', 'categories'); ?>"><a href="<?= site_url('items/categories'); ?>"><i class="fa fa-circle-o"></i> <?= lang('categories'); ?></a></li>
+                  <?php endif; ?>
               </ul>
           </li>
 
 
-
+          <li class="treeview <?= is_sidebar_menu_active('accounts') ?>">
+              <a href="#"><i class="fa fa-dollar"></i> <span><?= lang('accounts') ?></span>
+                  <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+              </a>
+              <ul class="treeview-menu">
+                  <?php if (in_array('show_accounts', $logged_in_user_permissions)): ?>
+                      <li class="<?= is_tree_sidebar_menu_active('accounts', 'chart_of_account'); ?>"><a href="<?= site_url('accounts/chart_of_account'); ?>"><i class="fa fa-circle-o"></i> <?= lang('accounts'); ?></a></li>
+                  <?php endif; ?>
+              </ul>
+          </li>
 
 
 
@@ -96,30 +119,40 @@
                     </span>
               </a>
               <ul class="treeview-menu">
+                  <?php if (in_array('show_transactions', $logged_in_user_permissions)): ?>
                   <li class="<?= is_tree_sidebar_menu_active('transactions', 'all_transaction'); ?>"><a href="<?= site_url('transactions/all_transaction'); ?>"><i class="fa fa-circle-o"></i> <?= lang('all_transactions'); ?></a></li>
-                    <li class="<?= is_tree_sidebar_menu_active('transactions', 'chart_of_account'); ?>"><a href="<?= site_url('transactions/chart_of_account'); ?>"><i class="fa fa-circle-o"></i> <?= lang('accounts'); ?></a></li>
-                
+                  <?php endif; ?>
 
+                  <?php if (in_array('add_income', $logged_in_user_permissions)): ?>
                   <li><a href="<?= site_url('transactions/add_transaction?type=income') ?>"><i class="fa fa-circle-o"></i><?= lang('add_income') ?></a></li>
+                  <?php endif; ?>
 
 
-
+                  <?php if (in_array('add_expense', $logged_in_user_permissions)): ?>
                   <li><a href="<?= site_url('transactions/add_transaction?type=expense') ?>"><i class="fa fa-circle-o"></i><?= lang('add_expense') ?></a></li>
+                  <?php endif; ?>
 
+                  <?php if (in_array('add_transfer', $logged_in_user_permissions)): ?>
                   <li><a href="<?= site_url('transactions/add_transaction?type=transfer') ?>"><i class="fa fa-circle-o"></i><?= lang('add_transfer') ?></a></li>
+                  <?php endif; ?>
 
-
+                  <?php if (in_array('income_categories', $logged_in_user_permissions)): ?>
                   <li class="<?= is_tree_sidebar_menu_active('transactions', 'income_category'); ?>"><a href="<?= site_url('transactions/income_category'); ?>"><i class="fa fa-circle-o"></i> <?= lang('income_categories'); ?></a></li>
+                  <?php endif; ?>
+
+                  <?php if (in_array('expense_categories', $logged_in_user_permissions)): ?>
                   <li class="<?= is_tree_sidebar_menu_active('transactions', 'expense_category'); ?>"><a href="<?= site_url('transactions/expense_category'); ?>"><i class="fa fa-circle-o"></i> <?= lang('expense_categories'); ?></a></li>
+                  <?php endif; ?>
               </ul>
           </li>
 
 
+          <?php if (in_array('show_reports', $logged_in_user_permissions)): ?>
           <li <?= is_sidebar_menu_active('reports'); ?>>
               <a href="<?= site_url('reports') ?>"><i class="fa fa-file"></i> <span><?= lang('reports') ?></span>
               </a>
           </li>
-
+        <?php endif; ?>
 
       <?php if (in_array('show_users', $logged_in_user_permissions)): ?>
           <li class="treeview <?= is_sidebar_menu_active('users'); ?>">
@@ -139,9 +172,8 @@
 
 
 
-        
-        <?php if (!KENYA): ?>
 
+          <?php if (in_array('show_roles', $logged_in_user_permissions)): ?>
           <li class="treeview <?= is_sidebar_menu_active('roles'); ?>">
               <a href="#"><i class="fa fa-key text-red"></i> <span><?= lang('roles_and_permissions') ?></span>
                   <span class="pull-right-container">
@@ -150,19 +182,19 @@
               </a>
               <ul class="treeview-menu">
                   <li class="<?= is_tree_sidebar_menu_active('roles', 'all'); ?>"><a href="<?= site_url('roles/all'); ?>"><i class="fa fa-circle-o"></i> <?= lang('all_roles'); ?></a></li>
+                  <?php if (in_array('add_roles', $logged_in_user_permissions)): ?>
                   <li class="<?= is_tree_sidebar_menu_active('roles', 'add'); ?>"><a href="<?= site_url('roles/add'); ?>"><i class="fa fa-circle-o"></i> <?= lang('add_new'); ?></a></li>
+                  <?php endif; ?>
               </ul>
           </li>
+          <?php endif; ?>
 
-        <?php endif; ?>
 
 
 
           <li class="<?= is_sidebar_menu_active('settings'); ?>">
               <a href="<?= site_url('settings') ?>"><i class="fa fa-gear"></i> <span><?= lang('settings') ?></span>
-
               </a>
-
           </li>
         
       </ul>
