@@ -6,6 +6,8 @@ class Settings extends MY_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->middleware->execute_middlewares(['not_authinticated']);
+
         ini_set('max_input_vars', '3000');
         $this->load->library('form_builder');
         $this->load->model('Setting_model');
@@ -14,15 +16,17 @@ class Settings extends MY_Controller
 
     public function index()
     {
-        $tab = $this->input->get('tab');
+
+        $tab = isset($_GET['tab']) ? $this->input->get('tab') : false;
+
         $tab_view = explode('/', $tab);
         $form = $this->form_builder->create_form();
 
-        if (!$this->input->get('tab'))
+        if (!$tab)
         {
             $view = 'company';
             $tab = 'company';
-            $data = '';
+            $data = [];
         }
         elseif ($tab_view[0] == 'language')
         {
@@ -32,7 +36,7 @@ class Settings extends MY_Controller
         {
             $tab = $tab_view[0];
             $view = $tab_view[0];
-            $data = '';
+            $data = [];
         }
 
 
