@@ -167,6 +167,24 @@ span.logo img {
     padding: 0 0 5px 0;
 }
 
+.readmore-btn {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    min-height: 400px;
+}
+
+.readmore-btn a {
+    display: inline-block;
+    background-color: #082f58 !important;
+    padding: 10px 20px;
+    font-size: 18px;
+    color: #fff;
+    border-radius: 5px;
+    text-align: center;
+}
+
 .email-box a {
     text-decoration: none;
     display: inline-block;
@@ -1262,6 +1280,7 @@ section.contact {
     color: #999;
     opacity: 1;
 }
+
 
 .contact-section textarea::-webkit-input-placeholder {
     color: #999;
