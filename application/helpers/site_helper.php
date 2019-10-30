@@ -1,4 +1,6 @@
 <?php
+
+
 function encrypt($input, $key = 'AppKey1252') {
     $iv = substr(hash('SHA256', $key),0,16);
     return base64_encode(openssl_encrypt($input, 'AES-256-CBC', $key, 0, $iv));
