@@ -1628,4 +1628,56 @@ footer p {
 
 }
 
+.my-carousel .owl-buttons {
+    display: block !important;
+}
 
+.my-carousel .owl-prev{
+    display: block !important;
+    left: -630px !important;
+    top: -300px !important;
+    text-align: center;
+    background: none !important;
+    opacity: 1 !important;
+    color: #1ABB9C !important;
+}
+
+.my-carousel .owl-prev i {
+    font-size: 60px !important;
+    display: inline-block;
+    padding: 10px;
+}
+
+
+.my-carousel .owl-next{
+    display: block !important;
+    right: -600px !important;
+    top: -320px !important;
+    text-align: center;
+    background: none !important;
+    opacity: 1 !important;
+    color: #1ABB9C!important;
+}
+
+.news-carousel .owl-next {
+    top: -550px !important;
+}
+
+.news-carousel .owl-prev {
+    top: -550px !important;
+}
+
+.my-carousel .owl-next i {
+    font-size: 60px !important;
+    display: inline-block;
+    padding: 10px;
+}
+
+@media screen and (max-width: 1200px) {
+    .my-carousel .owl-next{
+        right: -900% !important;
+    }
+    .my-carousel .owl-prev{
+        left: -1000% !important;
+    }
+}

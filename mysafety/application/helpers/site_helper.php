@@ -1,21 +1,21 @@
-<?php 
+<?php
 /**
  * Check if the current sidebar menu is active or not
  */
-function is_sidebar_menu_active($current) 
+function is_sidebar_menu_active($current)
 {
     $CI =& get_instance();
     if ($CI->uri->segment(1) == $current) {
-      return 'active';
+        return 'active';
     }
     return '';
 }
 
 
 function is_tree_sidebar_menu_active($first, $second) {
-  $CI =& get_instance();
+    $CI =& get_instance();
     if ($CI->uri->segment(2) == $second && $CI->uri->segment(1) == $first) {
-      return 'active';
+        return 'active';
     }
     return '';
 }
@@ -25,12 +25,12 @@ function is_tree_sidebar_menu_active($first, $second) {
  * Get the setting by it's name
  */
 function setting($setting_name = null) {
-  $CI =& get_instance();
-  if ($setting_name) {
-    $query = $CI->db->get_where('settings', ['name' => $setting_name]);
-    return $query->row() ? trim($query->row()->value) : '';
-  }
-  return '';
+    $CI =& get_instance();
+    if ($setting_name) {
+        $query = $CI->db->get_where('settings', ['name' => $setting_name]);
+        return $query->row() ? trim($query->row()->value) : '';
+    }
+    return '';
 }
 
 
@@ -58,7 +58,7 @@ function make_slug($title, $lang = 'en')
 {
     return $lang == 'ar' ? preg_replace('/[^\x{0600}-\x{06FF}0-9-]+/u', '-', $title) :
         strtolower(preg_replace('/[^A-Za-z0-9-]+/', '-', $title));
-    
+
 }
 
 function transText($dataField , $lang = null)
@@ -80,7 +80,7 @@ function shortDescrip($descrip , $numb)
     return $desc;
 }
 
- function words($value, $words = 100, $end = '...')
+function words($value, $words = 100, $end = '...')
 {
     preg_match('/^\s*+(?:\S++\s*+){1,'.$words.'}/u', $value, $matches);
 
@@ -100,8 +100,14 @@ function get_length($value, $encoding = null)
     return mb_strlen($value);
 }
 
-function dateFormat($date){
-    $newFormat = date('j M Y h:i a',strtotime($date));
+function dateFormat($date, $format = false){
+    if (!$date) {
+        return false;
+    }
+    if (!$format) {
+        $format = 'j M Y h:i a';
+    }
+    $newFormat = date($format,strtotime($date));
     return $newFormat;
 }
 
@@ -113,7 +119,7 @@ function draw_actions_button($dit_link = '', $delete_link = '', $permission_grou
     $output = '';
     $logged_in_user_permissions = Modules::run('roles/get_active_user_permissions');
 
-    
+
     if ($dit_link && in_array('edit' . '_' . $permission_group, $logged_in_user_permissions)) {
         $output .= '<a href="'.$dit_link.'" class="btn btn-sm btn-primary" title="'.lang('edit').'"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;&nbsp;';
     }
@@ -130,8 +136,8 @@ function get_current_lang()
 {
     if (!isset($_SESSION['lang']) && !isset($_GET['lang']) && isset($_SERVER['HTTP_ACCEPT_LANGUAGE']))
     {
-            $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
-    } 
+        $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+    }
     else if (isset($_SESSION['lang'])) {
         $lang = $lang;
     }

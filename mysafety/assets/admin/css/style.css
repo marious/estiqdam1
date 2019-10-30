@@ -26,6 +26,11 @@
     max-height: 350px;
 }
 
+input[id^="ar_"]{
+    text-align: right !important;
+    direction: rtl !important;
+}
+
 
 .block-label {
     display: block;

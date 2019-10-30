@@ -67,7 +67,7 @@ $sliders = Modules::run('slider/get_all');
 
         <div class="row">
             <div class="col-md-12">
-                <div class="categories-carousel">
+                <div class="categories-carousel my-carousel">
                     <?php
                     $categoreis = Modules::run('categories/get_all');
                     ?>
@@ -95,7 +95,7 @@ $sliders = Modules::run('slider/get_all');
 <!-- Categories End -->
 
 <!-- Service Start -->
-<section class="service-v1">
+<section class="news-v1" style="background-color: #fff;">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -106,27 +106,31 @@ $sliders = Modules::run('slider/get_all');
             </div>
         </div>
         <div class="row">
-            <?php
-            $services = Modules::run('services/get_all');
-            if (is_array($services) && count($services)) {
-                foreach ($services as $service) {
-                    ?>
-                    <div class="col-sm-6 col-md-4 ser-item wow fadeInUp">
-                        <div class="item">
-                            <div class="photo" style="background-image:url(<?php echo site_url($service->image); ?>);">
-                            </div>
-                            <div class="text">
-                                <h3><a href="<?= site_url('services/item/' . transText($service->slug, get_current_front_lang())); ?>"><?php echo transText($service->name, get_current_front_lang()); ?></a></h3>
-                                <p>
-                                    <?php echo shortDescrip(transText($service->description, get_current_front_lang()), 20) ?>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+            <div class="col-md-12">
+                <div class="news-carousel my-carousel">
                     <?php
-                }
-            }
-            ?>
+                    $services = Modules::run('services/get_all');
+                    if (is_array($services) && count($services)) {
+                        foreach ($services as $service) {
+                            ?>
+                            <div class="item wow fadeInUp">
+                                <div class="thumb">
+                                    <div class="photo" style="background-image:url(<?php echo site_url($service->image); ?>);">
+                                    </div>
+                                    <div class="text">
+                                        <h3><a href="<?= site_url('services/item/' . transText($service->slug, get_current_front_lang())); ?>"><?php echo transText($service->name, get_current_front_lang()); ?></a></h3>
+                                        <p>
+                                            <?php echo shortDescrip(transText($service->description, get_current_front_lang()), 20) ?>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php
+                        }
+                    }
+                    ?>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -149,7 +153,7 @@ $sliders = Modules::run('slider/get_all');
             <div class="col-md-12">
 
                 <!-- News Carousel Start -->
-                <div class="news-carousel">
+                <div class="news-carousel my-carousel">
 
                     <?php
                     $i=0;
@@ -199,7 +203,7 @@ $sliders = Modules::run('slider/get_all');
             <div class="col-md-12">
 
                 <!-- News Carousel Start -->
-                <div class="clients-carousel">
+                <div class="clients-carousel my-carousel">
 
                     <?php
                     $this->load->module('clients');
@@ -252,7 +256,7 @@ $sliders = Modules::run('slider/get_all');
                         <i class="fa fa-phone" aria-hidden="true"></i>
                         <div class="text-col">
                             <span><?= lang('head_branch') ?>:</span>
-                            <strong class="ltr"><?= setting('contact_phone') ?></strong>
+                            <strong><?= setting('contact_phone') ?></strong>
                         </div>
                     </li>
                     <li>

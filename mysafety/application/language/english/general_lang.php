@@ -1,4 +1,4 @@
-<?php 
+<?php
 $lang['settings'] = 'Settings';
 $lang['save'] = 'Save';
 $lang['success_sended_data'] = 'Sended data saved successfully';
@@ -77,9 +77,9 @@ $lang['enter_message'] = 'Enter your message';
 $lang['get_contact'] = 'Get Contact';
 $lang['products_of_category'] = 'Products Of This Category';
 $lang['home'] = 'Home';
-$lang['be_social'] = 'Be Social';
+$lang['be_social'] = 'Follow Us';
 $lang['call_us'] = 'Call Us';
-$lang['email_us'] = 'Email Us';
+$lang['email_us'] = 'For Inquiry';
 $lang['home'] = 'Home';
 $lang['our_categories'] = 'Our Categories';
 $lang['check_our_categories'] = 'Check Out Our Categories';
@@ -100,3 +100,6 @@ $lang['safety_point'] = 'Safety Point';
 $lang['main_page_title'] = 'Main Page';
 $lang['site_messages'] = 'Site Messages';
 $lang['success_contact_message'] = 'Your message has been sent successfully';
+$lang['offers'] = 'Offers';
+$lang['all_offers'] = 'All Offers';
+$lang['add_offer'] = 'Add Offer';

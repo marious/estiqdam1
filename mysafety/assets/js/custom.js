@@ -3,19 +3,27 @@ if ($('.wow').length) {
 }
 
 if ($('.categories-carousel').length) {
-    $('.categories-carousel, .news-carousel').owlCarousel({
+    $('.categories-carousel, .news-carousel, .services-carousel').owlCarousel({
         autoplay: 4000,
         items: 3,
         itemsDesktop : [1199,3],
         itemsDesktopSmall : [979,3],
+        navigation: true,
+        navigationText: ["<i class='fa fa-angle-left'></i>", "<i class='fa fa-angle-right'></i>"],
     });
+
+
+
+
 
     $('.clients-carousel').owlCarousel({
         autoplay: 4000,
         items: 6,
         itemsDesktop : [1199,6],
         itemsTablet: [768, 6],
-        itemsMobile: [479,4]
+        itemsMobile: [479,4],
+        navigation: true,
+        navigationText: ["<i class='fa fa-angle-left'></i>", "<i class='fa fa-angle-right'></i>"],
     });
 }
 
