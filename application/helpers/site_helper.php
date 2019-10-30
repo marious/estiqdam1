@@ -1,229 +1,238 @@
 <?php
-function admin_assets($file) {
-    return base_url() . 'assets/admin_panel/' . $file;
-}
-
-function format_money($locale = 'en-US', $num) {
-    $locale = new NumberFormatter($locale, NumberFormatter::CURRENCY);
-    return $locale->format($num);
-}
-
-function active_tab($checkTab) {
-    $ci =& get_instance();
-    if ($ci->uri->segment(1) == $checkTab) {
+/**
+ * Check if the current sidebar menu is active or not
+ */
+function is_sidebar_menu_active($current)
+{
+    $CI =& get_instance();
+    if ($CI->uri->segment(1) == $current) {
         return 'active';
     }
     return '';
 }
 
-function calculate_age($birth_date)
-{
-    if ($birth_date) {
-        $birthDate = explode("/", $birth_date);
-        $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[1], $birthDate[0], $birthDate[2]))) > date("md")
-            ? ((date("Y") - $birthDate[2]) - 0)
-            : (date("Y") - $birthDate[2]));
-        return $age;
-    }
-}
 
-
-function arabic_day($day)
-{
-    $day = strtolower($day);
-    $arabic_days = [
-        'saturday' => 'السبت',
-        'sunday' => 'الاحد',
-        'monday' => 'الاثنين',
-        'tuesday' => 'الثلاثاء',
-        'wednesday' => 'الاربعاء',
-        'thursday' => 'الخميس',
-        'friday' => 'الجمعة',
-    ];
-    if (array_key_exists($day, $arabic_days)) {
-        return $arabic_days[$day];
-    }
-}
-
-
-
-function langOption()
-{
-    $lang = scandir( APPPATH.'/language/');
-    $t = array();
-    foreach($lang as $value) {
-        if($value === '.' || $value === '..') {continue;}
-        if(is_dir( APPPATH . '/language/' . $value) && file_exists(APPPATH.'/language/'.$value.'/info.json'))
-        {
-            $fp = file_get_contents('application/language/'.$value.'/info.json');
-            $fp = json_decode($fp,true);
-            $t[] =  $fp ;
-        }
-
-    }
-    return $t;
-}
-
-
-function get_language($lang)
-{
-    switch ($lang)
-    {
-        case 'en':
-            return 'english';
-            break;
-        case 'ar':
-            return 'arabic';
-            break;
-    }
-}
-
-
-function get_agent_allowed_url()
-{
-    return [
-        'dashboard',
-        'Admin',
-        'agent_worker',
-    ];
-}
-
-function get_yes_or_no($value)
-{
-    switch ($value) {
-        case '0':
-            return 'لا';
-        break;
-        case '1':
-            return 'نعم';
-            break;
-    }
-}
-
-function calculate_after_tax_amount($total)
-{
+function is_tree_sidebar_menu_active($first, $second) {
     $CI =& get_instance();
-
-    $query = $CI->db->query("SELECT tax_amount FROM institution_details")->result();
-    $percentage = (float) $query[0]->tax_amount;
-    $total = (float) $total;
-    $tax_amount = ($percentage/100) * $total;
-    $total = $total + $tax_amount;
-    return ['tax_amount' => $tax_amount, 'total' => $total];
+    if ($CI->uri->segment(2) == $second && $CI->uri->segment(1) == $first) {
+        return 'active';
+    }
+    return '';
 }
 
-function get_day_lang()
+
+/**
+ * Get the setting by it's name
+ */
+function setting($setting_name = null) {
+    $CI =& get_instance();
+    if ($setting_name) {
+        $query = $CI->db->get_where('settings', ['name' => $setting_name]);
+        return $query->row() ? trim($query->row()->value) : '';
+    }
+    return '';
+}
+
+
+function active_tab($current)
 {
-    if (isset($_SESSION['language']) && $_SESSION['language'] == 'arabic')
+    if (isset($_SESSION['active_tab']) && $_SESSION['active_tab'] == $current) {
+        return 'active';
+    }
+}
+
+
+function addToJson($ar , $en)
+{
+    $text = [
+        'en' => $en,
+        'ar' => $ar,
+    ];
+
+    $json = json_encode($text , JSON_UNESCAPED_UNICODE);
+
+    return $json;
+}
+
+function make_slug($title, $lang = 'en')
+{
+    return $lang == 'ar' ? preg_replace('/[^\x{0600}-\x{06FF}0-9-]+/u', '-', $title) :
+        strtolower(preg_replace('/[^A-Za-z0-9-]+/', '-', $title));
+
+}
+
+function transText($dataField , $lang = null)
+{
+    if($dataField != '') {
+        $text = json_decode($dataField);
+        return $text->$lang;
+    }
+    return '';
+
+//    if ($lang == null)
+//        $lang = app()->getLocale();
+
+}
+
+function shortDescrip($descrip , $numb)
+{
+    $desc = words(strip_tags($descrip) , $numb ,' ....');
+    return $desc;
+}
+
+function words($value, $words = 100, $end = '...')
+{
+    preg_match('/^\s*+(?:\S++\s*+){1,'.$words.'}/u', $value, $matches);
+
+    if (! isset($matches[0]) || get_length($value) === get_length($matches[0])) {
+        return $value;
+    }
+
+    return rtrim($matches[0]).$end;
+}
+
+function get_length($value, $encoding = null)
+{
+    if ($encoding) {
+        return mb_strlen($value, $encoding);
+    }
+
+    return mb_strlen($value);
+}
+
+function dateFormat($date, $format = false){
+    if (!$date) {
+        return false;
+    }
+    if (!$format) {
+        $format = 'j M Y h:i a';
+    }
+    $newFormat = date($format,strtotime($date));
+    return $newFormat;
+}
+
+
+
+
+function draw_actions_button($dit_link = '', $delete_link = '', $permission_group = '')
+{
+    $output = '';
+    $logged_in_user_permissions = Modules::run('roles/get_active_user_permissions');
+
+
+    if ($dit_link && in_array('edit' . '_' . $permission_group, $logged_in_user_permissions)) {
+        $output .= '<a href="'.$dit_link.'" class="btn btn-sm btn-primary" title="'.lang('edit').'"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;&nbsp;';
+    }
+    if ($delete_link && in_array('delete' . '_' . $permission_group, $logged_in_user_permissions))
     {
-        return ' يوم ';
+        $output .= '<a data-href="'.$delete_link.'" class="btn btn-sm btn-danger" title="'.lang('delete').'" data-toggle="modal" data-target="#confirm-delete"><i class="fa fa-trash-o"></i></a>';
     }
-    return ' days ';
+    return $output;
 }
 
 
 
-
-function value_exists($table,$col,$value,$id='',$id_value='')
+function get_current_lang()
 {
-    $CI	=&	get_instance();
-    $CI->load->database();
-    $rowcount=0;
-
-    if($id=='' && $id_value==''){
-        $CI->db->select($col);
-        $CI->db->from($table);
-        $CI->db->where($col,$value);
-        $CI->db->where('user_id',$_SESSION['id']);
-        $query=$CI->db->get();
-        $rowcount = $query->num_rows();
-    }else{
-        $CI->db->select($col);
-        $CI->db->from($table);
-        $CI->db->where($col,$value);
-        $CI->db->where('user_id',$_SESSION['id']);
-        $CI->db->where_not_in($id,$id_value);
-        $query=$CI->db->get();
-        $rowcount = $query->num_rows();
-
+    if (!isset($_SESSION['lang']) && !isset($_GET['lang']) && isset($_SERVER['HTTP_ACCEPT_LANGUAGE']))
+    {
+        $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+    }
+    else if (isset($_SESSION['lang'])) {
+        $lang = $lang;
     }
 
-    if($rowcount>0){
-        return true;
-    }else{
-        return false;
-    }
-
+    return $lang;
 }
 
-function value_exists2($table,$col,$value,$type,$type_value,$id='',$id_value='')
+
+function get_current_front_lang()
 {
-    $CI =&  get_instance();
-    $CI->load->database();
-    $rowcount=0;
-
-    if($id=='' && $id_value==''){
-        $CI->db->select($col);
-        $CI->db->from($table);
-        $CI->db->where($col,$value);
-//        $CI->db->where('user_id',$CI->session->userdata('user_id'));
-        $CI->db->where($type,$type_value);
-        $query=$CI->db->get();
-        $rowcount = $query->num_rows();
-    }else{
-        $CI->db->select($col);
-        $CI->db->from($table);
-        $CI->db->where($col,$value);
-        $CI->db->where($type,$type_value);
-//        $CI->db->where('user_id',$CI->session->userdata('user_id'));
-        $CI->db->where_not_in($id,$id_value);
-        $query=$CI->db->get();
-        $rowcount = $query->num_rows();
-
+    $lang =  isset($_SESSION['public_site_language']) ? $_SESSION['public_site_language'] : 'arabic';
+    if (strtolower($lang) == 'english') {
+        return 'en';
+    } else {
+        return 'ar';
     }
+}
 
-    if($rowcount>0){
-        return true;
-    }else{
-        return false;
+function get_backend_lang() {
+    $lang =  isset($_SESSION['backend_language']) ? $_SESSION['backend_language'] : 'english';
+    if (strtolower($lang) == 'english') {
+        return 'en';
+    } else {
+        return 'ar';
     }
-
 }
 
 
-function getOld($id,$id_value,$table){
-    $CI =&  get_instance();
-    $CI->load->database();
-    $CI->db->select('*');
-    $CI->db->from($table);
-    $CI->db->where($id,$id_value);
-    $query=$CI->db->get();
-    $result=$query->row();
-    return $result;
+function make_trans($column) {
+    $lang = get_current_lang();
+    $text_trans = $column . '_' . $lang;
+    return $text_trans;
 }
 
 
-if ( ! function_exists('get_current_setting'))
+function get_caller_info() {
+    $c = '';
+    $file = '';
+    $func = '';
+    $class = '';
+    $trace = debug_backtrace();
+    if (isset($trace[2])) {
+        $file = $trace[1]['file'];
+        $func = $trace[2]['function'];
+        if ((substr($func, 0, 7) == 'include') || (substr($func, 0, 7) == 'require')) {
+            $func = '';
+        }
+    } else if (isset($trace[1])) {
+        $file = $trace[1]['file'];
+        $func = '';
+    }
+    if (isset($trace[3]['class'])) {
+        $class = $trace[3]['class'];
+        $func = $trace[3]['function'];
+        $file = $trace[2]['file'];
+    } else if (isset($trace[2]['class'])) {
+        $class = $trace[2]['class'];
+        $func = $trace[2]['function'];
+        $file = $trace[1]['file'];
+    }
+    if ($file != '') $file = basename($file);
+    $c = $file . ": ";
+    $c .= ($class != '') ? ":" . $class . "->" : "";
+    $c .= ($func != '') ? $func . "(): " : "";
+    return($c);
+}
+
+
+function safe_urlencode($txt){
+    //$str = urlencode($txt);
+    $str = $txt;
+    // $str = str_replace('.', '%2E', $str);
+    // $str = str_replace('-', '%2D', $str);
+    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+        $string = urlencode($str);
+
+        $string = str_replace("%C2%96", "-", $string);
+        $string = str_replace("%C2%91", "%27", $string);
+        $string = str_replace("%C2%92", "%27", $string);
+        $string = str_replace("%C2%82", "%27", $string);
+        $string = str_replace("%C2%93", "%22", $string);
+        $string = str_replace("%C2%94", "%22", $string);
+        $string = str_replace("%C2%84", "%22", $string);
+        $string = str_replace("%C2%8B", "%C2%AB", $string);
+        $string = str_replace("%C2%9B", "%C2%BB", $string);
+        return $string;
+    }
+    return urlencode($str);
+}
+
+function get_icon_pull()
 {
-
-    function get_current_setting($setting) {
-        $CI =&	get_instance();
-        $CI->load->database();
-        $CI->db->select('value');
-        $CI->db->from('settings');
-        $CI->db->where('settings',$setting);
-        $query=$CI->db->get();
-        $result=$query->row();
-        return $result->value;
+    if (get_current_front_lang() == 'ar'){
+        return 'pull-left';
+    } else {
+        return 'pull-right';
     }
-
-}
-
-if ( ! function_exists('decimalPlace'))
-{
-
-    function decimalPlace($number){
-        return number_format((float)$number, 2);
-    }
-
 }
