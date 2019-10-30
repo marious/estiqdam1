@@ -6,6 +6,11 @@ class Offers extends MY_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->middleware->only(['not_authinticated'], ['all', 'add', 'edit', 'delete']);
+        $this->middleware->only(['check_permission:show_pages'], ['all']);
+        $this->middleware->only(['check_permission:add_pages'], ['add']);
+        $this->middleware->only(['check_permission:edit_pages'], ['edit']);
+        $this->middleware->only(['check_permission:delete_pages'], ['delete']);
         $this->lang->load('offers');
         $this->load->model('Offer_model');
     }
@@ -15,7 +20,7 @@ class Offers extends MY_Controller
     {
         if ($id)
         {
-            $id = $this->encryption->decrypt(str_replace(array('-', '_', '~'), array('+', '/', '='), $id));
+            $id = decrypt($id);
             $this->data['offer'] = $this->Offer_model->get($id, true);
             if ($this->data['offer'])
             {
