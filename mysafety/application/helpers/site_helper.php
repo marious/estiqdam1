@@ -1,4 +1,12 @@
 <?php
+function encrypt($input, $key = 'AppKey1252') {
+    $iv = substr(hash('SHA256', $key),0,16);
+    return base64_encode(openssl_encrypt($input, 'AES-256-CBC', $key, 0, $iv));
+}
+function decrypt($input, $key='AppKey1252') {
+    $iv = substr(hash('SHA256', $key),0,16);
+    return openssl_decrypt(base64_decode($input), 'AES-256-CBC', $key, 0, $iv);
+}
 /**
  * Check if the current sidebar menu is active or not
  */
@@ -149,6 +157,15 @@ function get_current_lang()
 function get_current_front_lang()
 {
     $lang =  isset($_SESSION['public_site_language']) ? $_SESSION['public_site_language'] : 'arabic';
+    if (strtolower($lang) == 'english') {
+        return 'en';
+    } else {
+        return 'ar';
+    }
+}
+
+function get_backend_lang() {
+    $lang =  isset($_SESSION['backend_language']) ? $_SESSION['backend_language'] : 'english';
     if (strtolower($lang) == 'english') {
         return 'en';
     } else {
