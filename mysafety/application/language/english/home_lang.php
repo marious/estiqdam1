@@ -1,5 +1,5 @@
 <?php 
-$lang['be_social'] = 'Be Social';
-$lang['call_us'] = 'Call Us';
+$lang['be_social'] = 'Follow Us';
+$lang['call_us'] = 'For Inquiry';
 $lang['email_us'] = 'Email Us';
 $lang['home'] = 'Home';
