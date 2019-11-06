@@ -1,14 +1,7 @@
 <?php
 
 
-function encrypt($input, $key = 'AppKey1252') {
-    $iv = substr(hash('SHA256', $key),0,16);
-    return base64_encode(openssl_encrypt($input, 'AES-256-CBC', $key, 0, $iv));
-}
-function decrypt($input, $key='AppKey1252') {
-    $iv = substr(hash('SHA256', $key),0,16);
-    return openssl_decrypt(base64_decode($input), 'AES-256-CBC', $key, 0, $iv);
-}
+
 /**
  * Check if the current sidebar menu is active or not
  */
